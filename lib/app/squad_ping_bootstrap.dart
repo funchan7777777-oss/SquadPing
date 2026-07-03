@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../features/signal_gate/screens/signal_gate_coordinator.dart';
 import '../field_notes/repositories/pulse_story_repository.dart';
-import 'navigation/squad_ping_shell.dart';
 import 'theme/squad_ping_theme.dart';
 
 class SquadPingBootstrap extends StatelessWidget {
@@ -15,7 +15,7 @@ class SquadPingBootstrap extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'SquadPing',
       theme: buildSquadPingTheme(),
-      home: SquadPingShell(storyArchive: storyArchive),
+      home: SignalGateCoordinator(storyArchive: storyArchive),
     );
   }
 }
