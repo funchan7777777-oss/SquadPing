@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../../shared/visuals/squad_ping_assets.dart';
+import '../widgets/agreement_consent_line.dart';
 import '../widgets/full_bleed_asset_stage.dart';
+import '../widgets/gate_notice_dialog.dart';
 import '../widgets/png_signal_button.dart';
+import 'agreement_web_view_stage.dart';
 
-class AccessMethodLounge extends StatelessWidget {
+class AccessMethodLounge extends StatefulWidget {
   const AccessMethodLounge({
     super.key,
     required this.onSignInPulled,
@@ -14,7 +17,20 @@ class AccessMethodLounge extends StatelessWidget {
 
   final VoidCallback onSignInPulled;
   final VoidCallback onCreateAccountPulled;
-  final VoidCallback onApplePulled;
+  final Future<void> Function() onApplePulled;
+
+  @override
+  State<AccessMethodLounge> createState() => _AccessMethodLoungeState();
+}
+
+class _AccessMethodLoungeState extends State<AccessMethodLounge> {
+  static const _termsUrl =
+      'https://sites.google.com/view/squadping-termsofservice/home';
+  static const _privacyUrl =
+      'https://sites.google.com/view/squadping-privacy-policy/home';
+
+  bool _agreementAccepted = false;
+  bool _appleRequestInFlight = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,42 +39,87 @@ class AccessMethodLounge extends StatelessWidget {
       foreground: Align(
         alignment: Alignment.bottomCenter,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 0, 24, 52),
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 42),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               PngSignalButton(
                 assetPath: SquadPingAssets.signInButton,
                 semanticLabel: 'Sign in',
-                onPressed: onSignInPulled,
+                onPressed: () => _runAfterAgreement(widget.onSignInPulled),
               ),
               const SizedBox(height: 10),
               PngSignalButton(
                 assetPath: SquadPingAssets.createAccountButton,
                 semanticLabel: 'Create account',
-                onPressed: onCreateAccountPulled,
+                onPressed: () =>
+                    _runAfterAgreement(widget.onCreateAccountPulled),
               ),
               const SizedBox(height: 10),
-              PngSignalButton(
-                assetPath: SquadPingAssets.appleButton,
-                semanticLabel: 'Sign in with Apple',
-                onPressed: onApplePulled,
+              Opacity(
+                opacity: _appleRequestInFlight ? 0.62 : 1,
+                child: PngSignalButton(
+                  assetPath: SquadPingAssets.appleButton,
+                  semanticLabel: 'Sign in with Apple',
+                  onPressed: _appleRequestInFlight ? () {} : _startAppleFlow,
+                ),
               ),
-              const SizedBox(height: 34),
-              const Text(
-                'By continuing, you agree to SquadPing service terms and community notes.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w600,
-                  height: 1.25,
-                  letterSpacing: 0,
+              const SizedBox(height: 24),
+              AgreementConsentLine(
+                isAccepted: _agreementAccepted,
+                onAcceptanceChanged: (value) {
+                  setState(() => _agreementAccepted = value);
+                },
+                onTermsPressed: () => _openAgreementPage(
+                  title: 'User Agreement',
+                  url: _termsUrl,
+                ),
+                onPrivacyPressed: () => _openAgreementPage(
+                  title: 'Privacy Policy',
+                  url: _privacyUrl,
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _runAfterAgreement(VoidCallback action) {
+    if (!_agreementAccepted) {
+      _showAgreementNotice();
+      return;
+    }
+    action();
+  }
+
+  Future<void> _startAppleFlow() async {
+    if (!_agreementAccepted) {
+      _showAgreementNotice();
+      return;
+    }
+    setState(() => _appleRequestInFlight = true);
+    await widget.onApplePulled();
+    if (mounted) {
+      setState(() => _appleRequestInFlight = false);
+    }
+  }
+
+  void _showAgreementNotice() {
+    showGateNoticeDialog(
+      context: context,
+      title: 'Agreement required',
+      message:
+          'Please read and accept the User Agreement and Privacy Policy before continuing.',
+      actionLabel: 'I understand',
+    );
+  }
+
+  void _openAgreementPage({required String title, required String url}) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => AgreementWebViewStage(pageTitle: title, pageUrl: url),
       ),
     );
   }

@@ -6,32 +6,45 @@ class CredentialLaneField extends StatefulWidget {
   const CredentialLaneField({
     super.key,
     required this.fieldLabel,
+    this.controller,
     this.keyboardType,
     this.obscuredByDefault = false,
+    this.textInputAction,
+    this.maxLines = 1,
+    this.hintText,
   });
 
   final String fieldLabel;
+  final TextEditingController? controller;
   final TextInputType? keyboardType;
   final bool obscuredByDefault;
+  final TextInputAction? textInputAction;
+  final int maxLines;
+  final String? hintText;
 
   @override
   State<CredentialLaneField> createState() => _CredentialLaneFieldState();
 }
 
 class _CredentialLaneFieldState extends State<CredentialLaneField> {
-  late final TextEditingController _laneController;
+  TextEditingController? _ownedLaneController;
   late bool _isObscured;
+
+  TextEditingController get _laneController =>
+      widget.controller ?? _ownedLaneController!;
 
   @override
   void initState() {
     super.initState();
-    _laneController = TextEditingController();
+    if (widget.controller == null) {
+      _ownedLaneController = TextEditingController();
+    }
     _isObscured = widget.obscuredByDefault;
   }
 
   @override
   void dispose() {
-    _laneController.dispose();
+    _ownedLaneController?.dispose();
     super.dispose();
   }
 
@@ -57,11 +70,13 @@ class _CredentialLaneFieldState extends State<CredentialLaneField> {
         ),
         const SizedBox(height: 12),
         SizedBox(
-          height: 60,
+          height: widget.maxLines > 1 ? 96 : 60,
           child: TextField(
             controller: _laneController,
             keyboardType: widget.keyboardType,
             obscureText: _isObscured,
+            textInputAction: widget.textInputAction,
+            maxLines: widget.obscuredByDefault ? 1 : widget.maxLines,
             cursorColor: const Color(0xFF7044EC),
             style: const TextStyle(
               color: Color(0xFF231A35),
@@ -72,6 +87,13 @@ class _CredentialLaneFieldState extends State<CredentialLaneField> {
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white.withValues(alpha: 0.93),
+              hintText: widget.hintText,
+              hintStyle: TextStyle(
+                color: const Color(0xFF7B7488).withValues(alpha: 0.62),
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0,
+              ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 22,
                 vertical: 18,
