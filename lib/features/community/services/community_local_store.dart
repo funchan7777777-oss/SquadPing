@@ -21,7 +21,14 @@ class CommunityLocalStore extends ChangeNotifier {
   static const _followRequestsKey = 'community.follow_requests_sent';
   static const _followingKey = 'community.following_user_ids';
   static const _approvedFollowersKey = 'community.approved_follower_ids';
+  static const _initialFollowersSeededKey =
+      'community.initial_followers_seeded';
   static const _chatPrefix = 'community.chat.';
+  static const _initialFollowerIds = <String>[
+    'chloe',
+    'liam',
+    'maya-community',
+  ];
 
   Future<void> initialize() async {
     _preferences ??= await SharedPreferences.getInstance();
@@ -35,6 +42,7 @@ class CommunityLocalStore extends ChangeNotifier {
     _approvedFollowerIds =
         (_preferences!.getStringList(_approvedFollowersKey) ?? const [])
             .toSet();
+    await _seedInitialFollowersIfNeeded();
   }
 
   List<String> get incomingFollowRequestIds =>
@@ -147,5 +155,20 @@ class CommunityLocalStore extends ChangeNotifier {
       await initialize();
     }
     return _preferences!;
+  }
+
+  Future<void> _seedInitialFollowersIfNeeded() async {
+    final seeded = _preferences!.getBool(_initialFollowersSeededKey) ?? false;
+    if (seeded) {
+      return;
+    }
+    _approvedFollowerIds.addAll(_initialFollowerIds);
+    await Future.wait([
+      _preferences!.setStringList(
+        _approvedFollowersKey,
+        _approvedFollowerIds.toList(),
+      ),
+      _preferences!.setBool(_initialFollowersSeededKey, true),
+    ]);
   }
 }

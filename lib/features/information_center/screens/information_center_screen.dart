@@ -6,6 +6,7 @@ import '../../../shared/visuals/squad_ping_assets.dart';
 import '../../../shared/widgets/squad_empty_state.dart';
 import '../../community/data/community_seed.dart';
 import '../../community/models/community_models.dart';
+import '../../community/screens/community_topic_detail_screen.dart';
 import '../../community/screens/community_user_profile_screen.dart';
 import '../../community/services/community_local_store.dart';
 import 'information_chat_screen.dart';
@@ -23,6 +24,7 @@ class _InformationCenterScreenState extends State<InformationCenterScreen> {
   final _localStore = CommunityLocalStore.instance;
   final _safetyStore = SafetyActionStore.instance;
   var _threads = <_InformationThread>[];
+  var _systemNotices = <_SystemNotice>[];
   var _isReady = false;
 
   @override
@@ -76,9 +78,74 @@ class _InformationCenterScreenState extends State<InformationCenterScreen> {
     if (mounted) {
       setState(() {
         _threads = nextThreads;
+        _systemNotices = _buildSystemNotices();
         _isReady = true;
       });
     }
+  }
+
+  List<_SystemNotice> _buildSystemNotices() {
+    final notices = <_SystemNotice>[];
+    for (final userId in _localStore.incomingFollowRequestIds) {
+      final user = _visibleUserById(userId);
+      if (user == null) {
+        continue;
+      }
+      notices.add(
+        _SystemNotice(
+          id: 'follow-request-${user.id}',
+          type: _SystemNoticeType.followRequest,
+          user: user,
+        ),
+      );
+    }
+    for (final userId in _localStore.approvedFollowerIds) {
+      final user = _visibleUserById(userId);
+      if (user == null) {
+        continue;
+      }
+      notices.add(
+        _SystemNotice(
+          id: 'follower-${user.id}',
+          type: _SystemNoticeType.follower,
+          user: user,
+        ),
+      );
+    }
+
+    final ownPosts = CommunitySeed.posts.where(
+      (post) =>
+          post.author.id == CommunitySeed.viewer.id &&
+          !_safetyStore.isContentHidden(post.id, authorId: post.author.id),
+    );
+    for (final post in ownPosts) {
+      for (final comment in post.comments) {
+        if (comment.author.id == CommunitySeed.viewer.id ||
+            _safetyStore.isUserBlocked(comment.author.id)) {
+          continue;
+        }
+        notices.add(
+          _SystemNotice(
+            id: 'comment-${comment.id}',
+            type: _SystemNoticeType.comment,
+            user: comment.author,
+            post: post,
+            comment: comment,
+          ),
+        );
+      }
+      if (post.likeCount > 0) {
+        notices.add(
+          _SystemNotice(
+            id: 'like-${post.id}',
+            type: _SystemNoticeType.like,
+            post: post,
+            count: post.likeCount,
+          ),
+        );
+      }
+    }
+    return notices;
   }
 
   CommunityUser? _userById(String userId) {
@@ -88,6 +155,13 @@ class _InformationCenterScreenState extends State<InformationCenterScreen> {
       }
     }
     return null;
+  }
+
+  CommunityUser? _visibleUserById(String userId) {
+    if (userId == CommunitySeed.viewer.id || _safetyStore.isUserBlocked(userId)) {
+      return null;
+    }
+    return _userById(userId);
   }
 
   int get _incomingRequestCount {
@@ -121,6 +195,32 @@ class _InformationCenterScreenState extends State<InformationCenterScreen> {
             CommunityUserProfileScreen(user: user, posts: CommunitySeed.posts),
       ),
     );
+  }
+
+  Future<void> _openSystemNotice(_SystemNotice notice) async {
+    switch (notice.type) {
+      case _SystemNoticeType.followRequest:
+        await _openApplications();
+      case _SystemNoticeType.follower:
+        final user = notice.user;
+        if (user != null) {
+          _openProfile(user);
+        }
+      case _SystemNoticeType.comment:
+      case _SystemNoticeType.like:
+        final post = notice.post;
+        if (post == null) {
+          return;
+        }
+        await Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => CommunityTopicDetailScreen(
+              post: post,
+              onPostChanged: (_) {},
+            ),
+          ),
+        );
+    }
   }
 
   Future<void> _deleteThread(CommunityUser user) async {
@@ -187,6 +287,26 @@ class _InformationCenterScreenState extends State<InformationCenterScreen> {
                             onTap: _openApplications,
                           ),
                           const SizedBox(height: 18),
+                          Text(
+                            'System',
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                          ),
+                          const SizedBox(height: 12),
+                          if (_systemNotices.isEmpty)
+                            _SystemEmptyNote()
+                          else
+                            for (final notice in _systemNotices) ...[
+                              _SystemNoticeTile(
+                                notice: notice,
+                                onTap: () => _openSystemNotice(notice),
+                              ),
+                              const SizedBox(height: 12),
+                            ],
+                          const SizedBox(height: 6),
                           Text(
                             'Friend',
                             style: Theme.of(context).textTheme.titleLarge
