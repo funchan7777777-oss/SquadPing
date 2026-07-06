@@ -77,7 +77,6 @@ class _SignalGateCoordinatorState extends State<SignalGateCoordinator> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => CredentialSigninStage(
-          recordKeeper: _recordKeeper,
           onCreateAccountPulled: _pushRegisterEntranceFromNestedRoute,
           onAccessGranted: _openPasswordSession,
         ),
@@ -113,7 +112,6 @@ class _SignalGateCoordinatorState extends State<SignalGateCoordinator> {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (_) => CredentialSigninStage(
-          recordKeeper: _recordKeeper,
           onCreateAccountPulled: _pushRegisterEntranceFromNestedRoute,
           onAccessGranted: _openPasswordSession,
         ),
