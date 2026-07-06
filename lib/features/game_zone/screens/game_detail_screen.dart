@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../shared/safety/safety_action_sheet.dart';
+import '../../../shared/safety/safety_action_store.dart';
+import '../../../shared/visuals/squad_ping_assets.dart';
+import '../../../shared/widgets/squad_empty_state.dart';
 import '../data/game_zone_seed.dart';
 import '../models/game_zone_models.dart';
 import '../widgets/game_zone_composer.dart';
@@ -15,6 +19,7 @@ class GameDetailScreen extends StatefulWidget {
 }
 
 class _GameDetailScreenState extends State<GameDetailScreen> {
+  final _safetyStore = SafetyActionStore.instance;
   late final TextEditingController _commentController;
   late final List<GameComment> _comments;
 
@@ -23,12 +28,25 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     super.initState();
     _commentController = TextEditingController();
     _comments = [...widget.game.comments];
+    _safetyStore.initialize().then((_) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+    _safetyStore.addListener(_refresh);
   }
 
   @override
   void dispose() {
+    _safetyStore.removeListener(_refresh);
     _commentController.dispose();
     super.dispose();
+  }
+
+  void _refresh() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _sendComment() {
@@ -42,7 +60,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
         GameComment(
           author: GameZoneSeed.viewer,
           message: message,
-          postedAt: 'just now',
+          postedAt: 'Now',
         ),
       );
       _commentController.clear();
@@ -50,64 +68,92 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     FocusScope.of(context).unfocus();
   }
 
+  Future<void> _openCommentSafety(GameComment comment) async {
+    final changed = await showSafetyActionSheet(
+      context: context,
+      contentId: _commentContentId(comment),
+      authorId: comment.author.id,
+      authorName: comment.author.displayName,
+      allowBlock: comment.author.id != GameZoneSeed.viewer.id,
+    );
+    if (changed && mounted) {
+      setState(() {});
+    }
+  }
+
+  String _commentContentId(GameComment comment) {
+    return 'game-comment-${widget.game.id}-${comment.author.id}-${comment.postedAt}-${comment.message.hashCode}';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final visibleComments = _comments
+        .where(
+          (comment) => !_safetyStore.isContentHidden(
+            _commentContentId(comment),
+            authorId: comment.author.id,
+          ),
+        )
+        .toList();
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: const Color(0xFF7034F4),
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
-          const Positioned.fill(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF8E42FF),
-                    Color(0xFF6735EF),
-                    Color(0xFFB44DFF),
-                  ],
-                ),
+          Positioned.fill(
+            child: Image.asset(SquadPingAssets.background, fit: BoxFit.fill),
+          ),
+          Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 430),
+              child: CustomScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                slivers: [
+                  SliverToBoxAdapter(child: _GameHero(game: widget.game)),
+                  SliverPadding(
+                    padding: const EdgeInsets.fromLTRB(18, 16, 18, 116),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate([
+                        _DescriptionCard(game: widget.game),
+                        const SizedBox(height: 18),
+                        _CommentHeader(count: visibleComments.length),
+                        const SizedBox(height: 12),
+                        if (visibleComments.isEmpty)
+                          buildSquadEmptyState(size: 126)
+                        else
+                          for (final comment in visibleComments) ...[
+                            _CommentTile(
+                              comment: comment,
+                              onMoreTap: () => _openCommentSafety(comment),
+                            ),
+                            const SizedBox(height: 12),
+                          ],
+                      ]),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-          SafeArea(
-            bottom: false,
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 430),
-                child: CustomScrollView(
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
-                  slivers: [
-                    SliverToBoxAdapter(child: _GameHero(game: widget.game)),
-                    SliverPadding(
-                      padding: const EdgeInsets.fromLTRB(18, 16, 18, 120),
-                      sliver: SliverList(
-                        delegate: SliverChildListDelegate([
-                          _DescriptionCard(game: widget.game),
-                          const SizedBox(height: 18),
-                          _CommentHeader(count: _comments.length),
-                          const SizedBox(height: 12),
-                          for (final comment in _comments) ...[
-                            _CommentTile(comment: comment),
-                            const SizedBox(height: 12),
-                          ],
-                        ]),
-                      ),
-                    ),
-                  ],
+                child: GameZoneComposer(
+                  controller: _commentController,
+                  hintText: 'Enter what you want to send',
+                  onSend: _sendComment,
+                  showBackground: false,
                 ),
               ),
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: GameZoneComposer(
-        controller: _commentController,
-        hintText: 'Enter what you want to send',
-        onSend: _sendComment,
       ),
     );
   }
@@ -140,7 +186,7 @@ class _GameHero extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 10,
+            top: MediaQuery.paddingOf(context).top + 12,
             left: 12,
             child: _RoundBackButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -288,9 +334,10 @@ class _CommentHeader extends StatelessWidget {
 }
 
 class _CommentTile extends StatelessWidget {
-  const _CommentTile({required this.comment});
+  const _CommentTile({required this.comment, required this.onMoreTap});
 
   final GameComment comment;
+  final VoidCallback onMoreTap;
 
   @override
   Widget build(BuildContext context) {
@@ -341,10 +388,17 @@ class _CommentTile extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 6),
-                    const Icon(
-                      Icons.more_horiz_rounded,
-                      color: Colors.white,
-                      size: 22,
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: onMoreTap,
+                      child: const Padding(
+                        padding: EdgeInsets.fromLTRB(6, 3, 0, 3),
+                        child: Icon(
+                          Icons.more_horiz_rounded,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
                     ),
                   ],
                 ),

@@ -260,22 +260,28 @@ abstract final class GameZoneSeed {
       hotLevel: 5,
       comments: [
         GameComment(
-          author: viewer,
+          author: victoria,
           message:
-              'I want a duo for zero build tonight. Prefer clear pings and quick rotations.',
-          postedAt: '2 min ago',
+              'Zero Build squads feel sharp tonight. I can mark rotations if someone tracks storm tags.',
+          postedAt: 'Jul 6 14:36',
         ),
         GameComment(
           author: luna,
           message:
-              'Creative maps are still the best warmup before ranked. Share your island codes.',
-          postedAt: '8 min ago',
+              'Creative aim maps are still my best warmup before ranked. Send island codes if you have good ones.',
+          postedAt: 'Jul 6 13:58',
         ),
         GameComment(
           author: axel,
           message:
-              'The current loot pool feels better for late-game fights than last week.',
-          postedAt: '16 min ago',
+              'The loot pool finally rewards late-game high ground without making every end circle messy.',
+          postedAt: 'Jul 5 22:10',
+        ),
+        GameComment(
+          author: mia,
+          message:
+              'I am practicing quick wall edits. Happy to run duos with patient builders.',
+          postedAt: 'Jul 5 20:42',
         ),
       ],
     ),
@@ -293,14 +299,20 @@ abstract final class GameZoneSeed {
         GameComment(
           author: kira,
           message:
-              'Looking for people who know Mirage utility and do not overcall mid round.',
-          postedAt: '11 min ago',
+              'Looking for people who know Mirage utility and keep mid-round calls short.',
+          postedAt: 'Jul 6 12:44',
         ),
         GameComment(
           author: marco,
           message:
-              'I can anchor B sites. Need one entry and one calm IGL for premier.',
-          postedAt: '20 min ago',
+              'I can anchor B sites. Need one entry and one calm IGL for Premier.',
+          postedAt: 'Jul 5 23:16',
+        ),
+        GameComment(
+          author: cole,
+          message:
+              'Save calls matter. Random teams keep forcing rifles when the economy is broken.',
+          postedAt: 'Jul 5 18:25',
         ),
       ],
     ),
@@ -318,14 +330,14 @@ abstract final class GameZoneSeed {
         GameComment(
           author: zoe,
           message:
-              'Post your anti-three-star bases. I want to test hybrid and lalo routes.',
-          postedAt: '30 min ago',
+              'Post anti-three-star bases. I want to test hybrid and lalo routes before war day.',
+          postedAt: 'Jul 6 10:22',
         ),
         GameComment(
           author: owen,
           message:
-              'War prep should start earlier. Last-minute donations are killing attacks.',
-          postedAt: '42 min ago',
+              'War prep has to start earlier. Last-minute donations keep breaking our attack plans.',
+          postedAt: 'Jul 4 21:34',
         ),
       ],
     ),
@@ -343,14 +355,8 @@ abstract final class GameZoneSeed {
         GameComment(
           author: amir,
           message:
-              'Bring smokes for every extraction. Randoms keep losing full bags at the gate.',
-          postedAt: '1 hr ago',
-        ),
-        GameComment(
-          author: leo,
-          message:
-              'I can entry if someone keeps the timer and backpack calls clean.',
-          postedAt: '1 hr ago',
+              'Bring smoke cover for extraction. Losing full bags at the gate is the worst part of this mode.',
+          postedAt: 'Jul 5 19:48',
         ),
       ],
     ),
@@ -368,14 +374,32 @@ abstract final class GameZoneSeed {
         GameComment(
           author: rex,
           message:
-              'Draft review after finals was sharp. We need a thread for support picks.',
-          postedAt: '2 hr ago',
+              'The finals draft review was sharp. We need a separate thread for support picks.',
+          postedAt: 'Jul 6 09:12',
         ),
         GameComment(
           author: theo,
           message:
-              'Please tag spoilers for people watching later in different time zones.',
-          postedAt: '2 hr ago',
+              'Please tag spoilers for people watching replays after work.',
+          postedAt: 'Jul 5 23:40',
+        ),
+        GameComment(
+          author: hana,
+          message:
+              'That second-map rotation looked simple, but it changed every objective fight.',
+          postedAt: 'Jul 5 22:05',
+        ),
+        GameComment(
+          author: nia,
+          message:
+              'Patch notes made the caster desk way more interesting this week.',
+          postedAt: 'Jul 4 20:18',
+        ),
+        GameComment(
+          author: kai,
+          message:
+              'I am saving the VOD for draft practice. Hero bans were cleaner than usual.',
+          postedAt: 'Jul 3 18:55',
         ),
       ],
     ),
@@ -393,14 +417,38 @@ abstract final class GameZoneSeed {
         GameComment(
           author: aria,
           message:
-              'The king defense phase is much easier when one player holds stun for flankers.',
-          postedAt: '2 hr ago',
+              'The king defense phase is much easier when one player saves stun for flankers.',
+          postedAt: 'Jul 6 08:50',
         ),
         GameComment(
           author: nate,
           message:
               'I can play front line if someone handles lane calls and objective timers.',
-          postedAt: '3 hr ago',
+          postedAt: 'Jul 5 21:27',
+        ),
+        GameComment(
+          author: ivy,
+          message:
+              'Do not chase after the first tower. Reset, buy, then push throne together.',
+          postedAt: 'Jul 5 17:36',
+        ),
+        GameComment(
+          author: finn,
+          message:
+              'Side lane pressure wins more matches than raw damage in this one.',
+          postedAt: 'Jul 4 22:11',
+        ),
+        GameComment(
+          author: rina,
+          message:
+              'The mage burst window is short, but it deletes the royal guard if timed right.',
+          postedAt: 'Jul 4 16:09',
+        ),
+        GameComment(
+          author: jax,
+          message:
+              'I am still learning guard swaps. A slower party would help.',
+          postedAt: 'Jul 3 19:44',
         ),
       ],
     ),
