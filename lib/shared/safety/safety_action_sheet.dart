@@ -10,12 +10,13 @@ Future<bool> showSafetyActionSheet({
   required String authorName,
   bool allowBlock = true,
 }) async {
+  final hostContext = context;
   final changed = await showModalBottomSheet<bool>(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
     builder: (context) => _SafetyActionSheet(
-      hostContext: context,
+      hostContext: hostContext,
       contentId: contentId,
       authorId: authorId,
       authorName: authorName,

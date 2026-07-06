@@ -376,34 +376,42 @@ class _RoundActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: onTap,
-          child: Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: const Color(0xFF0F3E55).withValues(alpha: 0.88),
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+    return Semantics(
+      button: true,
+      label: label,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: const Color(0xFF0F3E55).withValues(alpha: 0.88),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.white.withValues(alpha: 0.08),
+                ),
+              ),
+              child: Icon(
+                icon,
+                color: isActive ? const Color(0xFFFF7BDA) : Colors.white,
+                size: 24,
+              ),
             ),
-            child: Icon(
-              icon,
-              color: isActive ? const Color(0xFFFF7BDA) : Colors.white,
-              size: 24,
+            const SizedBox(height: 3),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w900,
+              ),
             ),
-          ),
+          ],
         ),
-        const SizedBox(height: 3),
-        Text(
-          label,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.w900,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
