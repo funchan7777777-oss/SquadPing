@@ -24,49 +24,43 @@ class _GameZoneHomeScreenState extends State<GameZoneHomeScreen> {
 
     return ColoredBox(
       color: Colors.black,
-      child: SafeArea(
-        bottom: false,
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 430),
-            child: CustomScrollView(
-              slivers: [
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(18, 8, 18, 0),
-                  sliver: SliverList(
-                    delegate: SliverChildListDelegate([
-                      const _HeroPoster(),
-                      const SizedBox(height: 18),
-                      _ShelfTabs(
-                        focusedShelf: _focusedShelf,
-                        onSelected: (shelf) {
-                          setState(() => _focusedShelf = shelf);
-                        },
-                      ),
-                    ]),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 430),
+          child: CustomScrollView(
+            slivers: [
+              const SliverToBoxAdapter(child: _HeroPoster()),
+              SliverPadding(
+                padding: const EdgeInsets.only(top: 18),
+                sliver: SliverToBoxAdapter(
+                  child: _ShelfTabs(
+                    focusedShelf: _focusedShelf,
+                    onSelected: (shelf) {
+                      setState(() => _focusedShelf = shelf);
+                    },
                   ),
                 ),
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(18, 0, 18, 16),
-                  sliver: SliverToBoxAdapter(
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 220),
-                      switchInCurve: Curves.easeOutCubic,
-                      switchOutCurve: Curves.easeInCubic,
-                      child: isGameShelf
-                          ? _GameDeck(
-                              key: const ValueKey('game-deck'),
-                              games: GameZoneSeed.games,
-                            )
-                          : _ChatDeck(
-                              key: const ValueKey('chat-deck'),
-                              rooms: GameZoneSeed.rooms,
-                            ),
-                    ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.only(bottom: 16),
+                sliver: SliverToBoxAdapter(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 220),
+                    switchInCurve: Curves.easeOutCubic,
+                    switchOutCurve: Curves.easeInCubic,
+                    child: isGameShelf
+                        ? _GameDeck(
+                            key: const ValueKey('game-deck'),
+                            games: GameZoneSeed.games,
+                          )
+                        : _ChatDeck(
+                            key: const ValueKey('chat-deck'),
+                            rooms: GameZoneSeed.rooms,
+                          ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -79,11 +73,13 @@ class _HeroPoster extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(6),
-      child: AspectRatio(
-        aspectRatio: 750 / 538,
-        child: Image.asset(SquadPingAssets.gameZoneHero, fit: BoxFit.cover),
+    return AspectRatio(
+      aspectRatio: 375 / 269,
+      child: Image.asset(
+        SquadPingAssets.gameZoneHero,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        alignment: Alignment.topCenter,
       ),
     );
   }
