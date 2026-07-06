@@ -17,43 +17,54 @@ class VideoCommentComposer extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 10, 16, 14),
+        padding: const EdgeInsets.fromLTRB(28, 12, 28, 26),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              child: TextField(
-                controller: controller,
-                minLines: 1,
-                maxLines: 3,
-                textInputAction: TextInputAction.send,
-                onSubmitted: (_) => onSend(),
-                decoration: InputDecoration(
-                  hintText: 'Enter what you want to send',
-                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: const Color(0xFFC5C3CC),
+              child: SizedBox(
+                height: 58,
+                child: TextField(
+                  controller: controller,
+                  maxLines: 1,
+                  textInputAction: TextInputAction.send,
+                  onSubmitted: (_) => onSend(),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Colors.black87,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 13,
-                    vertical: 13,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
+                  decoration: InputDecoration(
+                    hintText: 'Enter what you want to send',
+                    hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: const Color(0xFFBDB9C5),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 18,
+                      vertical: 18,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 18),
             Semantics(
               button: true,
               label: 'Send comment',
               child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
                 onTap: onSend,
                 child: Container(
-                  width: 56,
-                  height: 56,
+                  width: 60,
+                  height: 60,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
@@ -61,8 +72,8 @@ class VideoCommentComposer extends StatelessWidget {
                   alignment: Alignment.center,
                   child: Image.asset(
                     SquadPingAssets.sendGlyph,
-                    width: 34,
-                    height: 34,
+                    width: 36,
+                    height: 36,
                   ),
                 ),
               ),

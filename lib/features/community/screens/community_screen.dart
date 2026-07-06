@@ -91,6 +91,22 @@ class _CommunityScreenState extends State<CommunityScreen> {
     }
   }
 
+  void _openTopic(CommunityPost post) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => CommunityTopicDetailScreen(
+          post: post,
+          onPostChanged: (updatedPost) {
+            final index = _posts.indexWhere((item) => item.id == updatedPost.id);
+            if (index != -1) {
+              setState(() => _posts[index] = updatedPost);
+            }
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final visiblePosts = _posts
@@ -139,7 +155,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                         child: CircularProgressIndicator(color: Colors.white),
                       )
                     : ListView(
-                        padding: const EdgeInsets.fromLTRB(16, 14, 16, 112),
+                        padding: const EdgeInsets.fromLTRB(24, 28, 24, 126),
                         children: [
                           _CommunityHeader(
                             onRelease: () {
@@ -151,48 +167,31 @@ class _CommunityScreenState extends State<CommunityScreen> {
                               );
                             },
                           ),
-                          const SizedBox(height: 18),
+                          const SizedBox(height: 24),
                           _UserStrip(users: visibleUsers, onUserTap: _openUser),
-                          const SizedBox(height: 14),
-                          Image.asset(
-                            SquadPingAssets.aiAssistantButton,
-                            height: 54,
-                            fit: BoxFit.fill,
+                          const SizedBox(height: 20),
+                          Center(
+                            child: Image.asset(
+                              SquadPingAssets.aiAssistantButton,
+                              width: 344,
+                              height: 70,
+                              fit: BoxFit.fill,
+                            ),
                           ),
-                          const SizedBox(height: 14),
+                          const SizedBox(height: 20),
                           if (visiblePosts.isEmpty)
                             buildSquadEmptyState()
                           else
                             for (final post in visiblePosts) ...[
                               CommunityPostCard(
                                 post: post,
+                                onCardTap: () => _openTopic(post),
                                 onAuthorTap: () => _openUser(post.author),
                                 onMoreTap: () => _openSafety(post),
                                 onLikeTap: () => _toggleLike(post),
-                                onCommentTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute<void>(
-                                      builder: (_) =>
-                                          CommunityTopicDetailScreen(
-                                            post: post,
-                                            onPostChanged: (updatedPost) {
-                                              final index = _posts.indexWhere(
-                                                (item) =>
-                                                    item.id == updatedPost.id,
-                                              );
-                                              if (index != -1) {
-                                                setState(
-                                                  () => _posts[index] =
-                                                      updatedPost,
-                                                );
-                                              }
-                                            },
-                                          ),
-                                    ),
-                                  );
-                                },
+                                onCommentTap: () => _openTopic(post),
                               ),
-                              const SizedBox(height: 14),
+                              const SizedBox(height: 24),
                             ],
                         ],
                       ),
@@ -218,6 +217,8 @@ class _CommunityHeader extends StatelessWidget {
           'Community',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
             color: Colors.white,
+            fontSize: 34,
+            height: 1,
             fontWeight: FontWeight.w900,
           ),
         ),
@@ -225,8 +226,8 @@ class _CommunityHeader extends StatelessWidget {
         GestureDetector(
           onTap: onRelease,
           child: Container(
-            width: 48,
-            height: 48,
+            width: 56,
+            height: 56,
             decoration: BoxDecoration(
               color: const Color(0xFF633FEF),
               shape: BoxShape.circle,
@@ -238,7 +239,7 @@ class _CommunityHeader extends StatelessWidget {
                 ),
               ],
             ),
-            child: const Icon(Icons.add_rounded, color: Colors.white, size: 36),
+            child: const Icon(Icons.add_rounded, color: Colors.white, size: 42),
           ),
         ),
       ],
@@ -255,29 +256,30 @@ class _UserStrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 96,
+      height: 106,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: users.length,
-        separatorBuilder: (_, _) => const SizedBox(width: 10),
+        separatorBuilder: (_, _) => const SizedBox(width: 18),
         itemBuilder: (context, index) {
           final user = users[index];
           return GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () => onUserTap(user),
             child: SizedBox(
-              width: 70,
+              width: 76,
               child: Column(
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.asset(
                       user.avatarAsset,
-                      width: 70,
-                      height: 70,
+                      width: 76,
+                      height: 76,
                       fit: BoxFit.cover,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 7),
                   Text(
                     user.displayName,
                     maxLines: 1,
@@ -285,6 +287,7 @@ class _UserStrip extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       color: Colors.white,
+                      fontSize: 15,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
