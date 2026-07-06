@@ -97,10 +97,7 @@ class _ProfileRallyStageState extends State<ProfileRallyStage> {
                               SquadPingAssets.profileBadge,
                               fit: BoxFit.cover,
                             )
-                          : Image.file(
-                              File(_avatarPath!),
-                              fit: BoxFit.cover,
-                            ),
+                          : Image.file(File(_avatarPath!), fit: BoxFit.cover),
                     ),
                     Positioned(
                       right: -4,
@@ -325,10 +322,7 @@ class _AvatarChoiceTile extends StatelessWidget {
                   ),
                 ),
               ),
-              const Icon(
-                Icons.chevron_right_rounded,
-                color: Colors.white,
-              ),
+              const Icon(Icons.chevron_right_rounded, color: Colors.white),
             ],
           ),
         ),

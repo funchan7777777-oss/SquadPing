@@ -12,11 +12,10 @@ import '../widgets/launch_signal_loading.dart';
 import '../widgets/route_entry_loading_stage.dart';
 import 'access_method_lounge.dart';
 import 'credential_signin_stage.dart';
-import 'guided_signal_track.dart';
 import 'profile_rally_stage.dart';
 import 'register_signal_stage.dart';
 
-enum _GatePhase { loading, guide, method, home }
+enum _GatePhase { loading, method, home }
 
 class SignalGateCoordinator extends StatefulWidget {
   const SignalGateCoordinator({super.key, required this.storyArchive});
@@ -45,10 +44,6 @@ class _SignalGateCoordinatorState extends State<SignalGateCoordinator> {
         _GatePhase.loading => const LaunchSignalLoading(
           key: ValueKey('launch-loading'),
         ),
-        _GatePhase.guide => GuidedSignalTrack(
-          key: const ValueKey('guide-track'),
-          onTrackCompleted: _completeGuideTrack,
-        ),
         _GatePhase.method => AccessMethodLounge(
           key: const ValueKey('method-lounge'),
           onSignInPulled: _pushSignin,
@@ -75,18 +70,7 @@ class _SignalGateCoordinatorState extends State<SignalGateCoordinator> {
       return;
     }
 
-    final guideComplete = await _recordKeeper.hasCompletedGuideTrack();
-    if (!mounted) {
-      return;
-    }
-    setState(() => _phase = guideComplete ? _GatePhase.method : _GatePhase.guide);
-  }
-
-  Future<void> _completeGuideTrack() async {
-    await _recordKeeper.markGuideTrackComplete();
-    if (mounted) {
-      setState(() => _phase = _GatePhase.method);
-    }
+    setState(() => _phase = _GatePhase.method);
   }
 
   void _pushSignin() {
@@ -145,9 +129,8 @@ class _SignalGateCoordinatorState extends State<SignalGateCoordinator> {
           origin: GateProfileOrigin.localAccount,
           initialName: _nameFromMail(mailAddress),
           onSigninPulled: _replaceWithSignin,
-          onProfileConfirmed: () => _finishThroughEntryLoading(
-            caption: 'Preparing your squad room',
-          ),
+          onProfileConfirmed: () =>
+              _finishThroughEntryLoading(caption: 'Preparing your squad room'),
         ),
       ),
     );
@@ -198,9 +181,7 @@ class _SignalGateCoordinatorState extends State<SignalGateCoordinator> {
         ),
       );
     } on SignInWithAppleAuthorizationException catch (error) {
-      if (!mounted ||
-          error.code == AuthorizationErrorCode.canceled ||
-          error.code == AuthorizationErrorCode.unknown) {
+      if (!mounted || error.code == AuthorizationErrorCode.canceled) {
         return;
       }
       await showGateNoticeDialog(

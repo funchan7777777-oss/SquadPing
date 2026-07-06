@@ -70,10 +70,8 @@ class _AccessMethodLoungeState extends State<AccessMethodLounge> {
                 onAcceptanceChanged: (value) {
                   setState(() => _agreementAccepted = value);
                 },
-                onTermsPressed: () => _openAgreementPage(
-                  title: 'User Agreement',
-                  url: _termsUrl,
-                ),
+                onTermsPressed: () =>
+                    _openAgreementPage(title: 'User Agreement', url: _termsUrl),
                 onPrivacyPressed: () => _openAgreementPage(
                   title: 'Privacy Policy',
                   url: _privacyUrl,

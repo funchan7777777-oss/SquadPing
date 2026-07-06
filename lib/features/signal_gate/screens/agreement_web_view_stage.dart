@@ -90,7 +90,9 @@ class _AgreementWebViewStageState extends State<AgreementWebViewStage> {
               right: 0,
               child: LinearProgressIndicator(
                 color: Colors.white,
-                backgroundColor: const Color(0xFF7D45FF).withValues(alpha: 0.18),
+                backgroundColor: const Color(
+                  0xFF7D45FF,
+                ).withValues(alpha: 0.18),
                 minHeight: 3,
               ),
             ),

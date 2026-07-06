@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LocalGateRecordKeeper {
   SharedPreferences? _preferences;
 
-  static const _guideSettledKey = 'squad_gate.guide_settled';
   static const _sessionOpenKey = 'squad_gate.session_open';
   static const _accountMailKey = 'squad_gate.account_mail';
   static const _accountSecretKey = 'squad_gate.account_secret';
@@ -26,16 +25,6 @@ class LocalGateRecordKeeper {
   Future<bool> hasOpenSession() async {
     final store = await _store();
     return store.getBool(_sessionOpenKey) ?? false;
-  }
-
-  Future<bool> hasCompletedGuideTrack() async {
-    final store = await _store();
-    return store.getBool(_guideSettledKey) ?? false;
-  }
-
-  Future<void> markGuideTrackComplete() async {
-    final store = await _store();
-    await store.setBool(_guideSettledKey, true);
   }
 
   Future<void> savePasswordAccount({

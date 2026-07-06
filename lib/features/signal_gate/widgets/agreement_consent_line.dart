@@ -27,7 +27,9 @@ class AgreementConsentLine extends StatelessWidget {
             height: 22,
             margin: const EdgeInsets.only(top: 1),
             decoration: BoxDecoration(
-              color: isAccepted ? Colors.white : Colors.white.withValues(alpha: 0.1),
+              color: isAccepted
+                  ? Colors.white
+                  : Colors.white.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(7),
               border: Border.all(color: Colors.white, width: 1.5),
             ),

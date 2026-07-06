@@ -121,7 +121,8 @@ class _CredentialSigninStageState extends State<CredentialSigninStage> {
     if (!_looksLikeMail(mail)) {
       await _showNotice(
         title: 'Mail needs a second look',
-        message: 'Use a complete mail address so SquadPing can find your local account.',
+        message:
+            'Use a complete mail address so SquadPing can find your local account.',
       );
       return;
     }
@@ -139,7 +140,8 @@ class _CredentialSigninStageState extends State<CredentialSigninStage> {
     if (!canOpen) {
       await _showNotice(
         title: 'Account not found',
-        message: 'This mail and password do not match a saved SquadPing account on this device.',
+        message:
+            'This mail and password do not match a saved SquadPing account on this device.',
       );
       return;
     }
@@ -147,10 +149,7 @@ class _CredentialSigninStageState extends State<CredentialSigninStage> {
     await widget.onAccessGranted(mail);
   }
 
-  Future<void> _showNotice({
-    required String title,
-    required String message,
-  }) {
+  Future<void> _showNotice({required String title, required String message}) {
     return showGateNoticeDialog(
       context: context,
       title: title,

@@ -120,7 +120,8 @@ class _RegisterSignalStageState extends State<RegisterSignalStage> {
     if (!_looksLikeMail(mail)) {
       await _showNotice(
         title: 'Mail needs a second look',
-        message: 'Use a complete mail address so SquadPing can save this account locally.',
+        message:
+            'Use a complete mail address so SquadPing can save this account locally.',
       );
       return;
     }
@@ -144,10 +145,7 @@ class _RegisterSignalStageState extends State<RegisterSignalStage> {
     await widget.onSignupCompleted(mail);
   }
 
-  Future<void> _showNotice({
-    required String title,
-    required String message,
-  }) {
+  Future<void> _showNotice({required String title, required String message}) {
     return showGateNoticeDialog(
       context: context,
       title: title,
