@@ -197,7 +197,7 @@ class _CommunityReleaseScreenState extends State<CommunityReleaseScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: _releaseCost),
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),

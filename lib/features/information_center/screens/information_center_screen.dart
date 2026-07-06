@@ -308,7 +308,7 @@ class _FriendTile extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          minHeight: 70,
+          constraints: const BoxConstraints(minHeight: 70),
           padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
           decoration: BoxDecoration(
             color: Colors.white,

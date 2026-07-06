@@ -251,8 +251,7 @@ class _ProfileHero extends StatelessWidget {
             aspectRatio: 328 / 214,
             child: ProfileAvatarImage(avatarPath: profile.avatarPath),
           ),
-          Positioned(
-            inset: 0,
+          Positioned.fill(
             child: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
