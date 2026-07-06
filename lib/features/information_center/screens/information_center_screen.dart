@@ -158,7 +158,8 @@ class _InformationCenterScreenState extends State<InformationCenterScreen> {
   }
 
   CommunityUser? _visibleUserById(String userId) {
-    if (userId == CommunitySeed.viewer.id || _safetyStore.isUserBlocked(userId)) {
+    if (userId == CommunitySeed.viewer.id ||
+        _safetyStore.isUserBlocked(userId)) {
       return null;
     }
     return _userById(userId);
@@ -215,10 +216,8 @@ class _InformationCenterScreenState extends State<InformationCenterScreen> {
         }
         await Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (_) => CommunityTopicDetailScreen(
-              post: post,
-              onPostChanged: (_) {},
-            ),
+            builder: (_) =>
+                CommunityTopicDetailScreen(post: post, onPostChanged: (_) {}),
           ),
         );
         return;
@@ -473,11 +472,10 @@ class _SystemNoticeTile extends StatelessWidget {
                         '${user.age} years old · ${user.country}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.labelSmall
-                            ?.copyWith(
-                              color: const Color(0xFF7A7784),
-                              fontWeight: FontWeight.w800,
-                            ),
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: const Color(0xFF7A7784),
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                     ),
                 ],
@@ -703,5 +701,55 @@ class _InformationThread {
       return null;
     }
     return messages.last;
+  }
+}
+
+enum _SystemNoticeType { follower, followRequest, comment, like }
+
+class _SystemNotice {
+  const _SystemNotice({
+    required this.id,
+    required this.type,
+    this.user,
+    this.post,
+    this.comment,
+    this.count = 0,
+  });
+
+  final String id;
+  final _SystemNoticeType type;
+  final CommunityUser? user;
+  final CommunityPost? post;
+  final CommunityComment? comment;
+  final int count;
+
+  String get title {
+    return switch (type) {
+      _SystemNoticeType.follower =>
+        '${user?.displayName ?? 'Someone'} followed you',
+      _SystemNoticeType.followRequest =>
+        '${user?.displayName ?? 'Someone'} wants to follow you',
+      _SystemNoticeType.comment =>
+        '${user?.displayName ?? 'Someone'} commented on your post',
+      _SystemNoticeType.like => 'Your post got $count likes',
+    };
+  }
+
+  String get body {
+    return switch (type) {
+      _SystemNoticeType.follower =>
+        'This user is now in your fans list. Tap to view the profile.',
+      _SystemNoticeType.followRequest =>
+        'Tap to review the follow application.',
+      _SystemNoticeType.comment => comment?.message ?? '',
+      _SystemNoticeType.like => post?.message ?? '',
+    };
+  }
+
+  String? get timeLabel {
+    return switch (type) {
+      _SystemNoticeType.comment => comment?.sentAt,
+      _ => null,
+    };
   }
 }
