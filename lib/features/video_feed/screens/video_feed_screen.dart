@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/moderation/moderation_queue.dart';
 import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/safety/safety_action_store.dart';
@@ -220,9 +221,15 @@ class _VideoPostPage extends StatelessWidget {
           left: 0,
           right: 0,
           child: SafeArea(
+            top: false,
             bottom: false,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              padding: EdgeInsets.fromLTRB(
+                20,
+                squadCompactTopPadding(context),
+                20,
+                0,
+              ),
               child: _VideoHeader(onRelease: onRelease),
             ),
           ),

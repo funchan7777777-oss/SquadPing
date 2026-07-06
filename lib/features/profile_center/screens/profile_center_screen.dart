@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../app/navigation/session_exit_target.dart';
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_store.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../../../shared/widgets/squad_empty_state.dart';
@@ -159,6 +160,7 @@ class _ProfileCenterScreenState extends State<ProfileCenterScreen> {
             ),
           ),
           SafeArea(
+            top: false,
             bottom: false,
             child: Center(
               child: ConstrainedBox(
@@ -168,7 +170,12 @@ class _ProfileCenterScreenState extends State<ProfileCenterScreen> {
                         child: CircularProgressIndicator(color: Colors.white),
                       )
                     : ListView(
-                        padding: const EdgeInsets.fromLTRB(16, 14, 16, 112),
+                        padding: EdgeInsets.fromLTRB(
+                          16,
+                          squadCompactTopPadding(context, extra: 4),
+                          16,
+                          112,
+                        ),
                         children: [
                           Text(
                             'Mine',

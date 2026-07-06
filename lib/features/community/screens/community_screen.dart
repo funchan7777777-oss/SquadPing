@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/safety/safety_action_store.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
@@ -183,6 +184,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
             ),
           ),
           SafeArea(
+            top: false,
             bottom: false,
             child: Center(
               child: ConstrainedBox(
@@ -192,7 +194,12 @@ class _CommunityScreenState extends State<CommunityScreen> {
                         child: CircularProgressIndicator(color: Colors.white),
                       )
                     : ListView(
-                        padding: const EdgeInsets.fromLTRB(24, 4, 24, 126),
+                        padding: EdgeInsets.fromLTRB(
+                          24,
+                          squadCompactTopPadding(context, extra: 4),
+                          24,
+                          126,
+                        ),
                         children: [
                           _CommunityHeader(
                             onRelease: () {

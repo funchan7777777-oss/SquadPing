@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_store.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../../../shared/widgets/squad_empty_state.dart';
@@ -84,6 +85,7 @@ class _ProfileBlacklistScreenState extends State<ProfileBlacklistScreen> {
             ),
           ),
           SafeArea(
+            top: false,
             bottom: false,
             child: Center(
               child: ConstrainedBox(
@@ -93,7 +95,12 @@ class _ProfileBlacklistScreenState extends State<ProfileBlacklistScreen> {
                         child: CircularProgressIndicator(color: Colors.white),
                       )
                     : ListView(
-                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
+                        padding: EdgeInsets.fromLTRB(
+                          16,
+                          squadCompactTopPadding(context),
+                          16,
+                          28,
+                        ),
                         children: [
                           _BlacklistHeader(
                             onBack: () => Navigator.of(context).pop(),

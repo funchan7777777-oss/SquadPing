@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 
 class ProfileCommunityGuidelinesScreen extends StatelessWidget {
@@ -18,12 +19,18 @@ class ProfileCommunityGuidelinesScreen extends StatelessWidget {
             ),
           ),
           SafeArea(
+            top: false,
             bottom: false,
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 430),
                 child: ListView(
-                  padding: const EdgeInsets.fromLTRB(18, 8, 18, 28),
+                  padding: EdgeInsets.fromLTRB(
+                    18,
+                    squadCompactTopPadding(context),
+                    18,
+                    28,
+                  ),
                   children: [
                     _GuidelinesHeader(
                       onBack: () => Navigator.of(context).pop(),

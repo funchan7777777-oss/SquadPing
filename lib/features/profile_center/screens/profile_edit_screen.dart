@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../../signal_gate/services/local_gate_record_keeper.dart';
@@ -164,6 +165,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             ),
           ),
           SafeArea(
+            top: false,
             bottom: false,
             child: Center(
               child: ConstrainedBox(
@@ -173,7 +175,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         child: CircularProgressIndicator(color: Colors.white),
                       )
                     : ListView(
-                        padding: const EdgeInsets.fromLTRB(18, 8, 18, 28),
+                        padding: EdgeInsets.fromLTRB(
+                          18,
+                          squadCompactTopPadding(context),
+                          18,
+                          28,
+                        ),
                         children: [
                           _EditHeader(
                             onBack: () => Navigator.of(context).pop(),

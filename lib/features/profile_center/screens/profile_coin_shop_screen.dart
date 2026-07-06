@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../services/profile_wallet_store.dart';
@@ -82,6 +83,7 @@ class _ProfileCoinShopScreenState extends State<ProfileCoinShopScreen> {
             ),
           ),
           SafeArea(
+            top: false,
             bottom: false,
             child: Center(
               child: ConstrainedBox(
@@ -91,7 +93,12 @@ class _ProfileCoinShopScreenState extends State<ProfileCoinShopScreen> {
                         child: CircularProgressIndicator(color: Colors.white),
                       )
                     : ListView(
-                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
+                        padding: EdgeInsets.fromLTRB(
+                          16,
+                          squadCompactTopPadding(context),
+                          16,
+                          28,
+                        ),
                         children: [
                           _ShopHeader(
                             onBack: () => Navigator.of(context).pop(),

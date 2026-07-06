@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_store.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../../../shared/widgets/squad_empty_state.dart';
@@ -155,6 +156,7 @@ class _InformationCenterScreenState extends State<InformationCenterScreen> {
             ),
           ),
           SafeArea(
+            top: false,
             bottom: false,
             child: Center(
               child: ConstrainedBox(
@@ -164,7 +166,12 @@ class _InformationCenterScreenState extends State<InformationCenterScreen> {
                         child: CircularProgressIndicator(color: Colors.white),
                       )
                     : ListView(
-                        padding: const EdgeInsets.fromLTRB(16, 28, 16, 112),
+                        padding: EdgeInsets.fromLTRB(
+                          16,
+                          squadCompactTopPadding(context, extra: 4),
+                          16,
+                          112,
+                        ),
                         children: [
                           Text(
                             'information',

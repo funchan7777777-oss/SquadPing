@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../app/navigation/session_exit_target.dart';
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../../signal_gate/models/legal_document_links.dart';
@@ -157,12 +158,18 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
             ),
           ),
           SafeArea(
+            top: false,
             bottom: false,
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 430),
                 child: ListView(
-                  padding: const EdgeInsets.fromLTRB(18, 8, 18, 28),
+                  padding: EdgeInsets.fromLTRB(
+                    18,
+                    squadCompactTopPadding(context),
+                    18,
+                    28,
+                  ),
                   children: [
                     _SettingsHeader(onBack: () => Navigator.of(context).pop()),
                     const SizedBox(height: 18),
