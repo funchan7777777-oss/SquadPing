@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../../shared/safety/safety_action_sheet.dart';
@@ -24,6 +26,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
   final _safetyStore = SafetyActionStore.instance;
   final _localStore = CommunityLocalStore.instance;
   late final List<CommunityPost> _posts;
+  Timer? _userRefreshTimer;
+  var _userRotationOffset = 0;
   var _isReady = false;
 
   @override
@@ -33,10 +37,15 @@ class _CommunityScreenState extends State<CommunityScreen> {
     _initialize();
     _safetyStore.addListener(_refresh);
     _localStore.addListener(_refresh);
+    _userRefreshTimer = Timer.periodic(
+      const Duration(seconds: 4),
+      (_) => _rotateLiveUsers(),
+    );
   }
 
   @override
   void dispose() {
+    _userRefreshTimer?.cancel();
     _safetyStore.removeListener(_refresh);
     _localStore.removeListener(_refresh);
     super.dispose();
@@ -53,6 +62,25 @@ class _CommunityScreenState extends State<CommunityScreen> {
     if (mounted) {
       setState(() {});
     }
+  }
+
+  void _rotateLiveUsers() {
+    if (!mounted) {
+      return;
+    }
+    setState(() => _userRotationOffset++);
+  }
+
+  List<CommunityUser> _liveVisibleUsers() {
+    final users = CommunitySeed.users
+        .where((user) => user.id != CommunitySeed.viewer.id)
+        .where((user) => !_safetyStore.isUserBlocked(user.id))
+        .toList();
+    if (users.isEmpty) {
+      return users;
+    }
+    final offset = _userRotationOffset % users.length;
+    return [...users.skip(offset), ...users.take(offset)];
   }
 
   void _openUser(CommunityUser user) {
@@ -126,10 +154,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
               !_safetyStore.isContentHidden(post.id, authorId: post.author.id),
         )
         .toList();
-    final visibleUsers = CommunitySeed.users
-        .where((user) => user.id != CommunitySeed.viewer.id)
-        .where((user) => !_safetyStore.isUserBlocked(user.id))
-        .toList();
+    final visibleUsers = _liveVisibleUsers();
+    final visibleUserKey = visibleUsers.map((user) => user.id).join('-');
 
     return ColoredBox(
       color: const Color(0xFF7138F5),
@@ -179,7 +205,29 @@ class _CommunityScreenState extends State<CommunityScreen> {
                             },
                           ),
                           const SizedBox(height: 24),
-                          _UserStrip(users: visibleUsers, onUserTap: _openUser),
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 360),
+                            switchInCurve: Curves.easeOutCubic,
+                            switchOutCurve: Curves.easeInCubic,
+                            transitionBuilder: (child, animation) {
+                              final slide = Tween<Offset>(
+                                begin: const Offset(0.04, 0),
+                                end: Offset.zero,
+                              ).animate(animation);
+                              return FadeTransition(
+                                opacity: animation,
+                                child: SlideTransition(
+                                  position: slide,
+                                  child: child,
+                                ),
+                              );
+                            },
+                            child: _UserStrip(
+                              key: ValueKey(visibleUserKey),
+                              users: visibleUsers,
+                              onUserTap: _openUser,
+                            ),
+                          ),
                           const SizedBox(height: 20),
                           Center(
                             child: GestureDetector(
@@ -263,7 +311,7 @@ class _CommunityHeader extends StatelessWidget {
 }
 
 class _UserStrip extends StatelessWidget {
-  const _UserStrip({required this.users, required this.onUserTap});
+  const _UserStrip({super.key, required this.users, required this.onUserTap});
 
   final List<CommunityUser> users;
   final ValueChanged<CommunityUser> onUserTap;
@@ -279,6 +327,7 @@ class _UserStrip extends StatelessWidget {
         itemBuilder: (context, index) {
           final user = users[index];
           return GestureDetector(
+            key: ValueKey(user.id),
             behavior: HitTestBehavior.opaque,
             onTap: () => onUserTap(user),
             child: SizedBox(
