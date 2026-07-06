@@ -42,7 +42,7 @@ class _GameZoneHomeScreenState extends State<GameZoneHomeScreen> {
                 ),
               ),
               SliverPadding(
-                padding: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.only(top: 8, bottom: 16),
                 sliver: SliverToBoxAdapter(
                   child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 220),
@@ -164,13 +164,41 @@ class _DeckShell extends StatelessWidget {
             child: Image.asset(SquadPingAssets.gameZonePanel, fit: BoxFit.fill),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(17, 22, 17, 22),
+            padding: const EdgeInsets.fromLTRB(14, 16, 14, 22),
             child: child,
           ),
         ],
       ),
     );
   }
+}
+
+BoxDecoration _deckCardDecoration() {
+  return BoxDecoration(
+    gradient: const LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [Color(0xFF6331F6), Color(0xFF4B20DF)],
+    ),
+    borderRadius: BorderRadius.circular(8),
+    border: Border.all(
+      color: const Color(0xFF9A6DFF).withValues(alpha: 0.62),
+      width: 1,
+    ),
+    boxShadow: [
+      BoxShadow(
+        color: const Color(0xFF7B42FF).withValues(alpha: 0.42),
+        blurRadius: 18,
+        spreadRadius: -4,
+        offset: const Offset(0, 8),
+      ),
+      BoxShadow(
+        color: Colors.black.withValues(alpha: 0.28),
+        blurRadius: 12,
+        offset: const Offset(0, 4),
+      ),
+    ],
+  );
 }
 
 class _GameDeck extends StatelessWidget {
@@ -213,22 +241,11 @@ class _GameTile extends StatelessWidget {
     return Semantics(
       button: true,
       label: game.name,
-      child: InkWell(
+      child: GestureDetector(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
-        child: Ink(
+        child: Container(
           height: 128,
-          decoration: BoxDecoration(
-            color: const Color(0xFF4D20E8),
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF24106F).withValues(alpha: 0.34),
-                blurRadius: 16,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
+          decoration: _deckCardDecoration(),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
@@ -377,22 +394,11 @@ class _ChatTile extends StatelessWidget {
     return Semantics(
       button: true,
       label: room.name,
-      child: InkWell(
+      child: GestureDetector(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
-        child: Ink(
+        child: Container(
           height: 128,
-          decoration: BoxDecoration(
-            color: const Color(0xFF4D20E8),
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF24106F).withValues(alpha: 0.34),
-                blurRadius: 16,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
+          decoration: _deckCardDecoration(),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
