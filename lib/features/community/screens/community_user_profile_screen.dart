@@ -227,15 +227,14 @@ class _CommunityUserProfileScreenState
                     const SizedBox(height: 18),
                     _StatsPanel(postCount: visiblePosts.length),
                     const SizedBox(height: 16),
-                    if (!isViewer)
-                      _ProfileActionButtons(
-                        onChat: _openChat,
-                        onFollow: requestSent || mutual || isBlocked
-                            ? null
-                            : _requestFollow,
-                        isFollowed: mutual,
-                        isDisabled: requestSent || isBlocked,
-                      ),
+                    _ProfileActionButtons(
+                      onChat: isViewer || isBlocked ? null : _openChat,
+                      onFollow: isViewer || requestSent || mutual || isBlocked
+                          ? null
+                          : _requestFollow,
+                      isFollowed: mutual,
+                      isDisabled: isViewer || requestSent || isBlocked,
+                    ),
                     if (requestSent && !mutual) ...[
                       const SizedBox(height: 10),
                       Text(
@@ -351,7 +350,7 @@ class _ProfileActionButtons extends StatelessWidget {
     required this.isDisabled,
   });
 
-  final VoidCallback onChat;
+  final VoidCallback? onChat;
   final VoidCallback? onFollow;
   final bool isFollowed;
   final bool isDisabled;
@@ -369,6 +368,8 @@ class _ProfileActionButtons extends StatelessWidget {
             width: 168,
             height: 61,
             fit: BoxFit.fill,
+            color: onChat == null ? Colors.white.withValues(alpha: 0.35) : null,
+            colorBlendMode: onChat == null ? BlendMode.srcATop : null,
           ),
         ),
         const SizedBox(width: 18),
