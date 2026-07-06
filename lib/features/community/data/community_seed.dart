@@ -67,7 +67,7 @@ abstract final class CommunitySeed {
       message:
           "There aren't many games to play lately, so what games are you all playing?",
       imageAsset: SquadPingAssets.postNeonRacer,
-      likeCount: 123,
+      likeCount: 12,
       comments: [
         CommunityComment(
           id: 'comment-neon-racer-esme',
@@ -84,7 +84,7 @@ abstract final class CommunitySeed {
       message:
           'City walk before queue. I keep finding spots that look like open-world maps.',
       imageAsset: SquadPingAssets.postCitySquare,
-      likeCount: 88,
+      likeCount: 8,
       comments: [
         CommunityComment(
           id: 'comment-city-liam',
@@ -105,7 +105,7 @@ abstract final class CommunitySeed {
       author: liam,
       message: 'Found a neon arcade corner that feels built for squad photos.',
       imageAsset: SquadPingAssets.postCommunityNeonArcade,
-      likeCount: 64,
+      likeCount: 16,
       comments: [
         CommunityComment(
           id: 'comment-neon-arcade-chloe',
@@ -133,7 +133,7 @@ abstract final class CommunitySeed {
       message:
           'Retro machines still make the best warmup break between ranked rounds.',
       imageAsset: SquadPingAssets.postCommunityRetroArcade,
-      likeCount: 77,
+      likeCount: 10,
       comments: [
         CommunityComment(
           id: 'comment-retro-arcade-liam',
@@ -167,7 +167,7 @@ abstract final class CommunitySeed {
       message:
           'Controller night. Need two more patient players for story co-op.',
       imageAsset: SquadPingAssets.postCommunityController,
-      likeCount: 55,
+      likeCount: 6,
       comments: [
         CommunityComment(
           id: 'comment-controller-chloe',
@@ -206,7 +206,7 @@ abstract final class CommunitySeed {
       author: zoe,
       message: 'This old game screen has perfect menu energy.',
       imageAsset: SquadPingAssets.postArcadeScreen,
-      likeCount: 91,
+      likeCount: 14,
       comments: [
         CommunityComment(
           id: 'comment-arcade-screen-maya',

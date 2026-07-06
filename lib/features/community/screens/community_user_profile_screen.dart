@@ -29,10 +29,12 @@ class _CommunityUserProfileScreenState
     extends State<CommunityUserProfileScreen> {
   final _localStore = CommunityLocalStore.instance;
   final _safetyStore = SafetyActionStore.instance;
+  late List<CommunityPost> _posts;
 
   @override
   void initState() {
     super.initState();
+    _posts = [...widget.posts];
     _localStore.initialize().then((_) {
       if (mounted) {
         setState(() {});
@@ -40,6 +42,14 @@ class _CommunityUserProfileScreenState
     });
     _localStore.addListener(_refresh);
     _safetyStore.addListener(_refresh);
+  }
+
+  @override
+  void didUpdateWidget(covariant CommunityUserProfileScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.posts != widget.posts) {
+      _posts = [...widget.posts];
+    }
   }
 
   @override
@@ -76,13 +86,46 @@ class _CommunityUserProfileScreenState
     );
   }
 
+  void _replacePost(CommunityPost post) {
+    final index = _posts.indexWhere((item) => item.id == post.id);
+    if (index == -1) {
+      return;
+    }
+    setState(() => _posts[index] = post);
+  }
+
+  void _toggleLike(CommunityPost post) {
+    final index = _posts.indexWhere((item) => item.id == post.id);
+    if (index == -1) {
+      return;
+    }
+    final liked = !_posts[index].isLiked;
+    setState(() {
+      _posts[index] = _posts[index].copyWith(
+        isLiked: liked,
+        likeCount: _posts[index].likeCount + (liked ? 1 : -1),
+      );
+    });
+  }
+
+  void _openPostDetail(CommunityPost post) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) =>
+            CommunityTopicDetailScreen(post: post, onPostChanged: _replacePost),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final topInset = MediaQuery.paddingOf(context).top;
+    final topPadding = topInset > 12 ? topInset - 12 : 0.0;
     final isViewer = widget.user.id == CommunitySeed.viewer.id;
     final isBlocked = _safetyStore.isUserBlocked(widget.user.id);
     final requestSent = _localStore.hasRequestedFollow(widget.user.id);
     final mutual = _localStore.isMutualFollow(widget.user.id);
-    final visiblePosts = widget.posts
+    final visiblePosts = _posts
         .where((post) => post.author.id == widget.user.id)
         .where(
           (post) =>
@@ -100,13 +143,29 @@ class _CommunityUserProfileScreenState
               fit: BoxFit.cover,
             ),
           ),
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    const Color(0xFF6C34F5).withValues(alpha: 0.72),
+                    const Color(0xFF8945F6).withValues(alpha: 0.62),
+                    const Color(0xFFE050F2).withValues(alpha: 0.60),
+                  ],
+                ),
+              ),
+            ),
+          ),
           SafeArea(
+            top: false,
             bottom: false,
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 430),
                 child: ListView(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 34),
+                  padding: EdgeInsets.fromLTRB(24, topPadding, 24, 34),
                   children: [
                     _ProfileHeader(
                       onBack: () => Navigator.of(context).pop(),
@@ -119,15 +178,10 @@ class _CommunityUserProfileScreenState
                               authorName: widget.user.displayName,
                             ),
                     ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 8),
                     Center(
-                      child: ClipOval(
-                        child: Image.asset(
-                          widget.user.avatarAsset,
-                          width: 210,
-                          height: 210,
-                          fit: BoxFit.cover,
-                        ),
+                      child: _ProfileAvatarHero(
+                        avatarAsset: widget.user.avatarAsset,
                       ),
                     ),
                     const SizedBox(height: 18),
@@ -139,6 +193,7 @@ class _CommunityUserProfileScreenState
                           style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(
                                 color: Colors.white,
+                                fontSize: 22,
                                 fontWeight: FontWeight.w900,
                               ),
                         ),
@@ -148,6 +203,8 @@ class _CommunityUserProfileScreenState
                           style: Theme.of(context).textTheme.labelLarge
                               ?.copyWith(
                                 color: Colors.white.withValues(alpha: 0.82),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w800,
                               ),
                         ),
                         const SizedBox(width: 8),
@@ -161,48 +218,23 @@ class _CommunityUserProfileScreenState
                           style: Theme.of(context).textTheme.labelLarge
                               ?.copyWith(
                                 color: Colors.white.withValues(alpha: 0.82),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w800,
                               ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 18),
                     _StatsPanel(postCount: visiblePosts.length),
-                    const SizedBox(height: 14),
+                    const SizedBox(height: 16),
                     if (!isViewer)
-                      Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: _openChat,
-                              child: Image.asset(
-                                SquadPingAssets.communityChatButton,
-                                height: 58,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: requestSent || mutual || isBlocked
-                                  ? null
-                                  : _requestFollow,
-                              child: Image.asset(
-                                mutual
-                                    ? SquadPingAssets.communityFollowedButton
-                                    : SquadPingAssets.communityFollowButton,
-                                height: 58,
-                                fit: BoxFit.fill,
-                                color: requestSent || isBlocked
-                                    ? Colors.white.withValues(alpha: 0.35)
-                                    : null,
-                                colorBlendMode: requestSent || isBlocked
-                                    ? BlendMode.srcATop
-                                    : null,
-                              ),
-                            ),
-                          ),
-                        ],
+                      _ProfileActionButtons(
+                        onChat: _openChat,
+                        onFollow: requestSent || mutual || isBlocked
+                            ? null
+                            : _requestFollow,
+                        isFollowed: mutual,
+                        isDisabled: requestSent || isBlocked,
                       ),
                     if (requestSent && !mutual) ...[
                       const SizedBox(height: 10),
@@ -220,25 +252,19 @@ class _CommunityUserProfileScreenState
                     Text(
                       widget.user.bio,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.86),
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: Colors.white.withValues(alpha: 0.88),
                         height: 1.34,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 24),
                     for (final post in visiblePosts) ...[
                       CommunityPostCard(
                         post: post,
-                        onCardTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (_) => CommunityTopicDetailScreen(
-                                post: post,
-                                onPostChanged: (_) {},
-                              ),
-                            ),
-                          );
-                        },
+                        compact: true,
+                        onCardTap: () => _openPostDetail(post),
                         onAuthorTap: () {},
                         onMoreTap: () => showSafetyActionSheet(
                           context: context,
@@ -246,19 +272,10 @@ class _CommunityUserProfileScreenState
                           authorId: post.author.id,
                           authorName: post.author.displayName,
                         ),
-                        onLikeTap: () {},
-                        onCommentTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (_) => CommunityTopicDetailScreen(
-                                post: post,
-                                onPostChanged: (_) {},
-                              ),
-                            ),
-                          );
-                        },
+                        onLikeTap: () => _toggleLike(post),
+                        onCommentTap: () => _openPostDetail(post),
                       ),
-                      const SizedBox(height: 14),
+                      const SizedBox(height: 18),
                     ],
                   ],
                 ),
@@ -285,12 +302,89 @@ class _ProfileHeader extends StatelessWidget {
           onPressed: onBack,
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           color: Colors.white,
+          iconSize: 32,
         ),
         const Spacer(),
         IconButton(
           onPressed: onMore,
-          icon: const Icon(Icons.more_horiz_rounded),
+          icon: const Icon(Icons.more_horiz_rounded, size: 32),
           color: Colors.white,
+        ),
+      ],
+    );
+  }
+}
+
+class _ProfileAvatarHero extends StatelessWidget {
+  const _ProfileAvatarHero({required this.avatarAsset});
+
+  final String avatarAsset;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 222,
+      height: 222,
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white.withValues(alpha: 0.18),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.28)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.18),
+            blurRadius: 30,
+            offset: const Offset(0, 16),
+          ),
+        ],
+      ),
+      child: ClipOval(child: Image.asset(avatarAsset, fit: BoxFit.cover)),
+    );
+  }
+}
+
+class _ProfileActionButtons extends StatelessWidget {
+  const _ProfileActionButtons({
+    required this.onChat,
+    required this.onFollow,
+    required this.isFollowed,
+    required this.isDisabled,
+  });
+
+  final VoidCallback onChat;
+  final VoidCallback? onFollow;
+  final bool isFollowed;
+  final bool isDisabled;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: onChat,
+          child: Image.asset(
+            SquadPingAssets.communityChatButton,
+            width: 168,
+            height: 61,
+            fit: BoxFit.fill,
+          ),
+        ),
+        const SizedBox(width: 18),
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: onFollow,
+          child: Image.asset(
+            isFollowed
+                ? SquadPingAssets.communityFollowedButton
+                : SquadPingAssets.communityFollowButton,
+            width: 168,
+            height: 61,
+            fit: BoxFit.fill,
+            color: isDisabled ? Colors.white.withValues(alpha: 0.35) : null,
+            colorBlendMode: isDisabled ? BlendMode.srcATop : null,
+          ),
         ),
       ],
     );
@@ -304,22 +398,34 @@ class _StatsPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 64,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: _Stat(label: 'Follow', value: '$postCount'),
+    return Center(
+      child: SizedBox(
+        width: 344,
+        height: 64,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(18),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.12),
+                blurRadius: 18,
+                offset: const Offset(0, 10),
+              ),
+            ],
           ),
-          Container(width: 1, height: 38, color: const Color(0xFFE2E2E8)),
-          const Expanded(
-            child: _Stat(label: 'Fans', value: '0'),
+          child: Row(
+            children: [
+              Expanded(
+                child: _Stat(label: 'Follow', value: '$postCount'),
+              ),
+              Container(width: 1, height: 38, color: const Color(0xFFE2E2E8)),
+              const Expanded(
+                child: _Stat(label: 'Fans', value: '0'),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -340,14 +446,18 @@ class _Stat extends StatelessWidget {
           value,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: const Color(0xFF25202F),
+            fontSize: 20,
             fontWeight: FontWeight.w900,
           ),
         ),
+        const SizedBox(height: 2),
         Text(
           label,
-          style: Theme.of(
-            context,
-          ).textTheme.labelMedium?.copyWith(color: const Color(0xFF25202F)),
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            color: const Color(0xFF25202F),
+            fontSize: 14,
+            fontWeight: FontWeight.w900,
+          ),
         ),
       ],
     );

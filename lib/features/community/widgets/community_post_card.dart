@@ -96,10 +96,7 @@ class CommunityPostCard extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: onMoreTap,
-                  icon: Icon(
-                    Icons.more_horiz_rounded,
-                    size: compact ? 28 : 30,
-                  ),
+                  icon: Icon(Icons.more_horiz_rounded, size: compact ? 28 : 30),
                   color: Colors.white,
                 ),
               ],
