@@ -462,6 +462,7 @@ abstract final class GameZoneSeed {
       summary: 'Welcome all game enthusiasts to join!',
       welcomeLine: 'Welcome all game enthusiasts to join!',
       topic: 'Open-world plans, party finding, and light game talk.',
+      memberCount: 128,
       participants: [viewer, luna, aria, axel],
       messages: [
         ChatMessage(
@@ -518,6 +519,7 @@ abstract final class GameZoneSeed {
       summary: 'Console gamer. Discussing various gameplay styles.',
       welcomeLine: 'Drop your build, role, and platform before queueing.',
       topic: 'Console, PC, and controller-friendly game setup talk.',
+      memberCount: 76,
       participants: [victoria, kai, nate, maya],
       messages: [
         ChatMessage(
@@ -559,6 +561,7 @@ abstract final class GameZoneSeed {
       summary: 'Exchange gunplay strategies and match tactics.',
       welcomeLine: 'Keep calls short: role, route, danger, reset.',
       topic: 'FPS tactics, loadouts, and clean team communication.',
+      memberCount: 93,
       participants: [ivy, marco, cole, rina],
       messages: [
         ChatMessage(
@@ -595,6 +598,7 @@ abstract final class GameZoneSeed {
       summary: 'Quick runs, retro scores, and casual party invites.',
       welcomeLine: 'Pick a cabinet, post your score, invite a rival.',
       topic: 'Arcade runs, score challenges, and casual events.',
+      memberCount: 54,
       participants: [jax, amir, nia, zoe],
       messages: [
         ChatMessage(
@@ -631,6 +635,7 @@ abstract final class GameZoneSeed {
       summary: 'Turn order, card reads, and tabletop-style planning.',
       welcomeLine: 'Share the plan before the timer starts.',
       topic: 'Strategy rooms for players who like calm planning.',
+      memberCount: 41,
       participants: [owen, finn, kira, mia],
       messages: [
         ChatMessage(
@@ -667,6 +672,7 @@ abstract final class GameZoneSeed {
       summary: 'Live match reactions and post-game breakdowns.',
       welcomeLine: 'No spoilers without a warning. Keep analysis readable.',
       topic: 'Watch parties, bracket talk, and pro match reviews.',
+      memberCount: 112,
       participants: [hana, theo, rex, leo],
       messages: [
         ChatMessage(

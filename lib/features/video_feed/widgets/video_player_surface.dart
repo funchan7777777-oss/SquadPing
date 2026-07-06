@@ -18,6 +18,7 @@ class VideoPlayerSurface extends StatefulWidget {
 class _VideoPlayerSurfaceState extends State<VideoPlayerSurface> {
   late final VideoPlayerController _controller;
   var _isReady = false;
+  var _isManuallyPaused = false;
 
   @override
   void initState() {
@@ -43,10 +44,28 @@ class _VideoPlayerSurfaceState extends State<VideoPlayerSurface> {
       return;
     }
     if (widget.isActive) {
-      _controller.play();
+      if (!_isManuallyPaused) {
+        _controller.play();
+      }
     } else {
+      _isManuallyPaused = false;
       _controller.pause();
     }
+    setState(() {});
+  }
+
+  void _togglePlayback() {
+    if (!_isReady || !widget.isActive) {
+      return;
+    }
+    if (_controller.value.isPlaying) {
+      _isManuallyPaused = true;
+      _controller.pause();
+    } else {
+      _isManuallyPaused = false;
+      _controller.play();
+    }
+    setState(() {});
   }
 
   @override
@@ -76,12 +95,47 @@ class _VideoPlayerSurfaceState extends State<VideoPlayerSurface> {
     }
 
     final size = _controller.value.size;
-    return FittedBox(
-      fit: BoxFit.cover,
-      child: SizedBox(
-        width: size.width,
-        height: size.height,
-        child: VideoPlayer(_controller),
+    final showPlayCue = widget.isActive && !_controller.value.isPlaying;
+
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: _togglePlayback,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          FittedBox(
+            fit: BoxFit.cover,
+            child: SizedBox(
+              width: size.width,
+              height: size.height,
+              child: VideoPlayer(_controller),
+            ),
+          ),
+          IgnorePointer(
+            child: Center(
+              child: AnimatedOpacity(
+                opacity: showPlayCue ? 1 : 0,
+                duration: const Duration(milliseconds: 180),
+                child: Container(
+                  width: 82,
+                  height: 82,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.42),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.28),
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.play_arrow_rounded,
+                    color: Colors.white,
+                    size: 56,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

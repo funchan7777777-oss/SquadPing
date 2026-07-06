@@ -198,7 +198,10 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
                           child: _WelcomeBanner(room: widget.room),
                         ),
                         const SizedBox(height: 12),
-                        _RoomMemberStrip(players: visibleParticipants),
+                        _RoomMemberStrip(
+                          players: visibleParticipants,
+                          memberCount: widget.room.memberCount,
+                        ),
                         const SizedBox(height: 6),
                         Expanded(
                           child: visibleMessages.isEmpty
@@ -366,6 +369,22 @@ class _WelcomeBanner extends StatelessWidget {
               color: Colors.white.withValues(alpha: 0.72),
             ),
           ),
+          const SizedBox(height: 7),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.14),
+              borderRadius: BorderRadius.circular(999),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.14)),
+            ),
+            child: Text(
+              '${room.memberCount} members online',
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -373,20 +392,30 @@ class _WelcomeBanner extends StatelessWidget {
 }
 
 class _RoomMemberStrip extends StatelessWidget {
-  const _RoomMemberStrip({required this.players});
+  const _RoomMemberStrip({required this.players, required this.memberCount});
 
   final List<PlayerProfile> players;
+  final int memberCount;
 
   @override
   Widget build(BuildContext context) {
+    final remainingCount = memberCount > players.length
+        ? memberCount - players.length
+        : 0;
+    final hasOverflowTile = remainingCount > 0;
+
     return SizedBox(
       height: 74,
       child: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 18),
         scrollDirection: Axis.horizontal,
-        itemCount: players.length,
+        itemCount: players.length + (hasOverflowTile ? 1 : 0),
         separatorBuilder: (_, _) => const SizedBox(width: 12),
         itemBuilder: (context, index) {
+          if (hasOverflowTile && index == players.length) {
+            return _MoreOnlineMemberTile(count: remainingCount);
+          }
+
           final player = players[index];
           return GestureDetector(
             onTap: () => showPlayerProfileSheet(context, player),
@@ -418,6 +447,66 @@ class _RoomMemberStrip extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _MoreOnlineMemberTile extends StatelessWidget {
+  const _MoreOnlineMemberTile({required this.count});
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 64,
+      child: Column(
+        children: [
+          Container(
+            width: 46,
+            height: 46,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFFFF4BEA), Color(0xFF5E31F5)],
+              ),
+              border: Border.all(
+                color: Colors.white.withValues(alpha: 0.62),
+                width: 2,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF4BEA).withValues(alpha: 0.26),
+                  blurRadius: 16,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Text(
+              '+$count',
+              maxLines: 1,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'online',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+        ],
       ),
     );
   }

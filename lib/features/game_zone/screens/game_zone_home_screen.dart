@@ -516,7 +516,7 @@ class _ChatTile extends StatelessWidget {
                           _ParticipantStack(players: room.participants),
                           const SizedBox(width: 8),
                           Text(
-                            '+${room.participants.length * 3}',
+                            '+${room.memberCount}',
                             style: Theme.of(context).textTheme.labelLarge
                                 ?.copyWith(color: Colors.white),
                           ),

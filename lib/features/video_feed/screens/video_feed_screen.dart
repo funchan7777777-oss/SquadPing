@@ -96,10 +96,6 @@ class _VideoFeedScreenState extends State<VideoFeedScreen> {
     );
   }
 
-  void _toggleFollow(VideoPost post) {
-    _replacePost(post.copyWith(isFollowed: !post.isFollowed));
-  }
-
   void _addComment(VideoPost post, VideoComment comment) {
     final index = _posts.indexWhere((item) => item.id == post.id);
     if (index == -1) {
@@ -135,11 +131,10 @@ class _VideoFeedScreenState extends State<VideoFeedScreen> {
                 final post = visiblePosts[index];
                 return _VideoPostPage(
                   post: post,
-                  walletCoins: _walletCoins,
+                  commentCount: _visibleCommentCount(post),
                   isActive: index == _activeIndex,
                   onRelease: _openRelease,
                   onLike: () => _toggleLike(post),
-                  onFollow: () => _toggleFollow(post),
                   onComment: () {
                     showVideoCommentsSheet(
                       context: context,
@@ -154,6 +149,21 @@ class _VideoFeedScreenState extends State<VideoFeedScreen> {
     );
   }
 
+  int _visibleCommentCount(VideoPost post) {
+    return post.comments
+        .where(
+          (comment) => !_safetyStore.isContentHidden(
+            _commentContentId(comment),
+            authorId: comment.author.id,
+          ),
+        )
+        .length;
+  }
+
+  String _commentContentId(VideoComment comment) {
+    return 'video-comment-${comment.author.id}-${comment.sentAt}-${comment.message.hashCode}';
+  }
+
   void _showMoreSheet(BuildContext context, VideoPost post) {
     final parentContext = context;
     showModalBottomSheet<void>(
@@ -163,12 +173,16 @@ class _VideoFeedScreenState extends State<VideoFeedScreen> {
         post: post,
         onSafetyTap: () async {
           Navigator.of(sheetContext).pop();
-          await showSafetyActionSheet(
+          final changed = await showSafetyActionSheet(
             context: parentContext,
             contentId: post.id,
             authorId: post.creator.id,
             authorName: post.creator.displayName,
+            allowBlock: post.creator.id != VideoFeedSeed.viewer.id,
           );
+          if (changed && mounted) {
+            setState(() {});
+          }
         },
       ),
     );
@@ -178,21 +192,19 @@ class _VideoFeedScreenState extends State<VideoFeedScreen> {
 class _VideoPostPage extends StatelessWidget {
   const _VideoPostPage({
     required this.post,
-    required this.walletCoins,
+    required this.commentCount,
     required this.isActive,
     required this.onRelease,
     required this.onLike,
-    required this.onFollow,
     required this.onComment,
     required this.onMore,
   });
 
   final VideoPost post;
-  final int walletCoins;
+  final int commentCount;
   final bool isActive;
   final VoidCallback onRelease;
   final VoidCallback onLike;
-  final VoidCallback onFollow;
   final VoidCallback onComment;
   final VoidCallback onMore;
 
@@ -206,25 +218,26 @@ class _VideoPostPage extends StatelessWidget {
         SafeArea(
           bottom: false,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(18, 14, 18, 0),
-            child: _VideoHeader(walletCoins: walletCoins, onRelease: onRelease),
+            padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
+            child: _VideoHeader(onRelease: onRelease),
           ),
         ),
         Positioned(
           right: 17,
-          bottom: 214,
+          bottom: 206,
           child: _ActionRail(
             post: post,
+            commentCount: commentCount,
             onLike: onLike,
             onComment: onComment,
             onMore: onMore,
           ),
         ),
         Positioned(
-          left: 18,
-          right: 88,
-          bottom: 116,
-          child: _CreatorCaption(post: post, onFollow: onFollow),
+          left: 20,
+          right: 92,
+          bottom: 102,
+          child: _CreatorCaption(post: post),
         ),
       ],
     );
@@ -242,11 +255,11 @@ class _VideoGradient extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.black.withValues(alpha: 0.22),
-            Colors.transparent,
-            Colors.black.withValues(alpha: 0.70),
+            const Color(0xFF5438E8).withValues(alpha: 0.32),
+            const Color(0xFF4E7FE8).withValues(alpha: 0.18),
+            Colors.black.withValues(alpha: 0.74),
           ],
-          stops: const [0, 0.48, 1],
+          stops: const [0, 0.46, 1],
         ),
       ),
     );
@@ -254,9 +267,8 @@ class _VideoGradient extends StatelessWidget {
 }
 
 class _VideoHeader extends StatelessWidget {
-  const _VideoHeader({required this.walletCoins, required this.onRelease});
+  const _VideoHeader({required this.onRelease});
 
-  final int walletCoins;
   final VoidCallback onRelease;
 
   @override
@@ -272,32 +284,6 @@ class _VideoHeader extends StatelessWidget {
           ),
         ),
         const Spacer(),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-          decoration: BoxDecoration(
-            color: Colors.black.withValues(alpha: 0.22),
-            borderRadius: BorderRadius.circular(999),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.18)),
-          ),
-          child: Row(
-            children: [
-              const Icon(
-                Icons.monetization_on_rounded,
-                size: 18,
-                color: Color(0xFFFFD24A),
-              ),
-              const SizedBox(width: 4),
-              Text(
-                '$walletCoins',
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(width: 10),
         GestureDetector(
           onTap: onRelease,
           child: Container(
@@ -325,12 +311,14 @@ class _VideoHeader extends StatelessWidget {
 class _ActionRail extends StatelessWidget {
   const _ActionRail({
     required this.post,
+    required this.commentCount,
     required this.onLike,
     required this.onComment,
     required this.onMore,
   });
 
   final VideoPost post;
+  final int commentCount;
   final VoidCallback onLike;
   final VoidCallback onComment;
   final VoidCallback onMore;
@@ -341,7 +329,7 @@ class _ActionRail extends StatelessWidget {
       children: [
         _RoundActionButton(
           icon: Icons.mode_comment_outlined,
-          label: '${post.comments.length}',
+          label: '$commentCount',
           onTap: onComment,
         ),
         const SizedBox(height: 14),
@@ -364,9 +352,6 @@ class _ActionRail extends StatelessWidget {
   }
 
   String _compactCount(int count) {
-    if (count >= 1000) {
-      return '${(count / 1000).toStringAsFixed(1)}k';
-    }
     return '$count';
   }
 }
@@ -419,10 +404,9 @@ class _RoundActionButton extends StatelessWidget {
 }
 
 class _CreatorCaption extends StatelessWidget {
-  const _CreatorCaption({required this.post, required this.onFollow});
+  const _CreatorCaption({required this.post});
 
   final VideoPost post;
-  final VoidCallback onFollow;
 
   @override
   Widget build(BuildContext context) {
@@ -473,76 +457,7 @@ class _CreatorCaption extends StatelessWidget {
             fontWeight: FontWeight.w800,
           ),
         ),
-        const SizedBox(height: 10),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            for (final tag in post.tags) _VideoTag(label: tag),
-            GestureDetector(
-              onTap: onFollow,
-              child: post.isFollowed
-                  ? const _FollowingPill()
-                  : Image.asset(
-                      SquadPingAssets.videoFollowButton,
-                      width: 92,
-                      height: 34,
-                      fit: BoxFit.fill,
-                    ),
-            ),
-          ],
-        ),
       ],
-    );
-  }
-}
-
-class _VideoTag extends StatelessWidget {
-  const _VideoTag({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.28),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
-      ),
-      child: Text(
-        '#$label',
-        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-          color: Colors.white,
-          fontWeight: FontWeight.w800,
-        ),
-      ),
-    );
-  }
-}
-
-class _FollowingPill extends StatelessWidget {
-  const _FollowingPill();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 34,
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.20),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.22)),
-      ),
-      child: Text(
-        'Following',
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-          color: Colors.white,
-          fontWeight: FontWeight.w900,
-        ),
-      ),
     );
   }
 }

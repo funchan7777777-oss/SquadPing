@@ -153,12 +153,20 @@ class _VideoCommentsSheetState extends State<_VideoCommentsSheet> {
                           final comment = visibleComments[index];
                           return _CommentRow(
                             comment: comment,
-                            onMoreTap: () => showSafetyActionSheet(
-                              context: context,
-                              contentId: _commentContentId(comment),
-                              authorId: comment.author.id,
-                              authorName: comment.author.displayName,
-                            ),
+                            onMoreTap: () async {
+                              final changed = await showSafetyActionSheet(
+                                context: context,
+                                contentId: _commentContentId(comment),
+                                authorId: comment.author.id,
+                                authorName: comment.author.displayName,
+                                allowBlock:
+                                    comment.author.id !=
+                                    VideoFeedSeed.viewer.id,
+                              );
+                              if (changed && mounted) {
+                                setState(() {});
+                              }
+                            },
                           );
                         },
                       ),
