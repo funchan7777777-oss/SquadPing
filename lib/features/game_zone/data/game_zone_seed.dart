@@ -253,9 +253,9 @@ abstract final class GameZoneSeed {
       name: 'Fortnite',
       coverAsset: SquadPingAssets.gameFortressCover,
       rating: 4.9,
-      summary: 'Battle Royale Mode: 100 players parachute to the island.',
+      summary: 'Colorful island drops, fast loot routes, and build fights.',
       detail:
-          'Battle Royale Mode: 100 players parachute to the ground and collect weapons, shields, and medical supplies. A unique feature is the ability to build walls and stairs for cover. Creative Mode lets players build maps, practice routes, and host custom parties with friends.',
+          'Fortnite sends squads onto a bright fantasy island to loot, rotate, and survive closing storm circles. Players can build walls and ramps for cover, or switch to Zero Build for cleaner gunfights. Creative maps are useful for warmups, parkour practice, and custom party modes.',
       tags: ['Battle royale', 'Creative', 'Squads'],
       hotLevel: 5,
       comments: [
@@ -283,10 +283,10 @@ abstract final class GameZoneSeed {
       id: 'counter-strike-2',
       name: 'Counter-strike 2',
       coverAsset: SquadPingAssets.gameStrikeCover,
-      rating: 4.9,
-      summary: 'Tight economy rounds, clean comms, and precise aim checks.',
+      rating: 4.8,
+      summary: 'Military-style bomb sites, utility lineups, and clutch duels.',
       detail:
-          'Counter-strike 2 rewards practiced utility, map control, and short voice calls. Good squads agree on defaults, trade spacing, and save rules before the first pistol round.',
+          'Counter-strike 2 is built around disciplined five-player rounds. Teams hold angles, throw smoke and flash lineups, manage the economy, and trade around bomb sites. The best squads keep voice calls short so every peek and retake stays clean.',
       tags: ['FPS', 'Ranked', 'Tactics'],
       hotLevel: 5,
       comments: [
@@ -308,10 +308,10 @@ abstract final class GameZoneSeed {
       id: 'clash-of-clans',
       name: 'Clash of Clans (COC)',
       coverAsset: SquadPingAssets.gameKingdomCover,
-      rating: 4.8,
-      summary: 'Clan wars, base layouts, and troop pathing discussions.',
+      rating: 4.7,
+      summary: 'Village raids, troop pathing, and clan war base planning.',
       detail:
-          'Clash of Clans is strongest when the clan plans attacks together. Members can review base layouts, assign targets, and coordinate spell timing before the war clock gets tight.',
+          'Clash of Clans turns village building into a clan strategy game. Players upgrade defenses, scout enemy bases, plan troop funnels, and coordinate spells before war attacks. Strong clans review layouts together instead of rushing targets.',
       tags: ['Strategy', 'Clan war', 'Base design'],
       hotLevel: 4,
       comments: [
@@ -333,10 +333,10 @@ abstract final class GameZoneSeed {
       id: 'shadow-ops',
       name: 'Shadow Ops',
       coverAsset: SquadPingAssets.gameOpsCover,
-      rating: 4.7,
-      summary: 'Heavy firefights with extraction timing and squad roles.',
+      rating: 4.6,
+      summary: 'Dark tactical pushes, extraction windows, and squad roles.',
       detail:
-          'Shadow Ops focuses on high-pressure firefights, resource grabs, and extraction windows. A balanced team needs an entry player, a scout, and one person watching the exit timer.',
+          'Shadow Ops is for players who like tense tactical fights in hostile zones. Squads push through smoke, grab high-value gear, and decide when to extract before the map collapses. A balanced team needs an entry, a scout, and one calm timer caller.',
       tags: ['Extraction', 'Fireteam', 'Loot'],
       hotLevel: 4,
       comments: [
@@ -358,10 +358,10 @@ abstract final class GameZoneSeed {
       id: 'spectator-legends',
       name: 'Spectator Legends',
       coverAsset: SquadPingAssets.gameSpectatorCover,
-      rating: 4.6,
-      summary: 'Watch-party analysis for meta shifts and pro match drafts.',
+      rating: 4.5,
+      summary: 'Hero highlights, match watch parties, and meta breakdowns.',
       detail:
-          'Spectator Legends is a watch-party space for people who like reading drafts, rotations, and patch trends. It is built for fans who want match analysis without flooding active game rooms.',
+          'Spectator Legends is a watch-party space for players who follow hero picks, cinematic plays, and patch trends. It fits fans who want to review highlights, compare draft choices, and talk meta without flooding active game rooms.',
       tags: ['Watch party', 'Drafts', 'Meta'],
       hotLevel: 3,
       comments: [
@@ -376,6 +376,31 @@ abstract final class GameZoneSeed {
           message:
               'Please tag spoilers for people watching later in different time zones.',
           postedAt: '2 hr ago',
+        ),
+      ],
+    ),
+    GameTitle(
+      id: 'kingdom-rivals',
+      name: 'Kingdom Rivals',
+      coverAsset: SquadPingAssets.gameKingCover,
+      rating: 4.4,
+      summary: 'Royal arena battles with hero timing and lane control.',
+      detail:
+          'Kingdom Rivals focuses on fantasy arena pushes where teams protect their ruler, pressure lanes, and time hero skills before the final clash. Strong parties call rotations early, save crowd control for enemy carries, and turn small skirmishes into throne pushes.',
+      tags: ['Fantasy', 'Arena', 'Teamfight'],
+      hotLevel: 3,
+      comments: [
+        GameComment(
+          author: aria,
+          message:
+              'The king defense phase is much easier when one player holds stun for flankers.',
+          postedAt: '2 hr ago',
+        ),
+        GameComment(
+          author: nate,
+          message:
+              'I can play front line if someone handles lane calls and objective timers.',
+          postedAt: '3 hr ago',
         ),
       ],
     ),

@@ -21,11 +21,21 @@ class GameZoneComposer extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.fromLTRB(18, 10, 18, 12),
         decoration: BoxDecoration(
-          color: Colors.transparent,
+          gradient: const LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF8B45F7), Color(0xFFC655F7)],
+          ),
+          image: const DecorationImage(
+            image: AssetImage(SquadPingAssets.gameZoneChatBackdrop),
+            fit: BoxFit.cover,
+            alignment: Alignment.bottomCenter,
+            colorFilter: ColorFilter.mode(Color(0x997D36F4), BlendMode.srcATop),
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 20,
+              color: Colors.black.withValues(alpha: 0.18),
+              blurRadius: 18,
               offset: const Offset(0, -8),
             ),
           ],

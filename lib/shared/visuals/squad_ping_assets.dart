@@ -46,6 +46,7 @@ abstract final class SquadPingAssets {
   static const gameStrikeCover = 'assets/images/Broadcast.png';
   static const gameOpsCover = 'assets/images/Matchmaking.png';
   static const gameSpectatorCover = 'assets/images/Spectator.png';
+  static const gameKingCover = 'assets/images/king.png';
 
   static const chatArcadeLobby = 'assets/images/Talk/chat_arcade_lobby.png';
   static const chatEsportsArena = 'assets/images/Talk/chat_esports_arena.png';
