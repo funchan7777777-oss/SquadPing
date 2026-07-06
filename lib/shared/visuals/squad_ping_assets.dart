@@ -18,4 +18,15 @@ abstract final class SquadPingAssets {
   static const clearGlyph = 'assets/images/Squad.png';
   static const visibleGlyph = 'assets/images/Lobby.png';
   static const hiddenGlyph = 'assets/images/Bazaar.png';
+
+  static const tabBeaconActive = 'assets/images/Beacon.png';
+  static const tabBeaconInactive = 'assets/images/Banner.png';
+  static const tabChatActive = 'assets/images/Chat.png';
+  static const tabChatInactive = 'assets/images/Tavern.png';
+  static const tabVoiceActive = 'assets/images/Voice.png';
+  static const tabVoiceInactive = 'assets/images/Buy.png';
+  static const tabEmblemActive = 'assets/images/Emblem.png';
+  static const tabEmblemInactive = 'assets/images/Match.png';
+  static const tabForumActive = 'assets/images/Forum.png';
+  static const tabForumInactive = 'assets/images/Nexus.png';
 }

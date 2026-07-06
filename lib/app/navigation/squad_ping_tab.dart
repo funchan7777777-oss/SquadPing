@@ -1,12 +1,31 @@
-import 'package:flutter/material.dart';
+import '../../shared/visuals/squad_ping_assets.dart';
 
 enum SquadPingTab {
-  pulseDeck(Icons.bolt_rounded, 'Pulse'),
-  rosterLane(Icons.diversity_3_rounded, 'Roster'),
-  nudgeStudio(Icons.near_me_rounded, 'Ping');
+  beacon(
+    SquadPingAssets.tabBeaconActive,
+    SquadPingAssets.tabBeaconInactive,
+    'Beacon',
+  ),
+  chat(SquadPingAssets.tabChatActive, SquadPingAssets.tabChatInactive, 'Chat'),
+  voice(
+    SquadPingAssets.tabVoiceActive,
+    SquadPingAssets.tabVoiceInactive,
+    'Voice',
+  ),
+  emblem(
+    SquadPingAssets.tabEmblemActive,
+    SquadPingAssets.tabEmblemInactive,
+    'Emblem',
+  ),
+  forum(
+    SquadPingAssets.tabForumActive,
+    SquadPingAssets.tabForumInactive,
+    'Forum',
+  );
 
-  const SquadPingTab(this.glyph, this.caption);
+  const SquadPingTab(this.activeAsset, this.inactiveAsset, this.caption);
 
-  final IconData glyph;
+  final String activeAsset;
+  final String inactiveAsset;
   final String caption;
 }

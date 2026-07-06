@@ -20,31 +20,103 @@ class _SquadPingShellState extends State<SquadPingShell> {
 
   @override
   Widget build(BuildContext context) {
-    final destinations = SquadPingTab.values
-        .map(
-          (tab) => NavigationDestination(
-            icon: Icon(tab.glyph),
-            selectedIcon: Icon(tab.glyph, fill: 1),
-            label: tab.caption,
-          ),
-        )
-        .toList();
-
     return Scaffold(
       body: IndexedStack(
         index: _selectedTabSlot,
-        children: [
-          TodayPulseBoard(storyArchive: widget.storyArchive),
-          SquadRosterView(storyArchive: widget.storyArchive),
-          QuickPingStudio(storyArchive: widget.storyArchive),
-        ],
+        children: SquadPingTab.values.map(_buildTabView).toList(),
       ),
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: _SquadPingTabBar(
         selectedIndex: _selectedTabSlot,
-        destinations: destinations,
-        onDestinationSelected: (tabSlot) {
+        onSelected: (tabSlot) {
           setState(() => _selectedTabSlot = tabSlot);
         },
+      ),
+    );
+  }
+
+  Widget _buildTabView(SquadPingTab tab) {
+    return switch (tab) {
+      SquadPingTab.beacon => TodayPulseBoard(storyArchive: widget.storyArchive),
+      SquadPingTab.chat => QuickPingStudio(storyArchive: widget.storyArchive),
+      SquadPingTab.voice => QuickPingStudio(storyArchive: widget.storyArchive),
+      SquadPingTab.emblem => TodayPulseBoard(storyArchive: widget.storyArchive),
+      SquadPingTab.forum => SquadRosterView(storyArchive: widget.storyArchive),
+    };
+  }
+}
+
+class _SquadPingTabBar extends StatelessWidget {
+  const _SquadPingTabBar({
+    required this.selectedIndex,
+    required this.onSelected,
+  });
+
+  final int selectedIndex;
+  final ValueChanged<int> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 92,
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 375),
+          child: Container(
+            width: 375,
+            height: 92,
+            decoration: const BoxDecoration(
+              color: Color(0xFF333333),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            ),
+            padding: const EdgeInsets.fromLTRB(21, 18, 21, 18),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                for (final entry in SquadPingTab.values.asMap().entries)
+                  _SquadPingTabButton(
+                    tab: entry.value,
+                    isSelected: entry.key == selectedIndex,
+                    onPressed: () => onSelected(entry.key),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SquadPingTabButton extends StatelessWidget {
+  const _SquadPingTabButton({
+    required this.tab,
+    required this.isSelected,
+    required this.onPressed,
+  });
+
+  final SquadPingTab tab;
+  final bool isSelected;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: tab.caption,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onPressed,
+        child: SizedBox.square(
+          dimension: 56,
+          child: Image.asset(
+            isSelected ? tab.activeAsset : tab.inactiveAsset,
+            width: 56,
+            height: 56,
+            fit: BoxFit.contain,
+          ),
+        ),
       ),
     );
   }
