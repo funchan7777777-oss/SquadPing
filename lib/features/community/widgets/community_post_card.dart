@@ -11,6 +11,7 @@ class CommunityPostCard extends StatelessWidget {
     required this.onMoreTap,
     required this.onLikeTap,
     required this.onCommentTap,
+    this.compact = false,
   });
 
   final CommunityPost post;
@@ -19,9 +20,17 @@ class CommunityPostCard extends StatelessWidget {
   final VoidCallback onMoreTap;
   final VoidCallback onLikeTap;
   final VoidCallback onCommentTap;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
+    final avatarSize = compact ? 44.0 : 52.0;
+    final nameSize = compact ? 19.0 : 21.0;
+    final messageSize = compact ? 15.5 : 17.0;
+    final cardPadding = compact
+        ? const EdgeInsets.fromLTRB(12, 12, 12, 12)
+        : const EdgeInsets.fromLTRB(14, 14, 14, 14);
+    final imageRadius = compact ? 7.0 : 8.0;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onCardTap,
@@ -34,7 +43,7 @@ class CommunityPostCard extends StatelessWidget {
             width: 1.4,
           ),
         ),
-        padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+        padding: cardPadding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -46,13 +55,13 @@ class CommunityPostCard extends StatelessWidget {
                   child: ClipOval(
                     child: Image.asset(
                       post.author.avatarAsset,
-                      width: 52,
-                      height: 52,
+                      width: avatarSize,
+                      height: avatarSize,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: compact ? 10 : 12),
                 Expanded(
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
@@ -67,7 +76,7 @@ class CommunityPostCard extends StatelessWidget {
                           style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(
                                 color: Colors.white,
-                                fontSize: 21,
+                                fontSize: nameSize,
                                 height: 1.08,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -87,30 +96,33 @@ class CommunityPostCard extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: onMoreTap,
-                  icon: const Icon(Icons.more_horiz_rounded, size: 30),
+                  icon: Icon(
+                    Icons.more_horiz_rounded,
+                    size: compact ? 28 : 30,
+                  ),
                   color: Colors.white,
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: compact ? 14 : 16),
             Text(
               post.message,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Colors.white,
-                fontSize: 17,
+                fontSize: messageSize,
                 height: 1.28,
                 fontWeight: FontWeight.w800,
               ),
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: compact ? 12 : 14),
             ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(imageRadius),
               child: AspectRatio(
                 aspectRatio: 630 / 368,
                 child: Image.asset(post.imageAsset, fit: BoxFit.cover),
               ),
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: compact ? 12 : 14),
             Row(
               children: [
                 _MetricButton(
