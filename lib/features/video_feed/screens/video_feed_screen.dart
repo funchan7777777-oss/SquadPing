@@ -47,7 +47,20 @@ class _VideoFeedScreenState extends State<VideoFeedScreen> {
 
   void _refresh() {
     if (mounted) {
-      setState(() {});
+      setState(() {
+        final visibleLength = _posts
+            .where(
+              (post) => !_safetyStore.isContentHidden(
+                post.id,
+                authorId: post.creator.id,
+              ),
+            )
+            .length;
+        final lastIndex = visibleLength - 1;
+        if (_activeIndex > lastIndex) {
+          _activeIndex = lastIndex < 0 ? 0 : lastIndex;
+        }
+      });
     }
   }
 
@@ -178,7 +191,6 @@ class _VideoFeedScreenState extends State<VideoFeedScreen> {
             contentId: post.id,
             authorId: post.creator.id,
             authorName: post.creator.displayName,
-            allowBlock: post.creator.id != VideoFeedSeed.viewer.id,
           );
           if (changed && mounted) {
             setState(() {});
@@ -214,17 +226,22 @@ class _VideoPostPage extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         VideoPlayerSurface(asset: post.videoAsset, isActive: isActive),
-        const _VideoGradient(),
-        SafeArea(
-          bottom: false,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
-            child: _VideoHeader(onRelease: onRelease),
+        const IgnorePointer(child: _VideoGradient()),
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: SafeArea(
+            bottom: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
+              child: _VideoHeader(onRelease: onRelease),
+            ),
           ),
         ),
         Positioned(
-          right: 17,
-          bottom: 206,
+          right: 24,
+          bottom: 230,
           child: _ActionRail(
             post: post,
             commentCount: commentCount,
@@ -236,7 +253,7 @@ class _VideoPostPage extends StatelessWidget {
         Positioned(
           left: 20,
           right: 92,
-          bottom: 102,
+          bottom: 72,
           child: _CreatorCaption(post: post),
         ),
       ],
@@ -332,7 +349,7 @@ class _ActionRail extends StatelessWidget {
           label: '$commentCount',
           onTap: onComment,
         ),
-        const SizedBox(height: 14),
+        const SizedBox(height: 10),
         _RoundActionButton(
           icon: post.isLiked
               ? Icons.thumb_up_alt_rounded
@@ -341,7 +358,7 @@ class _ActionRail extends StatelessWidget {
           onTap: onLike,
           isActive: post.isLiked,
         ),
-        const SizedBox(height: 14),
+        const SizedBox(height: 10),
         _RoundActionButton(
           icon: Icons.more_horiz_rounded,
           label: 'More',
@@ -376,8 +393,8 @@ class _RoundActionButton extends StatelessWidget {
         GestureDetector(
           onTap: onTap,
           child: Container(
-            width: 54,
-            height: 54,
+            width: 44,
+            height: 44,
             decoration: BoxDecoration(
               color: const Color(0xFF0F3E55).withValues(alpha: 0.88),
               shape: BoxShape.circle,
@@ -386,14 +403,14 @@ class _RoundActionButton extends StatelessWidget {
             child: Icon(
               icon,
               color: isActive ? const Color(0xFFFF7BDA) : Colors.white,
-              size: 30,
+              size: 24,
             ),
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 3),
         Text(
           label,
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.w900,
           ),
