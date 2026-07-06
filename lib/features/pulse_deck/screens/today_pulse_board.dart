@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../app/theme/squad_ping_colors.dart';
 import '../../../field_notes/repositories/pulse_story_repository.dart';
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/widgets/section_caption_bar.dart';
 import '../widgets/active_ping_banner.dart';
 import '../widgets/crew_pulse_tile.dart';
@@ -16,8 +17,14 @@ class TodayPulseBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
       child: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 18, 20, 28),
+        padding: EdgeInsets.fromLTRB(
+          20,
+          squadCompactTopPadding(context),
+          20,
+          28,
+        ),
         children: [
           ActivePingBanner(
             featuredPulse: storyArchive.crewPulses.first,

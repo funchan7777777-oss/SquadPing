@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../field_notes/repositories/pulse_story_repository.dart';
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/widgets/section_caption_bar.dart';
 import '../widgets/teammate_signal_card.dart';
 
@@ -12,8 +13,14 @@ class SquadRosterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
       child: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 18, 20, 28),
+        padding: EdgeInsets.fromLTRB(
+          20,
+          squadCompactTopPadding(context),
+          20,
+          28,
+        ),
         children: [
           const SectionCaptionBar(
             laneLabel: 'Roster lane',
