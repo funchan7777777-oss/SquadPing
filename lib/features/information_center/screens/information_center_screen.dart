@@ -469,7 +469,7 @@ class _SystemNoticeTile extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 4),
                       child: Text(
-                        '${user.age} years old · ${user.country}',
+                        '${user.age} years old - ${user.country}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
