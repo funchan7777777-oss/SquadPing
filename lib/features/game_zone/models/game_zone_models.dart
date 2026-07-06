@@ -78,6 +78,7 @@ class ChatRoom {
     required this.summary,
     required this.welcomeLine,
     required this.topic,
+    required this.memberCount,
     required this.participants,
     required this.messages,
   });
@@ -88,6 +89,7 @@ class ChatRoom {
   final String summary;
   final String welcomeLine;
   final String topic;
+  final int memberCount;
   final List<PlayerProfile> participants;
   final List<ChatMessage> messages;
 }
