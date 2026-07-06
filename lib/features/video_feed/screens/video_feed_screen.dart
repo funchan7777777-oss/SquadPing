@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../shared/moderation/moderation_queue.dart';
 import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/safety/safety_action_store.dart';
-import '../../../shared/visuals/squad_ping_assets.dart';
 import '../../../shared/widgets/squad_empty_state.dart';
 import '../data/video_feed_seed.dart';
 import '../models/video_feed_models.dart';
@@ -155,7 +154,7 @@ class _VideoFeedScreenState extends State<VideoFeedScreen> {
                       onCommentAdded: (comment) => _addComment(post, comment),
                     );
                   },
-                  onMore: () => _showMoreSheet(context, post),
+                  onMore: () => _openPostSafety(context, post),
                 );
               },
             ),
@@ -177,27 +176,16 @@ class _VideoFeedScreenState extends State<VideoFeedScreen> {
     return 'video-comment-${comment.author.id}-${comment.sentAt}-${comment.message.hashCode}';
   }
 
-  void _showMoreSheet(BuildContext context, VideoPost post) {
-    final parentContext = context;
-    showModalBottomSheet<void>(
+  Future<void> _openPostSafety(BuildContext context, VideoPost post) async {
+    final changed = await showSafetyActionSheet(
       context: context,
-      backgroundColor: Colors.transparent,
-      builder: (sheetContext) => _VideoMoreSheet(
-        post: post,
-        onSafetyTap: () async {
-          Navigator.of(sheetContext).pop();
-          final changed = await showSafetyActionSheet(
-            context: parentContext,
-            contentId: post.id,
-            authorId: post.creator.id,
-            authorName: post.creator.displayName,
-          );
-          if (changed && mounted) {
-            setState(() {});
-          }
-        },
-      ),
+      contentId: post.id,
+      authorId: post.creator.id,
+      authorName: post.creator.displayName,
     );
+    if (changed && mounted) {
+      setState(() {});
+    }
   }
 }
 
@@ -475,147 +463,6 @@ class _CreatorCaption extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _VideoMoreSheet extends StatelessWidget {
-  const _VideoMoreSheet({required this.post, required this.onSafetyTap});
-
-  final VideoPost post;
-  final VoidCallback onSafetyTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(12),
-      padding: const EdgeInsets.fromLTRB(18, 16, 18, 24),
-      decoration: BoxDecoration(
-        color: const Color(0xFF11121D),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.10)),
-      ),
-      child: SafeArea(
-        top: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Image.asset(
-                  SquadPingAssets.videoActionCamera,
-                  width: 54,
-                  height: 54,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    post.creator.bio,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.white,
-                      height: 1.32,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 18),
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: [
-                _MoreTool(
-                  asset: SquadPingAssets.videoCameraEnabledGlyph,
-                  label: 'Video on',
-                ),
-                _MoreTool(
-                  asset: SquadPingAssets.videoMicEnabledGlyph,
-                  label: 'Voice sync',
-                ),
-                _MoreTool(
-                  asset: SquadPingAssets.videoRefreshGlyph,
-                  label: 'Replay',
-                ),
-              ],
-            ),
-            if (post.attachedPhotos.isNotEmpty) ...[
-              const SizedBox(height: 18),
-              SizedBox(
-                height: 76,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: post.attachedPhotos.length,
-                  separatorBuilder: (_, _) => const SizedBox(width: 10),
-                  itemBuilder: (context, index) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
-                        post.attachedPhotos[index],
-                        width: 118,
-                        height: 76,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-            const SizedBox(height: 18),
-            Image.asset(
-              SquadPingAssets.videoFollowRibbon,
-              height: 42,
-              fit: BoxFit.contain,
-            ),
-            const SizedBox(height: 12),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: onSafetyTap,
-                icon: const Icon(Icons.shield_outlined),
-                label: const Text('Report or blacklist'),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  side: BorderSide(color: Colors.white.withValues(alpha: 0.24)),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _MoreTool extends StatelessWidget {
-  const _MoreTool({required this.asset, required this.label});
-
-  final String asset;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(10, 8, 12, 8),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset(asset, width: 32, height: 32),
-          const SizedBox(width: 7),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.w900,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

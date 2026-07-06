@@ -82,7 +82,7 @@ class _VideoReleaseScreenState extends State<VideoReleaseScreen> {
       return;
     }
     Navigator.of(context).pop(
-        VideoDraftResult(
+      VideoDraftResult(
         caption: caption,
         videoAsset: _selectedVideoAsset,
         attachedPhotos: _selectedPhotos.map((photo) => photo.path).toList(),
@@ -428,7 +428,6 @@ class _ClipSelector extends StatelessWidget {
                         ),
                       ]
                     : null,
-                ),
               ),
               child: Row(
                 children: [
