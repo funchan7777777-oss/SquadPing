@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../features/game_zone/screens/game_zone_home_screen.dart';
 import '../../features/nudge_studio/screens/quick_ping_studio.dart';
 import '../../features/pulse_deck/screens/today_pulse_board.dart';
 import '../../features/roster_lane/screens/squad_roster_view.dart';
@@ -36,7 +37,7 @@ class _SquadPingShellState extends State<SquadPingShell> {
 
   Widget _buildTabView(SquadPingTab tab) {
     return switch (tab) {
-      SquadPingTab.beacon => TodayPulseBoard(storyArchive: widget.storyArchive),
+      SquadPingTab.beacon => const GameZoneHomeScreen(),
       SquadPingTab.chat => QuickPingStudio(storyArchive: widget.storyArchive),
       SquadPingTab.voice => QuickPingStudio(storyArchive: widget.storyArchive),
       SquadPingTab.emblem => TodayPulseBoard(storyArchive: widget.storyArchive),
@@ -66,7 +67,7 @@ class _SquadPingTabBar extends StatelessWidget {
             width: 375,
             height: 92,
             decoration: const BoxDecoration(
-              color: Color(0xFF333333),
+              color: Colors.black,
               borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
             ),
             padding: const EdgeInsets.fromLTRB(21, 18, 21, 18),

@@ -102,4 +102,26 @@ abstract final class SquadPingAssets {
       'assets/images/head/avatar_female_neck_headphones.png';
   static const avatarFemaleWhiteSleeveless =
       'assets/images/head/avatar_female_white_sleeveless.png';
+
+  static const videoActionCamera = 'assets/images/Avatar.png';
+  static const videoFollowButton = 'assets/images/Clan.png';
+  static const videoFollowRibbon = 'assets/images/Montage.png';
+  static const videoDeleteGlyph = 'assets/images/Arena.png';
+  static const videoRefreshGlyph = 'assets/images/Patch.png';
+  static const videoCameraEnabledGlyph = 'assets/images/Region.png';
+  static const videoCameraMutedGlyph = 'assets/images/Zone.png';
+  static const videoMicEnabledGlyph = 'assets/images/Server.png';
+  static const videoMicMutedGlyph = 'assets/images/Realm.png';
+
+  static const postRuinsDrop = 'assets/images/post/post_ruins_drop.png';
+  static const postCitySquare = 'assets/images/post/post_city_square.png';
+  static const postArcadeScreen = 'assets/images/post/post_arcade_screen.png';
+  static const postNeonRacer = 'assets/images/post/post_neon_racer.png';
+
+  static const videoTacticalRooftop =
+      'assets/videos/tactical_rooftop_push.mp4';
+  static const videoBattleBuild = 'assets/videos/battle_build_duel.mp4';
+  static const videoNightScope = 'assets/videos/night_scope_hold.mp4';
+  static const videoArenaClose = 'assets/videos/arena_close_quarters.mp4';
+  static const videoStoryEscape = 'assets/videos/story_escape_scene.mp4';
 }
