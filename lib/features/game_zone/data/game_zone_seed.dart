@@ -475,10 +475,9 @@ abstract final class GameZoneSeed {
           sentAt: '14:10',
         ),
         ChatMessage(
-          author: viewer,
-          message: 'Fortnite first, then maybe a chill exploration run.',
+          author: aria,
+          message: 'Fortnite first, then maybe a chill exploration run after.',
           sentAt: '14:12',
-          fromViewer: true,
         ),
         ChatMessage(
           author: axel,
@@ -501,10 +500,9 @@ abstract final class GameZoneSeed {
           sentAt: '14:21',
         ),
         ChatMessage(
-          author: viewer,
-          message: 'Send them here. I will pin the cleaner one for tonight.',
+          author: victoria,
+          message: 'Send them here. We can keep the cleaner one for tonight.',
           sentAt: '14:23',
-          fromViewer: true,
         ),
         ChatMessage(
           author: axel,
@@ -621,7 +619,7 @@ abstract final class GameZoneSeed {
         ),
         ChatMessage(
           author: amir,
-          message: 'Deal. Winner picks tomorrow's casual room.',
+          message: "Deal. Winner picks tomorrow's casual room.",
           sentAt: '12:08',
         ),
       ],

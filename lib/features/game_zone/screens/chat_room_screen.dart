@@ -63,7 +63,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
         ChatMessage(
           author: GameZoneSeed.viewer,
           message: message,
-          sentAt: 'now',
+          sentAt: 'Now',
           fromViewer: true,
         ),
       );
@@ -85,7 +85,10 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     if (!changed || !mounted) {
       return;
     }
-    if (_safetyStore.isContentHidden(_roomContentId, authorId: _roomContentId)) {
+    if (_safetyStore.isContentHidden(
+      _roomContentId,
+      authorId: _roomContentId,
+    )) {
       Navigator.of(context).pop();
     } else {
       setState(() {});

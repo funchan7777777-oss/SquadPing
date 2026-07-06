@@ -400,19 +400,22 @@ class _ChatDeck extends StatelessWidget {
     return _DeckShell(
       child: Column(
         children: [
-          for (final room in rooms) ...[
-            _ChatTile(
-              room: room,
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => ChatRoomScreen(room: room),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 14),
-          ],
+          if (rooms.isEmpty)
+            buildSquadEmptyState(size: 126)
+          else
+            for (final room in rooms) ...[
+              _ChatTile(
+                room: room,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => ChatRoomScreen(room: room),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 14),
+            ],
         ],
       ),
     );
