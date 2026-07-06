@@ -229,6 +229,16 @@ class _CommunityUserProfileScreenState
                     for (final post in visiblePosts) ...[
                       CommunityPostCard(
                         post: post,
+                        onCardTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) => CommunityTopicDetailScreen(
+                                post: post,
+                                onPostChanged: (_) {},
+                              ),
+                            ),
+                          );
+                        },
                         onAuthorTap: () {},
                         onMoreTap: () => showSafetyActionSheet(
                           context: context,

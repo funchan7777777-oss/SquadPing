@@ -131,18 +131,34 @@ class _CommunityTopicDetailScreenState
               fit: BoxFit.cover,
             ),
           ),
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    const Color(0xFF6335F5).withValues(alpha: 0.76),
+                    const Color(0xFF783CF7).withValues(alpha: 0.64),
+                    const Color(0xFFD64BF4).withValues(alpha: 0.58),
+                  ],
+                ),
+              ),
+            ),
+          ),
           SafeArea(
             bottom: false,
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 430),
                 child: ListView(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 116),
+                  padding: const EdgeInsets.fromLTRB(24, 18, 24, 120),
                   children: [
                     _DetailHeader(onBack: () => Navigator.of(context).pop()),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 18),
                     CommunityPostCard(
                       post: _post,
+                      onCardTap: () {},
                       onAuthorTap: () => _openUser(_post.author),
                       onMoreTap: () => _openSafety(
                         contentId: _post.id,
@@ -184,33 +200,50 @@ class _CommunityTopicDetailScreenState
       bottomNavigationBar: SafeArea(
         top: false,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+          padding: const EdgeInsets.fromLTRB(28, 8, 28, 18),
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: _commentController,
-                  minLines: 1,
-                  maxLines: 3,
-                  textInputAction: TextInputAction.send,
-                  onSubmitted: (_) => _addComment(),
-                  decoration: InputDecoration(
-                    hintText: 'Enter what you want to send',
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
+                child: SizedBox(
+                  height: 58,
+                  child: TextField(
+                    controller: _commentController,
+                    maxLines: 1,
+                    textInputAction: TextInputAction.send,
+                    onSubmitted: (_) => _addComment(),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'Enter what you want to send',
+                      hintStyle: Theme.of(context).textTheme.bodyLarge
+                          ?.copyWith(
+                            color: const Color(0xFFBDB9C5),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 18,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: BorderSide.none,
+                      ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 18),
               GestureDetector(
+                behavior: HitTestBehavior.opaque,
                 onTap: _addComment,
                 child: Container(
-                  width: 56,
-                  height: 56,
+                  width: 60,
+                  height: 60,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
@@ -239,6 +272,7 @@ class _DetailHeader extends StatelessWidget {
           onPressed: onBack,
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           color: Colors.white,
+          iconSize: 32,
         ),
         Expanded(
           child: Text(
@@ -246,6 +280,7 @@ class _DetailHeader extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: Colors.white,
+              fontSize: 24,
               fontWeight: FontWeight.w900,
             ),
           ),

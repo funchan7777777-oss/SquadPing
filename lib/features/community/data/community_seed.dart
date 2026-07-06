@@ -92,6 +92,12 @@ abstract final class CommunitySeed {
           message: 'That plaza would make a great stealth mission start.',
           sentAt: '22 min ago',
         ),
+        CommunityComment(
+          id: 'comment-city-zoe',
+          author: zoe,
+          message: 'The color on the pavement feels like a racing lobby.',
+          sentAt: '35 min ago',
+        ),
       ],
     ),
     CommunityPost(
@@ -100,7 +106,26 @@ abstract final class CommunitySeed {
       message: 'Found a neon arcade corner that feels built for squad photos.',
       imageAsset: SquadPingAssets.postCommunityNeonArcade,
       likeCount: 64,
-      comments: [],
+      comments: [
+        CommunityComment(
+          id: 'comment-neon-arcade-chloe',
+          author: chloe,
+          message: 'This would be perfect for a team profile shot.',
+          sentAt: '18 min ago',
+        ),
+        CommunityComment(
+          id: 'comment-neon-arcade-julian',
+          author: julian,
+          message: 'The blue light makes it look like a boss room entrance.',
+          sentAt: '41 min ago',
+        ),
+        CommunityComment(
+          id: 'comment-neon-arcade-maya',
+          author: maya,
+          message: 'Queue there and I am joining.',
+          sentAt: '1 hr ago',
+        ),
+      ],
     ),
     CommunityPost(
       id: 'post-retro-arcade',
@@ -109,7 +134,32 @@ abstract final class CommunitySeed {
           'Retro machines still make the best warmup break between ranked rounds.',
       imageAsset: SquadPingAssets.postCommunityRetroArcade,
       likeCount: 77,
-      comments: [],
+      comments: [
+        CommunityComment(
+          id: 'comment-retro-arcade-liam',
+          author: liam,
+          message: 'Old cabinets always have the best button feel.',
+          sentAt: '9 min ago',
+        ),
+        CommunityComment(
+          id: 'comment-retro-arcade-zoe',
+          author: zoe,
+          message: 'I would spend the whole night on that row.',
+          sentAt: '27 min ago',
+        ),
+        CommunityComment(
+          id: 'comment-retro-arcade-chloe',
+          author: chloe,
+          message: 'This has weekend hangout energy.',
+          sentAt: '46 min ago',
+        ),
+        CommunityComment(
+          id: 'comment-retro-arcade-maya',
+          author: maya,
+          message: 'Warmup break approved.',
+          sentAt: '1 hr ago',
+        ),
+      ],
     ),
     CommunityPost(
       id: 'post-controller',
@@ -118,7 +168,38 @@ abstract final class CommunitySeed {
           'Controller night. Need two more patient players for story co-op.',
       imageAsset: SquadPingAssets.postCommunityController,
       likeCount: 55,
-      comments: [],
+      comments: [
+        CommunityComment(
+          id: 'comment-controller-chloe',
+          author: chloe,
+          message: 'I can join after dinner if the pace stays chill.',
+          sentAt: '7 min ago',
+        ),
+        CommunityComment(
+          id: 'comment-controller-liam',
+          author: liam,
+          message: 'I can run support and call routes.',
+          sentAt: '16 min ago',
+        ),
+        CommunityComment(
+          id: 'comment-controller-julian',
+          author: julian,
+          message: 'Story co-op sounds better than ranked tonight.',
+          sentAt: '28 min ago',
+        ),
+        CommunityComment(
+          id: 'comment-controller-zoe',
+          author: zoe,
+          message: 'Save me a slot if you still need one.',
+          sentAt: '39 min ago',
+        ),
+        CommunityComment(
+          id: 'comment-controller-alex',
+          author: viewer,
+          message: 'I am interested if voice chat is low pressure.',
+          sentAt: '52 min ago',
+        ),
+      ],
     ),
     CommunityPost(
       id: 'post-arcade-screen',
@@ -126,7 +207,44 @@ abstract final class CommunitySeed {
       message: 'This old game screen has perfect menu energy.',
       imageAsset: SquadPingAssets.postArcadeScreen,
       likeCount: 91,
-      comments: [],
+      comments: [
+        CommunityComment(
+          id: 'comment-arcade-screen-maya',
+          author: maya,
+          message: 'It looks like a hidden character select screen.',
+          sentAt: '11 min ago',
+        ),
+        CommunityComment(
+          id: 'comment-arcade-screen-liam',
+          author: liam,
+          message: 'The glow would make a strong stream backdrop.',
+          sentAt: '24 min ago',
+        ),
+        CommunityComment(
+          id: 'comment-arcade-screen-julian',
+          author: julian,
+          message: 'Menu energy is exactly right.',
+          sentAt: '38 min ago',
+        ),
+        CommunityComment(
+          id: 'comment-arcade-screen-chloe',
+          author: chloe,
+          message: 'I want a whole photo dump from this place.',
+          sentAt: '49 min ago',
+        ),
+        CommunityComment(
+          id: 'comment-arcade-screen-alex',
+          author: viewer,
+          message: 'That palette would look great on a profile banner.',
+          sentAt: '1 hr ago',
+        ),
+        CommunityComment(
+          id: 'comment-arcade-screen-zoe-reply',
+          author: zoe,
+          message: 'I saved a few more shots for later.',
+          sentAt: '1 hr ago',
+        ),
+      ],
     ),
   ];
 }

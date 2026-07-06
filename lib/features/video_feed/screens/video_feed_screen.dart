@@ -222,7 +222,7 @@ class _VideoPostPage extends StatelessWidget {
           child: SafeArea(
             bottom: false,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: _VideoHeader(onRelease: onRelease),
             ),
           ),
@@ -391,9 +391,7 @@ class _RoundActionButton extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color(0xFF0F3E55).withValues(alpha: 0.88),
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.08),
-                ),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
               ),
               child: Icon(
                 icon,

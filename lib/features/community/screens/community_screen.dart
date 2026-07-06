@@ -8,6 +8,7 @@ import '../data/community_seed.dart';
 import '../models/community_models.dart';
 import '../services/community_local_store.dart';
 import '../widgets/community_post_card.dart';
+import 'community_ai_assistant_screen.dart';
 import 'community_release_screen.dart';
 import 'community_topic_detail_screen.dart';
 import 'community_user_profile_screen.dart';
@@ -97,12 +98,22 @@ class _CommunityScreenState extends State<CommunityScreen> {
         builder: (_) => CommunityTopicDetailScreen(
           post: post,
           onPostChanged: (updatedPost) {
-            final index = _posts.indexWhere((item) => item.id == updatedPost.id);
+            final index = _posts.indexWhere(
+              (item) => item.id == updatedPost.id,
+            );
             if (index != -1) {
               setState(() => _posts[index] = updatedPost);
             }
           },
         ),
+      ),
+    );
+  }
+
+  void _openAiAssistant() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => const CommunityAiAssistantScreen(),
       ),
     );
   }
@@ -155,7 +166,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                         child: CircularProgressIndicator(color: Colors.white),
                       )
                     : ListView(
-                        padding: const EdgeInsets.fromLTRB(24, 28, 24, 126),
+                        padding: const EdgeInsets.fromLTRB(24, 4, 24, 126),
                         children: [
                           _CommunityHeader(
                             onRelease: () {
@@ -171,11 +182,15 @@ class _CommunityScreenState extends State<CommunityScreen> {
                           _UserStrip(users: visibleUsers, onUserTap: _openUser),
                           const SizedBox(height: 20),
                           Center(
-                            child: Image.asset(
-                              SquadPingAssets.aiAssistantButton,
-                              width: 344,
-                              height: 70,
-                              fit: BoxFit.fill,
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: _openAiAssistant,
+                              child: Image.asset(
+                                SquadPingAssets.aiAssistantButton,
+                                width: 344,
+                                height: 70,
+                                fit: BoxFit.fill,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 20),
