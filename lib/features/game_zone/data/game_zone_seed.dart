@@ -466,18 +466,50 @@ abstract final class GameZoneSeed {
       messages: [
         ChatMessage(
           author: victoria,
-          message: 'What games are you all playing? Share!',
-          sentAt: '9:41',
+          message: 'Anyone queueing after daily reset?',
+          sentAt: '14:08',
+        ),
+        ChatMessage(
+          author: luna,
+          message: 'I am warming up in Creative. Need ten minutes.',
+          sentAt: '14:10',
         ),
         ChatMessage(
           author: viewer,
           message: 'Fortnite first, then maybe a chill exploration run.',
-          sentAt: '9:42',
+          sentAt: '14:12',
+          fromViewer: true,
         ),
         ChatMessage(
           author: axel,
           message: 'I can host the party after my daily arcade clear.',
-          sentAt: '9:43',
+          sentAt: '14:13',
+        ),
+        ChatMessage(
+          author: aria,
+          message: 'Mark roles before we drop. Last squad got split too fast.',
+          sentAt: '14:16',
+        ),
+        ChatMessage(
+          author: victoria,
+          message: 'Good call. I can scout and keep storm route notes.',
+          sentAt: '14:18',
+        ),
+        ChatMessage(
+          author: luna,
+          message: 'I have two warmup islands ready if anyone wants codes.',
+          sentAt: '14:21',
+        ),
+        ChatMessage(
+          author: viewer,
+          message: 'Send them here. I will pin the cleaner one for tonight.',
+          sentAt: '14:23',
+          fromViewer: true,
+        ),
+        ChatMessage(
+          author: axel,
+          message: 'Party opens at :30. Bring mics or fast pings.',
+          sentAt: '14:27',
         ),
       ],
     ),
@@ -491,14 +523,34 @@ abstract final class GameZoneSeed {
       participants: [victoria, kai, nate, maya],
       messages: [
         ChatMessage(
+          author: nate,
+          message: 'Controller players, what sensitivity are you using now?',
+          sentAt: '13:02',
+        ),
+        ChatMessage(
           author: kai,
           message: 'Anyone using gyro controls for shooters?',
-          sentAt: '10:05',
+          sentAt: '13:05',
         ),
         ChatMessage(
           author: maya,
           message: 'For co-op games, I still prefer controller plus headset.',
-          sentAt: '10:07',
+          sentAt: '13:07',
+        ),
+        ChatMessage(
+          author: victoria,
+          message: 'Gyro is great for tiny corrections, not full turns.',
+          sentAt: '13:11',
+        ),
+        ChatMessage(
+          author: nate,
+          message: 'That makes sense. I keep overaiming in close fights.',
+          sentAt: '13:14',
+        ),
+        ChatMessage(
+          author: kai,
+          message: 'Try lower stick speed and let gyro finish the adjustment.',
+          sentAt: '13:18',
         ),
       ],
     ),
@@ -512,14 +564,29 @@ abstract final class GameZoneSeed {
       participants: [ivy, marco, cole, rina],
       messages: [
         ChatMessage(
+          author: ivy,
+          message: 'Can we keep callouts to role, route, danger, reset?',
+          sentAt: '12:36',
+        ),
+        ChatMessage(
           author: marco,
           message: 'Two players hold crossfire, one watches flank.',
-          sentAt: '11:18',
+          sentAt: '12:38',
+        ),
+        ChatMessage(
+          author: cole,
+          message: 'I can take flank watch if someone trades my first contact.',
+          sentAt: '12:40',
         ),
         ChatMessage(
           author: rina,
           message: 'Save utility for the final thirty seconds.',
-          sentAt: '11:21',
+          sentAt: '12:43',
+        ),
+        ChatMessage(
+          author: marco,
+          message: 'Perfect. No long speeches mid-round.',
+          sentAt: '12:45',
         ),
       ],
     ),
@@ -542,6 +609,21 @@ abstract final class GameZoneSeed {
           message: 'Late-night arcade queue sounds perfect.',
           sentAt: '12:02',
         ),
+        ChatMessage(
+          author: jax,
+          message: 'I am rusty, but I can bring the racing cabinet route.',
+          sentAt: '12:04',
+        ),
+        ChatMessage(
+          author: zoe,
+          message: 'Post screenshots. Scores without proof do not count.',
+          sentAt: '12:06',
+        ),
+        ChatMessage(
+          author: amir,
+          message: 'Deal. Winner picks tomorrow's casual room.',
+          sentAt: '12:08',
+        ),
       ],
     ),
     ChatRoom(
@@ -563,6 +645,21 @@ abstract final class GameZoneSeed {
           message: 'Send the board state before we lock roles.',
           sentAt: '13:17',
         ),
+        ChatMessage(
+          author: finn,
+          message: 'Top path looks slower, but it avoids the early trap.',
+          sentAt: '13:19',
+        ),
+        ChatMessage(
+          author: mia,
+          message: 'I can take resource tracking if someone handles timers.',
+          sentAt: '13:22',
+        ),
+        ChatMessage(
+          author: owen,
+          message: 'Good. I will upload the revised route after lunch.',
+          sentAt: '13:25',
+        ),
       ],
     ),
     ChatRoom(
@@ -575,6 +672,11 @@ abstract final class GameZoneSeed {
       participants: [hana, theo, rex, leo],
       messages: [
         ChatMessage(
+          author: leo,
+          message: 'Finals replay starts in fifteen. Spoilers off?',
+          sentAt: '15:31',
+        ),
+        ChatMessage(
           author: rex,
           message: 'The second map draft changed the whole series.',
           sentAt: '15:40',
@@ -583,6 +685,16 @@ abstract final class GameZoneSeed {
           author: hana,
           message: 'Aim duels were clean, but rotations won the match.',
           sentAt: '15:44',
+        ),
+        ChatMessage(
+          author: theo,
+          message: 'Watch the support pathing before the third objective.',
+          sentAt: '15:48',
+        ),
+        ChatMessage(
+          author: rex,
+          message: 'Agreed. That rotation forced every late fight.',
+          sentAt: '15:52',
         ),
       ],
     ),

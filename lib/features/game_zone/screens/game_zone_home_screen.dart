@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../shared/safety/safety_action_store.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
+import '../../../shared/widgets/squad_empty_state.dart';
 import '../data/game_zone_seed.dart';
 import '../models/game_zone_models.dart';
 import 'chat_room_screen.dart';
@@ -16,11 +18,43 @@ class GameZoneHomeScreen extends StatefulWidget {
 }
 
 class _GameZoneHomeScreenState extends State<GameZoneHomeScreen> {
+  final _safetyStore = SafetyActionStore.instance;
   _GameZoneShelf _focusedShelf = _GameZoneShelf.game;
+
+  @override
+  void initState() {
+    super.initState();
+    _safetyStore.initialize().then((_) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+    _safetyStore.addListener(_refresh);
+  }
+
+  @override
+  void dispose() {
+    _safetyStore.removeListener(_refresh);
+    super.dispose();
+  }
+
+  void _refresh() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final isGameShelf = _focusedShelf == _GameZoneShelf.game;
+    final visibleRooms = GameZoneSeed.rooms
+        .where(
+          (room) => !_safetyStore.isContentHidden(
+            _chatRoomContentId(room),
+            authorId: _chatRoomContentId(room),
+          ),
+        )
+        .toList();
 
     return ColoredBox(
       color: Colors.black,
@@ -55,7 +89,7 @@ class _GameZoneHomeScreenState extends State<GameZoneHomeScreen> {
                           )
                         : _ChatDeck(
                             key: const ValueKey('chat-deck'),
-                            rooms: GameZoneSeed.rooms,
+                            rooms: visibleRooms,
                           ),
                   ),
                 ),
@@ -67,6 +101,8 @@ class _GameZoneHomeScreenState extends State<GameZoneHomeScreen> {
     );
   }
 }
+
+String _chatRoomContentId(ChatRoom room) => 'chat-room-${room.id}';
 
 class _HeroPoster extends StatelessWidget {
   const _HeroPoster();
@@ -431,27 +467,15 @@ class _ChatTile extends StatelessWidget {
                                   ),
                             ),
                           ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 7,
-                              vertical: 3,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(999),
-                            ),
-                            child: Text(
-                              'chat',
-                              style: Theme.of(context).textTheme.labelMedium
-                                  ?.copyWith(
-                                    color: const Color(0xFF4D20E8),
-                                    fontSize: 10,
-                                  ),
-                            ),
+                          Image.asset(
+                            SquadPingAssets.chatBadgeBubble,
+                            width: 34,
+                            height: 30,
+                            fit: BoxFit.contain,
                           ),
                         ],
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 4),
                       Text(
                         room.summary,
                         maxLines: 2,
@@ -534,21 +558,11 @@ class _JoinPill extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 8),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFFFF54E0), Color(0xFFBE32F6)],
-          ),
-          borderRadius: BorderRadius.circular(999),
-        ),
-        child: Text(
-          'JOIN',
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.w900,
-          ),
-        ),
+      child: Image.asset(
+        SquadPingAssets.chatJoinButton,
+        width: 72,
+        height: 36,
+        fit: BoxFit.contain,
       ),
     );
   }
