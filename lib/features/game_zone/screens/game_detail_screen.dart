@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/safety/safety_action_store.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
@@ -186,7 +187,7 @@ class _GameHero extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: MediaQuery.paddingOf(context).top + 12,
+            top: squadCompactTopPadding(context),
             left: 12,
             child: _RoundBackButton(
               onPressed: () => Navigator.of(context).pop(),

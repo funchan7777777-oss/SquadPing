@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../models/community_models.dart';
 
@@ -126,8 +127,14 @@ class _CommunityVideoCallScreenState extends State<CommunityVideoCallScreen> {
             ),
           ),
           SafeArea(
+            top: false,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 8, 14, 0),
+              padding: EdgeInsets.fromLTRB(
+                10,
+                squadCompactTopPadding(context),
+                14,
+                0,
+              ),
               child: Row(
                 children: [
                   IconButton(
@@ -151,7 +158,7 @@ class _CommunityVideoCallScreenState extends State<CommunityVideoCallScreen> {
             ),
           ),
           Positioned(
-            top: MediaQuery.paddingOf(context).top + 66,
+            top: squadCompactTopPadding(context, extra: 66),
             right: 18,
             child: Container(
               width: 138,

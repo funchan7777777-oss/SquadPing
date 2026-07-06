@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/safety/safety_action_store.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
@@ -179,61 +180,66 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
             ),
           ),
           SafeArea(
+            top: false,
             bottom: false,
-            child: FadeTransition(
-              opacity: _roomFadeAnimation,
-              child: SlideTransition(
-                position: _roomSlideAnimation,
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 430),
-                    child: Column(
-                      children: [
-                        _ChatHeader(
-                          roomName: widget.room.name,
-                          onMoreTap: _openRoomSafety,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(18, 12, 18, 0),
-                          child: _WelcomeBanner(room: widget.room),
-                        ),
-                        const SizedBox(height: 12),
-                        _RoomMemberStrip(
-                          players: visibleParticipants,
-                          memberCount: widget.room.memberCount,
-                        ),
-                        const SizedBox(height: 6),
-                        Expanded(
-                          child: visibleMessages.isEmpty
-                              ? buildSquadEmptyState()
-                              : ListView.builder(
-                                  controller: _scrollController,
-                                  keyboardDismissBehavior:
-                                      ScrollViewKeyboardDismissBehavior.onDrag,
-                                  padding: const EdgeInsets.fromLTRB(
-                                    18,
-                                    8,
-                                    18,
-                                    112,
+            child: Padding(
+              padding: EdgeInsets.only(top: squadCompactTopPadding(context)),
+              child: FadeTransition(
+                opacity: _roomFadeAnimation,
+                child: SlideTransition(
+                  position: _roomSlideAnimation,
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 430),
+                      child: Column(
+                        children: [
+                          _ChatHeader(
+                            roomName: widget.room.name,
+                            onMoreTap: _openRoomSafety,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(18, 12, 18, 0),
+                            child: _WelcomeBanner(room: widget.room),
+                          ),
+                          const SizedBox(height: 12),
+                          _RoomMemberStrip(
+                            players: visibleParticipants,
+                            memberCount: widget.room.memberCount,
+                          ),
+                          const SizedBox(height: 6),
+                          Expanded(
+                            child: visibleMessages.isEmpty
+                                ? buildSquadEmptyState()
+                                : ListView.builder(
+                                    controller: _scrollController,
+                                    keyboardDismissBehavior:
+                                        ScrollViewKeyboardDismissBehavior
+                                            .onDrag,
+                                    padding: const EdgeInsets.fromLTRB(
+                                      18,
+                                      8,
+                                      18,
+                                      112,
+                                    ),
+                                    itemCount: visibleMessages.length,
+                                    itemBuilder: (context, index) {
+                                      final message = visibleMessages[index];
+                                      return _ChatMessageReveal(
+                                        index: index,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            bottom: 16,
+                                          ),
+                                          child: _ChatMessageTile(
+                                            message: message,
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                  itemCount: visibleMessages.length,
-                                  itemBuilder: (context, index) {
-                                    final message = visibleMessages[index];
-                                    return _ChatMessageReveal(
-                                      index: index,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          bottom: 16,
-                                        ),
-                                        child: _ChatMessageTile(
-                                          message: message,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
