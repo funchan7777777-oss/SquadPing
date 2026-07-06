@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 
 class CommunityAiAssistantScreen extends StatefulWidget {
@@ -126,40 +127,46 @@ class _CommunityAiAssistantScreenState
             ),
           ),
           SafeArea(
+            top: false,
             bottom: false,
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 430),
-                child: Column(
-                  children: [
-                    _AssistantHeader(onBack: () => Navigator.of(context).pop()),
-                    Expanded(
-                      child: ListView(
-                        controller: _scrollController,
-                        keyboardDismissBehavior:
-                            ScrollViewKeyboardDismissBehavior.onDrag,
-                        padding: const EdgeInsets.fromLTRB(22, 18, 22, 20),
-                        children: [
-                          const _AssistantSummaryCard(),
-                          const SizedBox(height: 18),
-                          for (final message in _messages) ...[
-                            _MessageBubble(message: message),
-                            const SizedBox(height: 12),
-                          ],
-                          if (_isThinking) ...[
-                            const _TypingBubble(),
-                            const SizedBox(height: 12),
-                          ],
-                        ],
+            child: Padding(
+              padding: EdgeInsets.only(top: squadCompactTopPadding(context)),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 430),
+                  child: Column(
+                    children: [
+                      _AssistantHeader(
+                        onBack: () => Navigator.of(context).pop(),
                       ),
-                    ),
-                    _PromptSuggestions(onSuggestionTap: _sendText),
-                    _AssistantComposer(
-                      controller: _controller,
-                      isSending: _isThinking,
-                      onSend: _sendCurrentText,
-                    ),
-                  ],
+                      Expanded(
+                        child: ListView(
+                          controller: _scrollController,
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          padding: const EdgeInsets.fromLTRB(22, 18, 22, 20),
+                          children: [
+                            const _AssistantSummaryCard(),
+                            const SizedBox(height: 18),
+                            for (final message in _messages) ...[
+                              _MessageBubble(message: message),
+                              const SizedBox(height: 12),
+                            ],
+                            if (_isThinking) ...[
+                              const _TypingBubble(),
+                              const SizedBox(height: 12),
+                            ],
+                          ],
+                        ),
+                      ),
+                      _PromptSuggestions(onSuggestionTap: _sendText),
+                      _AssistantComposer(
+                        controller: _controller,
+                        isSending: _isThinking,
+                        onSend: _sendCurrentText,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

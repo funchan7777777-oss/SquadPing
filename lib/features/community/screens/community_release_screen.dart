@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/moderation/moderation_queue.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 
@@ -206,11 +207,17 @@ class _CommunityReleaseScreenState extends State<CommunityReleaseScreen> {
             ),
           ),
           SafeArea(
+            top: false,
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 430),
                 child: ListView(
-                  padding: const EdgeInsets.fromLTRB(24, 2, 24, 26),
+                  padding: EdgeInsets.fromLTRB(
+                    24,
+                    squadCompactTopPadding(context),
+                    24,
+                    26,
+                  ),
                   children: [
                     _ReleaseHeader(onBack: () => Navigator.of(context).pop()),
                     const SizedBox(height: 18),

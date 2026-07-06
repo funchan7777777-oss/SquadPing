@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/safety/safety_action_store.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
@@ -226,54 +227,58 @@ class _InformationChatScreenState extends State<InformationChatScreen> {
             ),
           ),
           SafeArea(
+            top: false,
             bottom: false,
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 430),
-                child: Column(
-                  children: [
-                    _ChatHeader(
-                      onBack: () => Navigator.of(context).pop(),
-                      onMore: _openSafety,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-                      child: _PeerBanner(
-                        peer: widget.peer,
-                        onTap: _openProfile,
+            child: Padding(
+              padding: EdgeInsets.only(top: squadCompactTopPadding(context)),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 430),
+                  child: Column(
+                    children: [
+                      _ChatHeader(
+                        onBack: () => Navigator.of(context).pop(),
+                        onMore: _openSafety,
                       ),
-                    ),
-                    Expanded(
-                      child: !_isReady
-                          ? const Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                        child: _PeerBanner(
+                          peer: widget.peer,
+                          onTap: _openProfile,
+                        ),
+                      ),
+                      Expanded(
+                        child: !_isReady
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
+                            : hidden
+                            ? buildSquadEmptyState()
+                            : _messages.isEmpty
+                            ? buildSquadEmptyState()
+                            : ListView.separated(
+                                padding: const EdgeInsets.fromLTRB(
+                                  16,
+                                  22,
+                                  16,
+                                  24,
+                                ),
+                                itemCount: _messages.length,
+                                separatorBuilder: (_, _) =>
+                                    const SizedBox(height: 16),
+                                itemBuilder: (context, index) {
+                                  return _MessageBubble(
+                                    message: _messages[index],
+                                    peer: widget.peer,
+                                    onPeerTap: _openProfile,
+                                  );
+                                },
                               ),
-                            )
-                          : hidden
-                          ? buildSquadEmptyState()
-                          : _messages.isEmpty
-                          ? buildSquadEmptyState()
-                          : ListView.separated(
-                              padding: const EdgeInsets.fromLTRB(
-                                16,
-                                22,
-                                16,
-                                24,
-                              ),
-                              itemCount: _messages.length,
-                              separatorBuilder: (_, _) =>
-                                  const SizedBox(height: 16),
-                              itemBuilder: (context, index) {
-                                return _MessageBubble(
-                                  message: _messages[index],
-                                  peer: widget.peer,
-                                  onPeerTap: _openProfile,
-                                );
-                              },
-                            ),
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/safety/safety_action_store.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
@@ -119,8 +120,7 @@ class _CommunityUserProfileScreenState
 
   @override
   Widget build(BuildContext context) {
-    final topInset = MediaQuery.paddingOf(context).top;
-    final topPadding = topInset > 12 ? topInset - 12 : 0.0;
+    final topPadding = squadCompactTopPadding(context);
     final isViewer = widget.user.id == CommunitySeed.viewer.id;
     final isBlocked = _safetyStore.isUserBlocked(widget.user.id);
     final requestSent = _localStore.hasRequestedFollow(widget.user.id);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/safety/safety_action_store.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
@@ -147,12 +148,18 @@ class _CommunityTopicDetailScreenState
             ),
           ),
           SafeArea(
+            top: false,
             bottom: false,
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 430),
                 child: ListView(
-                  padding: const EdgeInsets.fromLTRB(24, 18, 24, 120),
+                  padding: EdgeInsets.fromLTRB(
+                    24,
+                    squadCompactTopPadding(context),
+                    24,
+                    120,
+                  ),
                   children: [
                     _DetailHeader(onBack: () => Navigator.of(context).pop()),
                     const SizedBox(height: 18),

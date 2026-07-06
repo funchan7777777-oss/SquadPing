@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../data/video_feed_seed.dart';
 import '../models/video_feed_models.dart';
@@ -120,11 +121,17 @@ class _VideoReleaseScreenState extends State<VideoReleaseScreen> {
             ),
           ),
           SafeArea(
+            top: false,
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 430),
                 child: ListView(
-                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 30),
+                  padding: EdgeInsets.fromLTRB(
+                    24,
+                    squadCompactTopPadding(context),
+                    24,
+                    30,
+                  ),
                   children: [
                     _ReleaseHeader(onBack: () => Navigator.of(context).pop()),
                     const SizedBox(height: 20),
