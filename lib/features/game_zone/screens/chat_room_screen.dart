@@ -18,10 +18,15 @@ class ChatRoomScreen extends StatefulWidget {
   State<ChatRoomScreen> createState() => _ChatRoomScreenState();
 }
 
-class _ChatRoomScreenState extends State<ChatRoomScreen> {
+class _ChatRoomScreenState extends State<ChatRoomScreen>
+    with SingleTickerProviderStateMixin {
   final _safetyStore = SafetyActionStore.instance;
   late final TextEditingController _messageController;
   late final ScrollController _scrollController;
+  late final AnimationController _roomMotionController;
+  late final Animation<double> _roomFadeAnimation;
+  late final Animation<Offset> _roomSlideAnimation;
+  late final Animation<Offset> _composerSlideAnimation;
   late final List<ChatMessage> _messages;
 
   @override
@@ -29,6 +34,29 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     super.initState();
     _messageController = TextEditingController();
     _scrollController = ScrollController();
+    _roomMotionController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 420),
+      reverseDuration: const Duration(milliseconds: 240),
+    );
+    final roomCurve = CurvedAnimation(
+      parent: _roomMotionController,
+      curve: Curves.easeOutCubic,
+      reverseCurve: Curves.easeInCubic,
+    );
+    _roomFadeAnimation = roomCurve;
+    _roomSlideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.035),
+      end: Offset.zero,
+    ).animate(roomCurve);
+    _composerSlideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.24), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _roomMotionController,
+            curve: const Interval(0.22, 1, curve: Curves.easeOutCubic),
+            reverseCurve: Curves.easeInCubic,
+          ),
+        );
     _messages = [...widget.room.messages];
     _safetyStore.initialize().then((_) {
       if (mounted) {
@@ -37,11 +65,13 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     });
     _safetyStore.addListener(_refresh);
     WidgetsBinding.instance.addPostFrameCallback((_) => _jumpToLatest());
+    _roomMotionController.forward();
   }
 
   @override
   void dispose() {
     _safetyStore.removeListener(_refresh);
+    _roomMotionController.dispose();
     _scrollController.dispose();
     _messageController.dispose();
     super.dispose();
@@ -150,46 +180,59 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           ),
           SafeArea(
             bottom: false,
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 430),
-                child: Column(
-                  children: [
-                    _ChatHeader(
-                      roomName: widget.room.name,
-                      onMoreTap: _openRoomSafety,
+            child: FadeTransition(
+              opacity: _roomFadeAnimation,
+              child: SlideTransition(
+                position: _roomSlideAnimation,
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 430),
+                    child: Column(
+                      children: [
+                        _ChatHeader(
+                          roomName: widget.room.name,
+                          onMoreTap: _openRoomSafety,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(18, 12, 18, 0),
+                          child: _WelcomeBanner(room: widget.room),
+                        ),
+                        const SizedBox(height: 12),
+                        _RoomMemberStrip(players: visibleParticipants),
+                        const SizedBox(height: 6),
+                        Expanded(
+                          child: visibleMessages.isEmpty
+                              ? buildSquadEmptyState()
+                              : ListView.builder(
+                                  controller: _scrollController,
+                                  keyboardDismissBehavior:
+                                      ScrollViewKeyboardDismissBehavior.onDrag,
+                                  padding: const EdgeInsets.fromLTRB(
+                                    18,
+                                    8,
+                                    18,
+                                    112,
+                                  ),
+                                  itemCount: visibleMessages.length,
+                                  itemBuilder: (context, index) {
+                                    final message = visibleMessages[index];
+                                    return _ChatMessageReveal(
+                                      index: index,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          bottom: 16,
+                                        ),
+                                        child: _ChatMessageTile(
+                                          message: message,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(18, 12, 18, 0),
-                      child: _WelcomeBanner(room: widget.room),
-                    ),
-                    const SizedBox(height: 12),
-                    _RoomMemberStrip(players: visibleParticipants),
-                    const SizedBox(height: 6),
-                    Expanded(
-                      child: visibleMessages.isEmpty
-                          ? buildSquadEmptyState()
-                          : ListView.builder(
-                              controller: _scrollController,
-                              keyboardDismissBehavior:
-                                  ScrollViewKeyboardDismissBehavior.onDrag,
-                              padding: const EdgeInsets.fromLTRB(
-                                18,
-                                8,
-                                18,
-                                112,
-                              ),
-                              itemCount: visibleMessages.length,
-                              itemBuilder: (context, index) {
-                                final message = visibleMessages[index];
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 16),
-                                  child: _ChatMessageTile(message: message),
-                                );
-                              },
-                            ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -198,20 +241,54 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             left: 0,
             right: 0,
             bottom: 0,
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 430),
-                child: GameZoneComposer(
-                  controller: _messageController,
-                  hintText: 'Enter what you want to send',
-                  onSend: _sendMessage,
-                  showBackground: false,
+            child: SlideTransition(
+              position: _composerSlideAnimation,
+              child: FadeTransition(
+                opacity: _roomFadeAnimation,
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 430),
+                    child: GameZoneComposer(
+                      controller: _messageController,
+                      hintText: 'Enter what you want to send',
+                      onSend: _sendMessage,
+                      showBackground: false,
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _ChatMessageReveal extends StatelessWidget {
+  const _ChatMessageReveal({required this.index, required this.child});
+
+  final int index;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final stagger = index > 8 ? 240 : index * 30;
+
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: Duration(milliseconds: 260 + stagger),
+      curve: Curves.easeOutCubic,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset(0, 16 * (1 - value)),
+            child: child,
+          ),
+        );
+      },
+      child: child,
     );
   }
 }

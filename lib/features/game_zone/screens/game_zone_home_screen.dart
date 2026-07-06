@@ -104,6 +104,32 @@ class _GameZoneHomeScreenState extends State<GameZoneHomeScreen> {
 
 String _chatRoomContentId(ChatRoom room) => 'chat-room-${room.id}';
 
+Route<void> _chatRoomRoute(ChatRoom room) {
+  return PageRouteBuilder<void>(
+    transitionDuration: const Duration(milliseconds: 360),
+    reverseTransitionDuration: const Duration(milliseconds: 240),
+    pageBuilder: (_, _, _) => ChatRoomScreen(room: room),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      final curvedAnimation = CurvedAnimation(
+        parent: animation,
+        curve: Curves.easeOutCubic,
+        reverseCurve: Curves.easeInCubic,
+      );
+
+      return FadeTransition(
+        opacity: curvedAnimation,
+        child: SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0.08, 0.04),
+            end: Offset.zero,
+          ).animate(curvedAnimation),
+          child: child,
+        ),
+      );
+    },
+  );
+}
+
 class _HeroPoster extends StatelessWidget {
   const _HeroPoster();
 
@@ -407,11 +433,7 @@ class _ChatDeck extends StatelessWidget {
               _ChatTile(
                 room: room,
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) => ChatRoomScreen(room: room),
-                    ),
-                  );
+                  Navigator.of(context).push(_chatRoomRoute(room));
                 },
               ),
               const SizedBox(height: 14),
