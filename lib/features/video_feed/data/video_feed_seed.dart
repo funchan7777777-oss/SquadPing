@@ -64,7 +64,8 @@ abstract final class VideoFeedSeed {
       id: 'clip-tactical-rooftop',
       videoAsset: SquadPingAssets.videoTacticalRooftop,
       creator: viewer,
-      caption: 'Wind, waves and flying discs. Nothing beats beach frisbee sunset sessions.',
+      caption:
+          'Wind, waves and flying discs. Nothing beats beach frisbee sunset sessions.',
       likeCount: 814,
       tags: ['FPS', 'Rooftop', 'Clean angle'],
       comments: [],
@@ -82,7 +83,8 @@ abstract final class VideoFeedSeed {
       id: 'clip-night-scope',
       videoAsset: SquadPingAssets.videoNightScope,
       creator: rex,
-      caption: 'Holding the angle until the last second. Patience wins this round.',
+      caption:
+          'Holding the angle until the last second. Patience wins this round.',
       likeCount: 672,
       tags: ['Scope', 'Hold', 'Tension'],
       comments: [],
@@ -91,7 +93,8 @@ abstract final class VideoFeedSeed {
       id: 'clip-arena-close',
       videoAsset: SquadPingAssets.videoArenaClose,
       creator: kira,
-      caption: 'Close-quarters pressure and a quick reset before the final push.',
+      caption:
+          'Close-quarters pressure and a quick reset before the final push.',
       likeCount: 986,
       tags: ['Arena', 'FPS', 'Clutch'],
       comments: [],
@@ -112,7 +115,8 @@ abstract final class VideoFeedSeed {
       id: 'tactical-rooftop',
       videoAsset: SquadPingAssets.videoTacticalRooftop,
       creator: viewer,
-      caption: 'Wind, waves and flying discs. Nothing beats beach frisbee sunset sessions.',
+      caption:
+          'Wind, waves and flying discs. Nothing beats beach frisbee sunset sessions.',
       likeCount: 814,
       isLiked: false,
       isFollowed: true,
@@ -121,7 +125,8 @@ abstract final class VideoFeedSeed {
       comments: [
         VideoComment(
           author: esme,
-          message: 'The timing on that peek was clean. Save this angle for ranked.',
+          message:
+              'The timing on that peek was clean. Save this angle for ranked.',
           sentAt: '2 min ago',
         ),
         VideoComment(
@@ -157,7 +162,8 @@ abstract final class VideoFeedSeed {
       id: 'night-scope',
       videoAsset: SquadPingAssets.videoNightScope,
       creator: rex,
-      caption: 'Holding the angle until the last second. Patience wins this round.',
+      caption:
+          'Holding the angle until the last second. Patience wins this round.',
       likeCount: 672,
       tags: ['Scope', 'Hold', 'Tension'],
       attachedPhotos: [SquadPingAssets.postArcadeScreen],
@@ -173,7 +179,8 @@ abstract final class VideoFeedSeed {
       id: 'arena-close',
       videoAsset: SquadPingAssets.videoArenaClose,
       creator: kira,
-      caption: 'Close-quarters pressure and a quick reset before the final push.',
+      caption:
+          'Close-quarters pressure and a quick reset before the final push.',
       likeCount: 986,
       tags: ['Arena', 'FPS', 'Clutch'],
       attachedPhotos: [SquadPingAssets.postNeonRacer],

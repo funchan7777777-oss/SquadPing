@@ -15,12 +15,12 @@ enum SquadPingTab {
   emblem(
     SquadPingAssets.tabEmblemActive,
     SquadPingAssets.tabEmblemInactive,
-    'Emblem',
+    'Information',
   ),
   forum(
     SquadPingAssets.tabForumActive,
     SquadPingAssets.tabForumInactive,
-    'Forum',
+    'Mine',
   );
 
   const SquadPingTab(this.activeAsset, this.inactiveAsset, this.caption);

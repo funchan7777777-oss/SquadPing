@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../shared/safety/safety_action_sheet.dart';
+import '../../../shared/safety/safety_action_store.dart';
+import '../../../shared/widgets/squad_empty_state.dart';
 import '../data/video_feed_seed.dart';
 import '../models/video_feed_models.dart';
 import 'video_comment_composer.dart';
@@ -13,10 +16,8 @@ Future<void> showVideoCommentsSheet({
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
-    builder: (context) => _VideoCommentsSheet(
-      comments: comments,
-      onCommentAdded: onCommentAdded,
-    ),
+    builder: (context) =>
+        _VideoCommentsSheet(comments: comments, onCommentAdded: onCommentAdded),
   );
 }
 
@@ -34,6 +35,7 @@ class _VideoCommentsSheet extends StatefulWidget {
 }
 
 class _VideoCommentsSheetState extends State<_VideoCommentsSheet> {
+  final _safetyStore = SafetyActionStore.instance;
   late final TextEditingController _controller;
   late final List<VideoComment> _comments;
 
@@ -42,12 +44,25 @@ class _VideoCommentsSheetState extends State<_VideoCommentsSheet> {
     super.initState();
     _controller = TextEditingController();
     _comments = [...widget.comments];
+    _safetyStore.initialize().then((_) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+    _safetyStore.addListener(_refresh);
   }
 
   @override
   void dispose() {
+    _safetyStore.removeListener(_refresh);
     _controller.dispose();
     super.dispose();
+  }
+
+  void _refresh() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _sendComment() {
@@ -71,6 +86,14 @@ class _VideoCommentsSheetState extends State<_VideoCommentsSheet> {
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
+    final visibleComments = _comments
+        .where(
+          (comment) => !_safetyStore.isContentHidden(
+            _commentContentId(comment),
+            authorId: comment.author.id,
+          ),
+        )
+        .toList();
 
     return AnimatedPadding(
       duration: const Duration(milliseconds: 180),
@@ -120,28 +143,47 @@ class _VideoCommentsSheetState extends State<_VideoCommentsSheet> {
                 ),
               ),
               Expanded(
-                child: ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(18, 8, 18, 14),
-                  itemCount: _comments.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 18),
-                  itemBuilder: (context, index) {
-                    return _CommentRow(comment: _comments[index]);
-                  },
-                ),
+                child: visibleComments.isEmpty
+                    ? buildSquadEmptyState()
+                    : ListView.separated(
+                        padding: const EdgeInsets.fromLTRB(18, 8, 18, 14),
+                        itemCount: visibleComments.length,
+                        separatorBuilder: (_, _) => const SizedBox(height: 18),
+                        itemBuilder: (context, index) {
+                          final comment = visibleComments[index];
+                          return _CommentRow(
+                            comment: comment,
+                            onMoreTap: () => showSafetyActionSheet(
+                              context: context,
+                              contentId: _commentContentId(comment),
+                              authorId: comment.author.id,
+                              authorName: comment.author.displayName,
+                            ),
+                          );
+                        },
+                      ),
               ),
-              VideoCommentComposer(controller: _controller, onSend: _sendComment),
+              VideoCommentComposer(
+                controller: _controller,
+                onSend: _sendComment,
+              ),
             ],
           ),
         ),
       ),
     );
   }
+
+  String _commentContentId(VideoComment comment) {
+    return 'video-comment-${comment.author.id}-${comment.sentAt}-${comment.message.hashCode}';
+  }
 }
 
 class _CommentRow extends StatelessWidget {
-  const _CommentRow({required this.comment});
+  const _CommentRow({required this.comment, required this.onMoreTap});
 
   final VideoComment comment;
+  final VoidCallback onMoreTap;
 
   @override
   Widget build(BuildContext context) {
@@ -180,8 +222,11 @@ class _CommentRow extends StatelessWidget {
                       color: Colors.white.withValues(alpha: 0.82),
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  const Icon(Icons.more_horiz_rounded, color: Colors.white),
+                  IconButton(
+                    onPressed: onMoreTap,
+                    icon: const Icon(Icons.more_horiz_rounded),
+                    color: Colors.white,
+                  ),
                 ],
               ),
               const SizedBox(height: 8),

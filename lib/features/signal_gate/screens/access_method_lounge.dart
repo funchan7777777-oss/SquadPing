@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../shared/visuals/squad_ping_assets.dart';
+import '../models/legal_document_links.dart';
 import '../widgets/agreement_consent_line.dart';
 import '../widgets/full_bleed_asset_stage.dart';
 import '../widgets/gate_notice_dialog.dart';
@@ -24,11 +25,6 @@ class AccessMethodLounge extends StatefulWidget {
 }
 
 class _AccessMethodLoungeState extends State<AccessMethodLounge> {
-  static const _termsUrl =
-      'https://sites.google.com/view/squadping-termsofservice/home';
-  static const _privacyUrl =
-      'https://sites.google.com/view/squadping-privacy-policy/home';
-
   bool _agreementAccepted = false;
   bool _appleRequestInFlight = false;
 
@@ -70,11 +66,13 @@ class _AccessMethodLoungeState extends State<AccessMethodLounge> {
                 onAcceptanceChanged: (value) {
                   setState(() => _agreementAccepted = value);
                 },
-                onTermsPressed: () =>
-                    _openAgreementPage(title: 'User Agreement', url: _termsUrl),
+                onTermsPressed: () => _openAgreementPage(
+                  title: 'User Agreement',
+                  url: LegalDocumentLinks.termsUrl,
+                ),
                 onPrivacyPressed: () => _openAgreementPage(
                   title: 'Privacy Policy',
-                  url: _privacyUrl,
+                  url: LegalDocumentLinks.privacyUrl,
                 ),
               ),
             ],

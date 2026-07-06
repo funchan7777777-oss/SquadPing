@@ -27,7 +27,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>SquadPing uses the camera when you choose to take a profile photo.</string>
+	<string>SquadPing uses the camera for profile photos and local video call preview when you choose those features.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>SquadPing uses the microphone for video calls only after you start a call.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>SquadPing uses your photo library when you choose an existing profile image.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

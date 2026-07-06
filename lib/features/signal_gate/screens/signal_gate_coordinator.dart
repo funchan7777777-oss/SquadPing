@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../../app/navigation/squad_ping_shell.dart';
+import '../../../app/navigation/session_exit_target.dart';
 import '../../../field_notes/repositories/pulse_story_repository.dart';
 import '../models/gate_profile_origin.dart';
 import '../services/local_gate_record_keeper.dart';
@@ -53,9 +54,24 @@ class _SignalGateCoordinatorState extends State<SignalGateCoordinator> {
         _GatePhase.home => SquadPingShell(
           key: const ValueKey('squad-home'),
           storyArchive: widget.storyArchive,
+          onSessionClosed: _handleSessionExit,
         ),
       },
     );
+  }
+
+  void _handleSessionExit(SessionExitTarget target) {
+    if (!mounted) {
+      return;
+    }
+    setState(() => _phase = _GatePhase.method);
+    if (target == SessionExitTarget.signIn) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _pushSignin();
+        }
+      });
+    }
   }
 
   Future<void> _bootstrapGate() async {
@@ -219,12 +235,8 @@ class _SignalGateCoordinatorState extends State<SignalGateCoordinator> {
     if (!mounted) {
       return;
     }
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(
-        builder: (_) => SquadPingShell(storyArchive: widget.storyArchive),
-      ),
-      (_) => false,
-    );
+    setState(() => _phase = _GatePhase.home);
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   String _appleDisplayName(AuthorizationCredentialAppleID credential) {

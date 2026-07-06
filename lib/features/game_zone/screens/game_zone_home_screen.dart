@@ -23,7 +23,7 @@ class _GameZoneHomeScreenState extends State<GameZoneHomeScreen> {
     final isGameShelf = _focusedShelf == _GameZoneShelf.game;
 
     return ColoredBox(
-      color: const Color(0xFFEDEFF4),
+      color: Colors.black,
       child: SafeArea(
         bottom: false,
         child: Center(
@@ -32,18 +32,9 @@ class _GameZoneHomeScreenState extends State<GameZoneHomeScreen> {
             child: CustomScrollView(
               slivers: [
                 SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(18, 12, 18, 0),
+                  padding: const EdgeInsets.fromLTRB(18, 8, 18, 0),
                   sliver: SliverList(
                     delegate: SliverChildListDelegate([
-                      Text(
-                        '首页',
-                        style: Theme.of(context).textTheme.headlineMedium
-                            ?.copyWith(
-                              color: const Color(0xFF55545C),
-                              fontWeight: FontWeight.w900,
-                            ),
-                      ),
-                      const SizedBox(height: 14),
                       const _HeroPoster(),
                       const SizedBox(height: 18),
                       _ShelfTabs(

@@ -5,6 +5,7 @@ abstract final class SquadPingAssets {
   static const appMark = 'assets/images/Party.png';
   static const rallyArtifact = 'assets/images/Rally.png';
   static const profileBadge = 'assets/images/profile_rally_badge.png';
+  static const emptyState = 'assets/images/Outpost.png';
 
   static const appleButton = 'assets/images/Hub.png';
   static const signInButton = 'assets/images/Lounge.png';
@@ -118,10 +119,57 @@ abstract final class SquadPingAssets {
   static const postArcadeScreen = 'assets/images/post/post_arcade_screen.png';
   static const postNeonRacer = 'assets/images/post/post_neon_racer.png';
 
-  static const videoTacticalRooftop =
-      'assets/videos/tactical_rooftop_push.mp4';
+  static const videoTacticalRooftop = 'assets/videos/tactical_rooftop_push.mp4';
   static const videoBattleBuild = 'assets/videos/battle_build_duel.mp4';
   static const videoNightScope = 'assets/videos/night_scope_hold.mp4';
   static const videoArenaClose = 'assets/videos/arena_close_quarters.mp4';
   static const videoStoryEscape = 'assets/videos/story_escape_scene.mp4';
+
+  static const reportGender = 'assets/images/Portal.png';
+  static const reportReligious = 'assets/images/Ladder.png';
+  static const reportContentError = 'assets/images/Siege.png';
+  static const reportVerbal = 'assets/images/Trophy.png';
+  static const reportAdult = 'assets/images/Mission.png';
+  static const reportBlacklist = 'assets/images/Circle.png';
+  static const aiAssistantButton = 'assets/images/Scout.png';
+  static const communityLikeGlyph = 'assets/images/Raid.png';
+  static const communityChatButton = 'assets/images/Crate.png';
+  static const communityFollowButton = 'assets/images/Signal.png';
+  static const communityFollowedButton = 'assets/images/Inventory.png';
+  static const communityProfileFrame = 'assets/images/Stronghold.png';
+  static const communityProfileBackdrop = 'assets/images/Wishlist.png';
+  static const communityCallGlyph = 'assets/images/Region.png';
+  static const communityMicGlyph = 'assets/images/Server.png';
+
+  static const informationFollowApplication = 'assets/images/Montage.png';
+  static const informationDeleteGlyph = 'assets/images/Arena.png';
+  static const informationFollowGlyph = 'assets/images/Clan.png';
+  static const callFlipGlyph = 'assets/images/Patch.png';
+  static const callEndGlyph = 'assets/images/Modpack.png';
+
+  static const profileSettingsGlyph = 'assets/images/Basecamp.png';
+  static const profileCoinShopTile = 'assets/images/Warden.png';
+  static const profileEditTile = 'assets/images/Mentor.png';
+  static const profileFollowedButton = 'assets/images/Guild.png';
+  static const profileAgreementButton = 'assets/images/Stream.png';
+  static const profileBlacklistButton = 'assets/images/Duel.png';
+  static const profileCoinPill = 'assets/images/Stronghold.png';
+  static const profileDeleteAccountButton = 'assets/images/Tournament.png';
+  static const profileBuyButton = 'assets/images/Badge.png';
+  static const profileRewardBuyButton = 'assets/images/Reward.png';
+  static const profileCancelButton = 'assets/images/Loadout.png';
+  static const profileLogoutButton = 'assets/images/Battle.png';
+  static const profileContactButton = 'assets/images/Campaign.png';
+  static const profileGuidelinesButton = 'assets/images/League.png';
+  static const profilePrivacyButton = 'assets/images/Season.png';
+  static const profileCoinIcon = 'assets/images/Loot.png';
+  static const profileLocationGlyph = 'assets/images/Workshop.png';
+  static const profileShopBackdrop = 'assets/images/Wishlist.png';
+
+  static const postCommunityNeonArcade =
+      'assets/images/post/community_neon_arcade.png';
+  static const postCommunityRetroArcade =
+      'assets/images/post/community_retro_arcade.png';
+  static const postCommunityController =
+      'assets/images/post/community_controller_closeup.png';
 }

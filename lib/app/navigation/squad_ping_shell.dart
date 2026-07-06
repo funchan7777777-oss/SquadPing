@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 
+import '../../features/community/screens/community_screen.dart';
 import '../../features/game_zone/screens/game_zone_home_screen.dart';
-import '../../features/nudge_studio/screens/quick_ping_studio.dart';
-import '../../features/pulse_deck/screens/today_pulse_board.dart';
-import '../../features/roster_lane/screens/squad_roster_view.dart';
+import '../../features/information_center/screens/information_center_screen.dart';
+import '../../features/profile_center/screens/profile_center_screen.dart';
+import '../../features/video_feed/screens/video_feed_screen.dart';
 import '../../field_notes/repositories/pulse_story_repository.dart';
+import 'session_exit_target.dart';
 import 'squad_ping_tab.dart';
 
 class SquadPingShell extends StatefulWidget {
-  const SquadPingShell({super.key, required this.storyArchive});
+  const SquadPingShell({
+    super.key,
+    required this.storyArchive,
+    this.onSessionClosed,
+  });
 
   final PulseStoryRepository storyArchive;
+  final ValueChanged<SessionExitTarget>? onSessionClosed;
 
   @override
   State<SquadPingShell> createState() => _SquadPingShellState();
@@ -22,6 +29,7 @@ class _SquadPingShellState extends State<SquadPingShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: IndexedStack(
         index: _selectedTabSlot,
         children: SquadPingTab.values.map(_buildTabView).toList(),
@@ -38,10 +46,12 @@ class _SquadPingShellState extends State<SquadPingShell> {
   Widget _buildTabView(SquadPingTab tab) {
     return switch (tab) {
       SquadPingTab.beacon => const GameZoneHomeScreen(),
-      SquadPingTab.chat => QuickPingStudio(storyArchive: widget.storyArchive),
-      SquadPingTab.voice => QuickPingStudio(storyArchive: widget.storyArchive),
-      SquadPingTab.emblem => TodayPulseBoard(storyArchive: widget.storyArchive),
-      SquadPingTab.forum => SquadRosterView(storyArchive: widget.storyArchive),
+      SquadPingTab.chat => const VideoFeedScreen(),
+      SquadPingTab.voice => const CommunityScreen(),
+      SquadPingTab.emblem => const InformationCenterScreen(),
+      SquadPingTab.forum => ProfileCenterScreen(
+        onSessionClosed: widget.onSessionClosed,
+      ),
     };
   }
 }

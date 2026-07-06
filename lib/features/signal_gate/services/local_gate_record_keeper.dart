@@ -5,6 +5,22 @@ import 'package:crypto/crypto.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class GateProfileSnapshot {
+  const GateProfileSnapshot({
+    required this.displayName,
+    required this.areaSignal,
+    required this.signatureLine,
+    required this.age,
+    this.avatarPath,
+  });
+
+  final String displayName;
+  final String areaSignal;
+  final String signatureLine;
+  final int age;
+  final String? avatarPath;
+}
+
 class LocalGateRecordKeeper {
   SharedPreferences? _preferences;
 
@@ -17,6 +33,7 @@ class LocalGateRecordKeeper {
   static const _profileAreaKey = 'squad_gate.profile_area';
   static const _profileSignatureKey = 'squad_gate.profile_signature';
   static const _profileAvatarPathKey = 'squad_gate.profile_avatar_path';
+  static const _profileAgeKey = 'squad_gate.profile_age';
 
   Future<void> initialize() async {
     _preferences ??= await SharedPreferences.getInstance();
@@ -77,10 +94,65 @@ class LocalGateRecordKeeper {
     await store.setString(_profileNameKey, displayName.trim());
     await store.setString(_profileAreaKey, areaSignal.trim());
     await store.setString(_profileSignatureKey, signatureLine.trim());
+    await store.setInt(_profileAgeKey, store.getInt(_profileAgeKey) ?? 20);
     if (avatarPath != null && avatarPath.trim().isNotEmpty) {
       await store.setString(_profileAvatarPathKey, avatarPath);
     }
     await store.setBool(_sessionOpenKey, true);
+  }
+
+  Future<GateProfileSnapshot> loadProfile() async {
+    final store = await _store();
+    return GateProfileSnapshot(
+      displayName: store.getString(_profileNameKey)?.trim().isNotEmpty == true
+          ? store.getString(_profileNameKey)!.trim()
+          : 'Marceline',
+      areaSignal: store.getString(_profileAreaKey)?.trim().isNotEmpty == true
+          ? store.getString(_profileAreaKey)!.trim()
+          : 'Austria',
+      signatureLine:
+          store.getString(_profileSignatureKey)?.trim().isNotEmpty == true
+          ? store.getString(_profileSignatureKey)!.trim()
+          : 'Respectful squads, clean clips, and weekend co-op plans.',
+      age: store.getInt(_profileAgeKey) ?? 20,
+      avatarPath: store.getString(_profileAvatarPathKey),
+    );
+  }
+
+  Future<void> updateProfile({
+    required String displayName,
+    required String areaSignal,
+    required int age,
+    String? avatarPath,
+  }) async {
+    final store = await _store();
+    await store.setString(_profileNameKey, displayName.trim());
+    await store.setString(_profileAreaKey, areaSignal.trim());
+    await store.setInt(_profileAgeKey, age);
+    if (avatarPath != null && avatarPath.trim().isNotEmpty) {
+      await store.setString(_profileAvatarPathKey, avatarPath);
+    }
+  }
+
+  Future<void> closeSession() async {
+    final store = await _store();
+    await store.setBool(_sessionOpenKey, false);
+  }
+
+  Future<void> deleteLocalAccount() async {
+    final store = await _store();
+    await Future.wait([
+      store.remove(_sessionOpenKey),
+      store.remove(_accountMailKey),
+      store.remove(_accountSecretKey),
+      store.remove(_appleUserKey),
+      store.remove(_appleMailKey),
+      store.remove(_profileNameKey),
+      store.remove(_profileAreaKey),
+      store.remove(_profileSignatureKey),
+      store.remove(_profileAvatarPathKey),
+      store.remove(_profileAgeKey),
+    ]);
   }
 
   Future<String> keepAvatarInsideApp(String pickedPath) async {
