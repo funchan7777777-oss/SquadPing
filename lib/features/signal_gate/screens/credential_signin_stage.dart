@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../shared/visuals/squad_ping_assets.dart';
-import '../services/local_gate_record_keeper.dart';
 import '../widgets/account_crosslink.dart';
 import '../widgets/credential_lane_field.dart';
 import '../widgets/full_bleed_asset_stage.dart';
@@ -14,12 +13,10 @@ import '../widgets/rally_corner_artifact.dart';
 class CredentialSigninStage extends StatefulWidget {
   const CredentialSigninStage({
     super.key,
-    required this.recordKeeper,
     required this.onCreateAccountPulled,
     required this.onAccessGranted,
   });
 
-  final LocalGateRecordKeeper recordKeeper;
   final VoidCallback onCreateAccountPulled;
   final Future<void> Function(String mailAddress) onAccessGranted;
 
@@ -64,6 +61,7 @@ class _CredentialSigninStageState extends State<CredentialSigninStage> {
                 CredentialLaneField(
                   fieldLabel: 'Mail',
                   controller: _mailController,
+                  hintText: 'Enter your mail address',
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                 ),
@@ -71,6 +69,7 @@ class _CredentialSigninStageState extends State<CredentialSigninStage> {
                 CredentialLaneField(
                   fieldLabel: 'Password',
                   controller: _passwordController,
+                  hintText: 'Enter your password',
                   obscuredByDefault: true,
                   textInputAction: TextInputAction.done,
                 ),
@@ -121,32 +120,23 @@ class _CredentialSigninStageState extends State<CredentialSigninStage> {
     if (!_looksLikeMail(mail)) {
       await _showNotice(
         title: 'Mail needs a second look',
-        message:
-            'Use a complete mail address so SquadPing can find your local account.',
+        message: 'Use a complete mail address before logging in.',
+      );
+      return;
+    }
+    if (password.trim().length < 6) {
+      await _showNotice(
+        title: 'Password is too short',
+        message: 'Use at least 6 characters to log in.',
       );
       return;
     }
 
     setState(() => _isChecking = true);
-    final canOpen = await widget.recordKeeper.canOpenPasswordAccount(
-      mailAddress: mail,
-      plainPassword: password,
-    );
-    if (!mounted) {
-      return;
-    }
-    setState(() => _isChecking = false);
-
-    if (!canOpen) {
-      await _showNotice(
-        title: 'Account not found',
-        message:
-            'This mail and password do not match a saved SquadPing account on this device.',
-      );
-      return;
-    }
-
     await widget.onAccessGranted(mail);
+    if (mounted) {
+      setState(() => _isChecking = false);
+    }
   }
 
   Future<void> _showNotice({required String title, required String message}) {

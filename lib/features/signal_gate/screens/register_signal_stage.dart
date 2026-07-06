@@ -63,6 +63,7 @@ class _RegisterSignalStageState extends State<RegisterSignalStage> {
                 CredentialLaneField(
                   fieldLabel: 'Mail',
                   controller: _mailController,
+                  hintText: 'Enter your mail address',
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                 ),
@@ -70,6 +71,7 @@ class _RegisterSignalStageState extends State<RegisterSignalStage> {
                 CredentialLaneField(
                   fieldLabel: 'Password',
                   controller: _passwordController,
+                  hintText: 'Create a password',
                   obscuredByDefault: true,
                   textInputAction: TextInputAction.done,
                 ),
