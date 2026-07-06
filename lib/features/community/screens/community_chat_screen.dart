@@ -136,6 +136,7 @@ class _CommunityChatScreenState extends State<CommunityChatScreen> {
     final blocked = _safetyStore.isUserBlocked(widget.peer.id);
 
     return Scaffold(
+      extendBody: true,
       resizeToAvoidBottomInset: true,
       backgroundColor: const Color(0xFF7138F5),
       body: Stack(

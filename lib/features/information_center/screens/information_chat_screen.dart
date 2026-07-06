@@ -201,6 +201,7 @@ class _InformationChatScreenState extends State<InformationChatScreen> {
     final hidden = _isChatHidden;
 
     return Scaffold(
+      extendBody: true,
       resizeToAvoidBottomInset: true,
       backgroundColor: const Color(0xFF7138F5),
       body: Stack(
