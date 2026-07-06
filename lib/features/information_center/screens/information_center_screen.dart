@@ -200,12 +200,13 @@ class _InformationCenterScreenState extends State<InformationCenterScreen> {
   Future<void> _openSystemNotice(_SystemNotice notice) async {
     switch (notice.type) {
       case _SystemNoticeType.followRequest:
-        await _openApplications();
+        return _openApplications();
       case _SystemNoticeType.follower:
         final user = notice.user;
         if (user != null) {
           _openProfile(user);
         }
+        return;
       case _SystemNoticeType.comment:
       case _SystemNoticeType.like:
         final post = notice.post;
@@ -220,6 +221,7 @@ class _InformationCenterScreenState extends State<InformationCenterScreen> {
             ),
           ),
         );
+        return;
     }
   }
 
@@ -297,7 +299,7 @@ class _InformationCenterScreenState extends State<InformationCenterScreen> {
                           ),
                           const SizedBox(height: 12),
                           if (_systemNotices.isEmpty)
-                            _SystemEmptyNote()
+                            const _SystemEmptyNote()
                           else
                             for (final notice in _systemNotices) ...[
                               _SystemNoticeTile(
@@ -383,6 +385,180 @@ class _ApplicationButton extends StatelessWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+}
+
+class _SystemNoticeTile extends StatelessWidget {
+  const _SystemNoticeTile({required this.notice, required this.onTap});
+
+  final _SystemNotice notice;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final user = notice.user;
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 74),
+        padding: const EdgeInsets.fromLTRB(12, 11, 12, 11),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.58),
+            width: 1.4,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 14,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            _SystemNoticeMark(notice: notice),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          notice.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w900,
+                              ),
+                        ),
+                      ),
+                      if (notice.timeLabel != null) ...[
+                        const SizedBox(width: 8),
+                        Text(
+                          notice.timeLabel!,
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: const Color(0xFF8B8894),
+                                fontWeight: FontWeight.w800,
+                              ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    notice.body,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: const Color(0xFF34323A),
+                      fontWeight: FontWeight.w700,
+                      height: 1.25,
+                    ),
+                  ),
+                  if (user != null && notice.type == _SystemNoticeType.follower)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Text(
+                        '${user.age} years old · ${user.country}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.labelSmall
+                            ?.copyWith(
+                              color: const Color(0xFF7A7784),
+                              fontWeight: FontWeight.w800,
+                            ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Icon(
+              Icons.chevron_right_rounded,
+              color: Color(0xFF8D85A5),
+              size: 24,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SystemNoticeMark extends StatelessWidget {
+  const _SystemNoticeMark({required this.notice});
+
+  final _SystemNotice notice;
+
+  @override
+  Widget build(BuildContext context) {
+    final user = notice.user;
+    if (user != null) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Image.asset(
+          user.avatarAsset,
+          width: 50,
+          height: 50,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+
+    final icon = switch (notice.type) {
+      _SystemNoticeType.like => Icons.thumb_up_alt_rounded,
+      _SystemNoticeType.comment => Icons.mode_comment_rounded,
+      _SystemNoticeType.follower => Icons.person_add_alt_1_rounded,
+      _SystemNoticeType.followRequest => Icons.group_add_rounded,
+    };
+    final color = switch (notice.type) {
+      _SystemNoticeType.like => const Color(0xFFFFD84D),
+      _SystemNoticeType.comment => const Color(0xFF53D6FF),
+      _SystemNoticeType.follower => const Color(0xFF6C4CFF),
+      _SystemNoticeType.followRequest => const Color(0xFFFF6F9F),
+    };
+
+    return Container(
+      width: 50,
+      height: 50,
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.18),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Icon(icon, color: color, size: 27),
+    );
+  }
+}
+
+class _SystemEmptyNote extends StatelessWidget {
+  const _SystemEmptyNote();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.14),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.20)),
+      ),
+      child: Text(
+        'No system messages yet.',
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          color: Colors.white.withValues(alpha: 0.82),
+          fontWeight: FontWeight.w800,
+        ),
       ),
     );
   }
