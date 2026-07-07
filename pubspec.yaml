@@ -68,29 +68,36 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/
-    - assets/images/Talk/
-    - assets/images/head/
-    - assets/images/post/
-    - assets/videos/
+    - assets/squad_ping/avatars/
+    - assets/squad_ping/brand/
+    - assets/squad_ping/chat_rooms/
+    - assets/squad_ping/clips/
+    - assets/squad_ping/community/
+    - assets/squad_ping/game_zone/
+    - assets/squad_ping/navigation/
+    - assets/squad_ping/onboarding/
+    - assets/squad_ping/profile/
+    - assets/squad_ping/safety/
+    - assets/squad_ping/shared/
+    - assets/squad_ping/video_feed/
 
   fonts:
     - family: Rajdhani
       fonts:
-        - asset: assets/fonts/rajdhani/Rajdhani-Regular.ttf
+        - asset: assets/squad_ping/fonts/rajdhani/squad_ui_rajdhani_regular.ttf
           weight: 400
-        - asset: assets/fonts/rajdhani/Rajdhani-Medium.ttf
+        - asset: assets/squad_ping/fonts/rajdhani/squad_ui_rajdhani_medium.ttf
           weight: 500
-        - asset: assets/fonts/rajdhani/Rajdhani-SemiBold.ttf
+        - asset: assets/squad_ping/fonts/rajdhani/squad_ui_rajdhani_semibold.ttf
           weight: 600
-        - asset: assets/fonts/rajdhani/Rajdhani-Bold.ttf
+        - asset: assets/squad_ping/fonts/rajdhani/squad_ui_rajdhani_bold.ttf
           weight: 700
     - family: Orbitron
       fonts:
-        - asset: 'assets/fonts/orbitron/Orbitron[wght].ttf'
+        - asset: 'assets/squad_ping/fonts/orbitron/squad_display_orbitron_variable.ttf'
     - family: Oxanium
       fonts:
-        - asset: 'assets/fonts/oxanium/Oxanium[wght].ttf'
+        - asset: 'assets/squad_ping/fonts/oxanium/squad_accent_oxanium_variable.ttf'
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
