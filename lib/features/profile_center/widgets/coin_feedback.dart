@@ -224,7 +224,7 @@ class _WelcomeGiftCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Your first drop is charged. Use it to release highlights when you are ready.',
+              'Your first drop is charged. Use it to post highlights when you are ready.',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Colors.white.withValues(alpha: 0.82),

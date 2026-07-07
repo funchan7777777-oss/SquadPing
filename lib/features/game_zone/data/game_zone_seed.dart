@@ -4,7 +4,7 @@ import '../models/game_zone_models.dart';
 abstract final class GameZoneSeed {
   static const viewer = PlayerProfile(
     id: 'viewer-esme',
-    displayName: 'Esme',
+    displayName: 'Esme Ping',
     age: 20,
     country: 'USA',
     gender: PlayerGender.female,
@@ -14,7 +14,7 @@ abstract final class GameZoneSeed {
 
   static const victoria = PlayerProfile(
     id: 'victoria',
-    displayName: 'Victoria',
+    displayName: 'Vika IGL',
     age: 21,
     country: 'Canada',
     gender: PlayerGender.female,
@@ -23,7 +23,7 @@ abstract final class GameZoneSeed {
   );
   static const luna = PlayerProfile(
     id: 'luna',
-    displayName: 'Luna',
+    displayName: 'Luna Build',
     age: 19,
     country: 'USA',
     gender: PlayerGender.female,
@@ -32,7 +32,7 @@ abstract final class GameZoneSeed {
   );
   static const aria = PlayerProfile(
     id: 'aria',
-    displayName: 'Aria',
+    displayName: 'Aria Lore',
     age: 22,
     country: 'UK',
     gender: PlayerGender.female,
@@ -41,7 +41,7 @@ abstract final class GameZoneSeed {
   );
   static const maya = PlayerProfile(
     id: 'maya',
-    displayName: 'Maya',
+    displayName: 'Maya Co-op',
     age: 23,
     country: 'Australia',
     gender: PlayerGender.female,
@@ -50,7 +50,7 @@ abstract final class GameZoneSeed {
   );
   static const ivy = PlayerProfile(
     id: 'ivy',
-    displayName: 'Ivy',
+    displayName: 'Ivy Guard',
     age: 20,
     country: 'Germany',
     gender: PlayerGender.female,
@@ -59,7 +59,7 @@ abstract final class GameZoneSeed {
   );
   static const nia = PlayerProfile(
     id: 'nia',
-    displayName: 'Nia',
+    displayName: 'Nia Queue',
     age: 21,
     country: 'France',
     gender: PlayerGender.female,
@@ -68,7 +68,7 @@ abstract final class GameZoneSeed {
   );
   static const kira = PlayerProfile(
     id: 'kira',
-    displayName: 'Kira',
+    displayName: 'Kira Aim',
     age: 24,
     country: 'Sweden',
     gender: PlayerGender.female,
@@ -77,7 +77,7 @@ abstract final class GameZoneSeed {
   );
   static const zoe = PlayerProfile(
     id: 'zoe',
-    displayName: 'Zoe',
+    displayName: 'Zoe Notes',
     age: 22,
     country: 'Italy',
     gender: PlayerGender.female,
@@ -86,7 +86,7 @@ abstract final class GameZoneSeed {
   );
   static const rina = PlayerProfile(
     id: 'rina',
-    displayName: 'Rina',
+    displayName: 'Rina Stream',
     age: 20,
     country: 'Japan',
     gender: PlayerGender.female,
@@ -95,7 +95,7 @@ abstract final class GameZoneSeed {
   );
   static const hana = PlayerProfile(
     id: 'hana',
-    displayName: 'Hana',
+    displayName: 'Hana Aim',
     age: 25,
     country: 'Korea',
     gender: PlayerGender.female,
@@ -104,7 +104,7 @@ abstract final class GameZoneSeed {
   );
   static const mia = PlayerProfile(
     id: 'mia',
-    displayName: 'Mia',
+    displayName: 'Mia Lead',
     age: 23,
     country: 'Spain',
     gender: PlayerGender.female,
@@ -113,7 +113,7 @@ abstract final class GameZoneSeed {
   );
   static const axel = PlayerProfile(
     id: 'axel',
-    displayName: 'Axel',
+    displayName: 'Axel Arcade',
     age: 24,
     country: 'USA',
     gender: PlayerGender.male,
@@ -122,7 +122,7 @@ abstract final class GameZoneSeed {
   );
   static const leo = PlayerProfile(
     id: 'leo',
-    displayName: 'Leo',
+    displayName: 'Leo Entry',
     age: 20,
     country: 'Brazil',
     gender: PlayerGender.male,
@@ -131,7 +131,7 @@ abstract final class GameZoneSeed {
   );
   static const kai = PlayerProfile(
     id: 'kai',
-    displayName: 'Kai',
+    displayName: 'Kai Calls',
     age: 22,
     country: 'Canada',
     gender: PlayerGender.male,
@@ -140,7 +140,7 @@ abstract final class GameZoneSeed {
   );
   static const nate = PlayerProfile(
     id: 'nate',
-    displayName: 'Nate',
+    displayName: 'Nate Pad',
     age: 21,
     country: 'UK',
     gender: PlayerGender.male,
@@ -149,7 +149,7 @@ abstract final class GameZoneSeed {
   );
   static const owen = PlayerProfile(
     id: 'owen',
-    displayName: 'Owen',
+    displayName: 'Owen Route',
     age: 25,
     country: 'Germany',
     gender: PlayerGender.male,
@@ -158,7 +158,7 @@ abstract final class GameZoneSeed {
   );
   static const finn = PlayerProfile(
     id: 'finn',
-    displayName: 'Finn',
+    displayName: 'Finn Scout',
     age: 23,
     country: 'Ireland',
     gender: PlayerGender.male,
@@ -167,7 +167,7 @@ abstract final class GameZoneSeed {
   );
   static const marco = PlayerProfile(
     id: 'marco',
-    displayName: 'Marco',
+    displayName: 'Marco Hold',
     age: 26,
     country: 'Mexico',
     gender: PlayerGender.male,
@@ -176,7 +176,7 @@ abstract final class GameZoneSeed {
   );
   static const theo = PlayerProfile(
     id: 'theo',
-    displayName: 'Theo',
+    displayName: 'Theo Map',
     age: 24,
     country: 'Portugal',
     gender: PlayerGender.male,
@@ -185,7 +185,7 @@ abstract final class GameZoneSeed {
   );
   static const jax = PlayerProfile(
     id: 'jax',
-    displayName: 'Jax',
+    displayName: 'Jax Pad',
     age: 19,
     country: 'USA',
     gender: PlayerGender.male,
@@ -194,7 +194,7 @@ abstract final class GameZoneSeed {
   );
   static const amir = PlayerProfile(
     id: 'amir',
-    displayName: 'Amir',
+    displayName: 'Amir Host',
     age: 22,
     country: 'UAE',
     gender: PlayerGender.male,
@@ -203,7 +203,7 @@ abstract final class GameZoneSeed {
   );
   static const cole = PlayerProfile(
     id: 'cole',
-    displayName: 'Cole',
+    displayName: 'Cole Duo',
     age: 23,
     country: 'Australia',
     gender: PlayerGender.male,
@@ -212,7 +212,7 @@ abstract final class GameZoneSeed {
   );
   static const rex = PlayerProfile(
     id: 'rex',
-    displayName: 'Rex',
+    displayName: 'Rex Replay',
     age: 21,
     country: 'USA',
     gender: PlayerGender.male,
@@ -255,7 +255,7 @@ abstract final class GameZoneSeed {
       rating: 4.9,
       summary: 'Colorful island drops, fast loot routes, and build fights.',
       detail:
-          'Fortnite sends squads onto a bright fantasy island to loot, rotate, and survive closing storm circles. Players can build walls and ramps for cover, or switch to Zero Build for cleaner gunfights. Creative maps are useful for warmups, parkour practice, and custom party modes.',
+          'Fortnite sends squads onto a bright fantasy island to loot, rotate, and survive closing storm circles. Players can build walls and ramps for cover, or switch to Zero Build for cleaner aim duels. Creative maps are useful for warmups, parkour practice, and custom party modes.',
       tags: ['Battle royale', 'Creative', 'Squads'],
       hotLevel: 5,
       comments: [
@@ -290,9 +290,9 @@ abstract final class GameZoneSeed {
       name: 'Counter-strike 2',
       coverAsset: SquadPingAssets.gameStrikeCover,
       rating: 4.8,
-      summary: 'Military-style bomb sites, utility lineups, and clutch duels.',
+      summary: 'Objective sites, utility lineups, and clutch retakes.',
       detail:
-          'Counter-strike 2 is built around disciplined five-player rounds. Teams hold angles, throw smoke and flash lineups, manage the economy, and trade around bomb sites. The best squads keep voice calls short so every peek and retake stays clean.',
+          'Counter-strike 2 is built around disciplined five-player rounds. Teams hold angles, coordinate smoke and flash lineups, manage the economy, and trade around objective sites. The best squads keep voice calls short so every peek and retake stays clean.',
       tags: ['FPS', 'Ranked', 'Tactics'],
       hotLevel: 5,
       comments: [
@@ -380,7 +380,7 @@ abstract final class GameZoneSeed {
         GameComment(
           author: theo,
           message:
-              'Please tag spoilers for people watching replays after work.',
+              'Please tag spoilers for people watching replays later tonight.',
           postedAt: 'Jul 5 23:40',
         ),
         GameComment(
@@ -459,8 +459,8 @@ abstract final class GameZoneSeed {
       id: 'world-gamer-chat-hub',
       name: 'World-Gamer Chat Hub',
       coverAsset: SquadPingAssets.chatOpenWorld,
-      summary: 'Welcome all game enthusiasts to join!',
-      welcomeLine: 'Welcome all game enthusiasts to join!',
+      summary: 'Drop your game, role, and queue window.',
+      welcomeLine: 'Drop your game, role, and queue window.',
       topic: 'Open-world plans, party finding, and light game talk.',
       memberCount: 128,
       participants: [viewer, luna, aria, axel],
@@ -516,7 +516,7 @@ abstract final class GameZoneSeed {
       id: 'game-discussion',
       name: 'Game Discussion',
       coverAsset: SquadPingAssets.chatStreamerStation,
-      summary: 'Console gamer. Discussing various gameplay styles.',
+      summary: 'Controller setups, platform notes, and squad-ready settings.',
       welcomeLine: 'Drop your build, role, and platform before queueing.',
       topic: 'Console, PC, and controller-friendly game setup talk.',
       memberCount: 76,
@@ -556,9 +556,9 @@ abstract final class GameZoneSeed {
     ),
     ChatRoom(
       id: 'battle-chat-room',
-      name: 'Battle Chat Room',
+      name: 'Aim Tactics Room',
       coverAsset: SquadPingAssets.chatCardKeys,
-      summary: 'Exchange gunplay strategies and match tactics.',
+      summary: 'Exchange aim plans, loadout notes, and match tactics.',
       welcomeLine: 'Keep calls short: role, route, danger, reset.',
       topic: 'FPS tactics, loadouts, and clean team communication.',
       memberCount: 93,
@@ -660,7 +660,7 @@ abstract final class GameZoneSeed {
         ),
         ChatMessage(
           author: owen,
-          message: 'Good. I will upload the revised route after lunch.',
+          message: 'Good. I will upload the revised route after scrim break.',
           sentAt: '13:25',
         ),
       ],

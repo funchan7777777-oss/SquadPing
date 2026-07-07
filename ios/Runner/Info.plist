@@ -27,13 +27,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>SquadPing uses the camera for profile photos, community post photos, and local video call preview when you choose those features.</string>
+	<string>SquadPing opens the camera only when you add a profile avatar, attach a squad post photo, or start a mutual-follow video call preview.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>SquadPing uses the microphone for video calls only after you start a call.</string>
+	<string>SquadPing uses the microphone only during mutual-follow video calls you start.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>SquadPing uses your photo library when you choose existing profile images or community post photos.</string>
+	<string>SquadPing reads selected photos only when you pick an avatar or attach images to a game post.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>SquadPing may save edited profile images or post photos only when you choose to keep them.</string>
+	<string>SquadPing saves edited avatars or post images only after you choose to keep them.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

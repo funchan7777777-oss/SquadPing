@@ -34,9 +34,9 @@ class SafetyTextCheck {
   String get message {
     final reason = switch (category) {
       SafetyTextCategory.adultSexualContent =>
-        'Adult sexual, hookup, or pornographic wording is not allowed.',
+        'Adult-only or explicit wording is not allowed.',
       SafetyTextCategory.sexualExploitation =>
-        'Sexual exploitation, trafficking, or sexual content involving minors is not allowed.',
+        'Exploitation, trafficking, or age-inappropriate explicit content is not allowed.',
       SafetyTextCategory.hateHarassment =>
         'Hate, identity-based attacks, bullying, or targeted harassment are not allowed.',
       SafetyTextCategory.threatsSelfHarm =>

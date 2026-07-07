@@ -83,7 +83,7 @@ class _ProfileRallyStageState extends State<ProfileRallyStage> {
                 CredentialLaneField(
                   fieldLabel: 'Name',
                   controller: _nameController,
-                  hintText: 'Enter your display name',
+                  hintText: 'Choose a squad display name',
                   textInputAction: TextInputAction.next,
                 ),
                 const SizedBox(height: 14),
@@ -95,7 +95,7 @@ class _ProfileRallyStageState extends State<ProfileRallyStage> {
                 CredentialLaneField(
                   fieldLabel: 'Signature (optional)',
                   controller: _signatureController,
-                  hintText: 'A short line your squad will recognize',
+                  hintText: 'A short playstyle line your squad will recognize',
                   maxLines: 2,
                   textInputAction: TextInputAction.done,
                 ),
@@ -270,7 +270,7 @@ class _ProfileRallyStageState extends State<ProfileRallyStage> {
         context: context,
         title: 'Photo unavailable',
         message:
-            'SquadPing could not open that photo source. Check camera or photo permissions and try again.',
+            'SquadPing needs camera or photo access only to set your local squad avatar.',
       );
     }
   }

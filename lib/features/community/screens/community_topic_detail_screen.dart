@@ -229,7 +229,7 @@ class _CommunityTopicDetailScreenState
                       fontWeight: FontWeight.w600,
                     ),
                     decoration: InputDecoration(
-                      hintText: 'Enter what you want to send',
+                      hintText: 'Add a respectful squad comment',
                       hintStyle: Theme.of(context).textTheme.bodyLarge
                           ?.copyWith(
                             color: const Color(0xFFBDB9C5),

@@ -76,7 +76,7 @@ Future<void> showModerationQueuedDialog(BuildContext context) {
             ),
             const SizedBox(height: 18),
             Text(
-              'Release received',
+              'Post queued',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: Colors.white,
@@ -85,7 +85,7 @@ Future<void> showModerationQueuedDialog(BuildContext context) {
             ),
             const SizedBox(height: 10),
             Text(
-              'Your update has entered backstage review. It will appear in the community only after approval.',
+              'Your squad update has entered review. It will appear in the community only after approval.',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Colors.white.withValues(alpha: 0.78),
@@ -105,7 +105,7 @@ Future<void> showModerationQueuedDialog(BuildContext context) {
                     borderRadius: BorderRadius.circular(999),
                   ),
                 ),
-                child: const Text('Okay'),
+                child: const Text('Understood'),
               ),
             ),
           ],

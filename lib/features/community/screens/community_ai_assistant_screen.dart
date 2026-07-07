@@ -19,7 +19,7 @@ class _CommunityAiAssistantScreenState
   final _messages = <_AiMessage>[
     const _AiMessage(
       text:
-          'Hi Alex. I can help you pick games, improve posts, find squad icebreakers, or plan tonight\'s queue.',
+          'Hi Alex. I can help tune game picks, squad posts, intro lines, or tonight\'s queue plan.',
       isUser: false,
     ),
     const _AiMessage(
@@ -91,7 +91,7 @@ class _CommunityAiAssistantScreenState
   String _buildAssistantReply(String text) {
     final normalized = text.toLowerCase();
     if (normalized.contains('post') || normalized.contains('caption')) {
-      return 'Here is a stronger post angle: lead with the game mood, add one concrete moment, then ask a low-friction question. Example: "Need a chill co-op run tonight. What is everyone playing after work?"';
+      return 'Stronger squad-post angle: lead with the game mood, add one concrete clip or queue moment, then ask one easy reply question. Example: "Need a chill co-op run tonight. Who can take support after 8?"';
     }
     if (normalized.contains('squad') || normalized.contains('team')) {
       return 'For squad matching, say your mode, time window, and vibe. Try: "Need 2 for relaxed story co-op, voice optional, starting in 20 minutes." That gets clearer replies.';
@@ -406,9 +406,9 @@ class _PromptSuggestions extends StatelessWidget {
   final ValueChanged<String> onSuggestionTap;
 
   static const _suggestions = [
-    'Recommend games for tonight',
-    'Draft a community post',
-    'Find squad intro text',
+    'Pick tonight\'s game',
+    'Draft squad post',
+    'Write intro ping',
   ];
 
   @override
@@ -481,7 +481,7 @@ class _AssistantComposer extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                   decoration: InputDecoration(
-                    hintText: 'Ask your AI assistant',
+                    hintText: 'Ask your squad planner',
                     hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: const Color(0xFFBDB9C5),
                       fontSize: 16,

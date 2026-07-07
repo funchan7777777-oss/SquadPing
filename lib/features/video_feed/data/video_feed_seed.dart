@@ -4,7 +4,7 @@ import '../models/video_feed_models.dart';
 abstract final class VideoFeedSeed {
   static const viewer = VideoCreator(
     id: 'viewer-alex',
-    displayName: 'Alex R',
+    displayName: 'Alex Rally',
     age: 20,
     country: 'USA',
     avatarAsset: SquadPingAssets.avatarMaleStreetSnap,
@@ -13,7 +13,7 @@ abstract final class VideoFeedSeed {
 
   static const esme = VideoCreator(
     id: 'esme',
-    displayName: 'Esme',
+    displayName: 'Esme Clip',
     age: 20,
     country: 'USA',
     avatarAsset: SquadPingAssets.avatarFemaleNeonCat,
@@ -21,7 +21,7 @@ abstract final class VideoFeedSeed {
   );
   static const luna = VideoCreator(
     id: 'luna',
-    displayName: 'Luna',
+    displayName: 'Luna Build',
     age: 19,
     country: 'USA',
     avatarAsset: SquadPingAssets.avatarFemaleBlondeHeadset,
@@ -29,7 +29,7 @@ abstract final class VideoFeedSeed {
   );
   static const rex = VideoCreator(
     id: 'rex',
-    displayName: 'Rex',
+    displayName: 'Rex Replay',
     age: 21,
     country: 'USA',
     avatarAsset: SquadPingAssets.avatarMaleBacklitStation,
@@ -37,7 +37,7 @@ abstract final class VideoFeedSeed {
   );
   static const kira = VideoCreator(
     id: 'kira',
-    displayName: 'Kira',
+    displayName: 'Kira Aim',
     age: 24,
     country: 'Sweden',
     avatarAsset: SquadPingAssets.avatarFemaleCompetitiveHeadset,
@@ -45,7 +45,7 @@ abstract final class VideoFeedSeed {
   );
   static const axel = VideoCreator(
     id: 'axel',
-    displayName: 'Axel',
+    displayName: 'Axel Arcade',
     age: 24,
     country: 'USA',
     avatarAsset: SquadPingAssets.avatarMaleArcadeHost,
@@ -102,7 +102,7 @@ abstract final class VideoFeedSeed {
       id: 'clip-story-escape',
       videoAsset: SquadPingAssets.videoStoryEscape,
       creator: axel,
-      caption: 'Do not go too far from the squad when the story turns dark.',
+      caption: 'Stay close to the squad when the story route gets tense.',
       likeCount: 42,
       tags: ['Story', 'Co-op', 'Night run'],
       comments: [],
@@ -175,7 +175,7 @@ abstract final class VideoFeedSeed {
       comments: [
         VideoComment(
           author: axel,
-          message: 'The quiet hold before the shot made this feel tense.',
+          message: 'The quiet hold before the peek made this feel tense.',
           sentAt: '22 min ago',
         ),
       ],
@@ -211,7 +211,7 @@ abstract final class VideoFeedSeed {
       id: 'story-escape',
       videoAsset: SquadPingAssets.videoStoryEscape,
       creator: axel,
-      caption: 'Do not go too far from the squad when the story turns dark.',
+      caption: 'Stay close to the squad when the story route gets tense.',
       likeCount: 42,
       tags: ['Story', 'Co-op', 'Night run'],
       comments: [
@@ -223,7 +223,7 @@ abstract final class VideoFeedSeed {
         ),
         VideoComment(
           author: kira,
-          message: 'The lighting makes the route feel unsafe in a good way.',
+          message: 'The lighting makes the route feel tense in a useful way.',
           sentAt: '29 min ago',
         ),
         VideoComment(

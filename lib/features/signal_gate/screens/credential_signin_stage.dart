@@ -48,7 +48,7 @@ class _CredentialSigninStageState extends State<CredentialSigninStage> {
           GateBackButton(onPressed: () => Navigator.of(context).pop()),
           const GateCopyCluster(
             heading: 'Log in',
-            primaryLine: 'Welcome to join us',
+            primaryLine: 'Return to your squad signal',
             secondaryLine: 'Log in to share and discuss topics',
             topOffset: 145,
           ),
@@ -61,7 +61,7 @@ class _CredentialSigninStageState extends State<CredentialSigninStage> {
                 CredentialLaneField(
                   fieldLabel: 'Mail',
                   controller: _mailController,
-                  hintText: 'Enter your mail address',
+                  hintText: 'Mail for your SquadPing login',
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                 ),
@@ -69,7 +69,7 @@ class _CredentialSigninStageState extends State<CredentialSigninStage> {
                 CredentialLaneField(
                   fieldLabel: 'Password',
                   controller: _passwordController,
-                  hintText: 'Enter your password',
+                  hintText: 'Local account password',
                   obscuredByDefault: true,
                   textInputAction: TextInputAction.done,
                 ),
@@ -113,7 +113,7 @@ class _CredentialSigninStageState extends State<CredentialSigninStage> {
     if (mail.isEmpty || password.isEmpty) {
       await _showNotice(
         title: 'Missing login details',
-        message: 'Enter your mail and password before starting.',
+        message: 'Enter your mail and password before opening SquadPing.',
       );
       return;
     }

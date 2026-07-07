@@ -153,7 +153,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                 constraints: const BoxConstraints(maxWidth: 430),
                 child: GameZoneComposer(
                   controller: _commentController,
-                  hintText: 'Enter what you want to send',
+                  hintText: 'Add a gameplay note',
                   onSend: _sendComment,
                   showBackground: false,
                 ),

@@ -4,7 +4,7 @@ Future<void> showGateNoticeDialog({
   required BuildContext context,
   required String title,
   required String message,
-  String actionLabel = 'Got it',
+  String actionLabel = 'Understood',
 }) {
   return showDialog<void>(
     context: context,

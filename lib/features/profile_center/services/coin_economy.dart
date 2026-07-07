@@ -47,12 +47,12 @@ abstract final class CoinEconomy {
 
   static const spendRules = <CoinSpendRule>[
     CoinSpendRule(
-      title: 'Community release',
+      title: 'Community post',
       cost: communityPostCost,
       detail: 'Publish one community post with real local photos.',
     ),
     CoinSpendRule(
-      title: 'Video highlight release',
+      title: 'Video highlight post',
       cost: videoHighlightCost,
       detail: 'Publish one gameplay highlight from the video feed.',
     ),

@@ -289,7 +289,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
                     constraints: const BoxConstraints(maxWidth: 430),
                     child: GameZoneComposer(
                       controller: _messageController,
-                      hintText: 'Enter what you want to send',
+                      hintText: 'Send a squad callout',
                       onSend: _sendMessage,
                       showBackground: false,
                     ),

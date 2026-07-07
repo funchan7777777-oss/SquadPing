@@ -50,8 +50,8 @@ class _RegisterSignalStageState extends State<RegisterSignalStage> {
           GateBackButton(onPressed: () => Navigator.of(context).pop()),
           const GateCopyCluster(
             heading: 'Register',
-            primaryLine: 'Welcome to join us',
-            secondaryLine: 'Register to share and discuss topics',
+            primaryLine: 'Build your squad signal',
+            secondaryLine: 'Create a local profile for clips and game chat',
             topOffset: 150,
           ),
           Positioned(
@@ -63,7 +63,7 @@ class _RegisterSignalStageState extends State<RegisterSignalStage> {
                 CredentialLaneField(
                   fieldLabel: 'Mail',
                   controller: _mailController,
-                  hintText: 'Enter your mail address',
+                  hintText: 'Mail for your SquadPing login',
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                 ),
@@ -71,7 +71,7 @@ class _RegisterSignalStageState extends State<RegisterSignalStage> {
                 CredentialLaneField(
                   fieldLabel: 'Password',
                   controller: _passwordController,
-                  hintText: 'Create a password',
+                  hintText: 'Create a local account password',
                   obscuredByDefault: true,
                   textInputAction: TextInputAction.done,
                 ),
@@ -114,8 +114,9 @@ class _RegisterSignalStageState extends State<RegisterSignalStage> {
 
     if (mail.isEmpty || password.isEmpty) {
       await _showNotice(
-        title: 'Registration needs details',
-        message: 'Enter both mail and password before creating your account.',
+        title: 'Squad login needs details',
+        message:
+            'Add both mail and password before creating your local SquadPing account.',
       );
       return;
     }

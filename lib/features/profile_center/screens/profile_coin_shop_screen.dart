@@ -414,7 +414,7 @@ class _WalletPanel extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Updates after gifts, purchases, and releases.',
+                  'Updates after gifts, purchases, and posted highlights.',
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
                     color: Colors.white.withValues(alpha: 0.76),
                     fontWeight: FontWeight.w700,

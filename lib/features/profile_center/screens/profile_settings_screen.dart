@@ -208,7 +208,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                           ),
                         ),
                         child: Text(
-                          'confirm',
+                          'Apply',
                           style: Theme.of(context).textTheme.titleLarge
                               ?.copyWith(
                                 color: Colors.white,
@@ -244,7 +244,7 @@ class _SettingsHeader extends StatelessWidget {
         ),
         Expanded(
           child: Text(
-            'set up',
+            'Settings',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: Colors.white,
@@ -310,7 +310,7 @@ enum _SettingsOption {
       _SettingsOption.agreement => 'User agreement',
       _SettingsOption.contact => 'Contact support',
       _SettingsOption.logout => 'Log out',
-      _SettingsOption.deleteAccount => 'Deleting an account',
+      _SettingsOption.deleteAccount => 'Delete local account',
     };
   }
 

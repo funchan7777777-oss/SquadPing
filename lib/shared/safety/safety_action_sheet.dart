@@ -54,18 +54,19 @@ class _SafetyActionSheetState extends State<_SafetyActionSheet> {
     if (type == null || _isSubmitting) {
       return;
     }
+    final hostContext = widget.hostContext;
     setState(() => _isSubmitting = true);
     await SafetyActionStore.instance.reportContent(
       contentId: widget.contentId,
       authorId: widget.authorId,
       type: type,
     );
-    if (!mounted) {
+    if (!mounted || !hostContext.mounted) {
       return;
     }
     Navigator.of(context).pop(true);
     await showSafetyFeedbackDialog(
-      context: widget.hostContext,
+      context: hostContext,
       title: 'Report received',
       message:
           'This content is now hidden locally. Your report type was ${type.label}.',
@@ -76,17 +77,18 @@ class _SafetyActionSheetState extends State<_SafetyActionSheet> {
     if (_isSubmitting) {
       return;
     }
+    final hostContext = widget.hostContext;
     setState(() => _isSubmitting = true);
     await SafetyActionStore.instance.blockUser(
       userId: widget.authorId,
       reason: 'Blacklist',
     );
-    if (!mounted) {
+    if (!mounted || !hostContext.mounted) {
       return;
     }
     Navigator.of(context).pop(true);
     await showSafetyFeedbackDialog(
-      context: widget.hostContext,
+      context: hostContext,
       title: 'User hidden',
       message:
           '${widget.authorName} and their posts, comments, and chats are now hidden locally.',
@@ -192,7 +194,7 @@ class _SafetyActionSheetState extends State<_SafetyActionSheet> {
                   ),
                 ),
                 child: Text(
-                  'confirm',
+                  'Submit report',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w900,
@@ -327,7 +329,7 @@ Future<void> showSafetyFeedbackDialog({
                   borderRadius: BorderRadius.circular(999),
                 ),
               ),
-              child: const Text('Got it'),
+              child: const Text('Understood'),
             ),
           ],
         ),

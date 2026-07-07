@@ -63,7 +63,9 @@ class _VideoReleaseScreenState extends State<VideoReleaseScreen> {
         return;
       }
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Photo access failed. Try again.')),
+        const SnackBar(
+          content: Text('Photo picker could not open. Check access and retry.'),
+        ),
       );
     }
   }
@@ -76,7 +78,7 @@ class _VideoReleaseScreenState extends State<VideoReleaseScreen> {
     final caption = _captionController.text.trim();
     if (caption.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Say something before releasing.')),
+        const SnackBar(content: Text('Add clip context before posting.')),
       );
       return;
     }
@@ -159,7 +161,7 @@ class _VideoReleaseScreenState extends State<VideoReleaseScreen> {
                     _ReleaseHeader(onBack: () => Navigator.of(context).pop()),
                     const SizedBox(height: 20),
                     Text(
-                      'Let me introduce it.',
+                      'Frame your highlight.',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w900,
@@ -169,7 +171,7 @@ class _VideoReleaseScreenState extends State<VideoReleaseScreen> {
                     _CaptionField(controller: _captionController),
                     const SizedBox(height: 26),
                     Text(
-                      'Add photos',
+                      'Attach context photos',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w900,
@@ -183,7 +185,7 @@ class _VideoReleaseScreenState extends State<VideoReleaseScreen> {
                     ),
                     const SizedBox(height: 26),
                     Text(
-                      'Choose clip',
+                      'Pick gameplay clip',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w900,
@@ -227,7 +229,7 @@ class _ReleaseHeader extends StatelessWidget {
         ),
         Expanded(
           child: Text(
-            'release',
+            'Share clip',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: Colors.white,
@@ -274,7 +276,7 @@ class _CaptionField extends StatelessWidget {
           fontWeight: FontWeight.w700,
         ),
         decoration: InputDecoration(
-          hintText: 'Say something',
+          hintText: 'Add queue note or clip context',
           hintStyle: Theme.of(
             context,
           ).textTheme.bodyLarge?.copyWith(color: const Color(0xFF9B9AA2)),
@@ -553,7 +555,7 @@ class _ReleaseButton extends StatelessWidget {
             ),
           ),
           child: Text(
-            'release',
+            'Share clip',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w900,

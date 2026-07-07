@@ -116,7 +116,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       await showSafetyFeedbackDialog(
         context: context,
         title: 'Photo unavailable',
-        message: 'Check camera or photo permissions and try again.',
+        message: 'Allow camera or photo access to update your squad avatar.',
       );
     }
   }
@@ -129,7 +129,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       await showSafetyFeedbackDialog(
         context: context,
         title: 'Profile incomplete',
-        message: 'Enter a name, age from 13 to 99, and area before confirming.',
+        message:
+            'Add a display name, age from 13 to 99, and area before saving your squad profile.',
       );
       return;
     }
@@ -264,7 +265,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 ),
                               ),
                               child: Text(
-                                'confirm',
+                                'Save profile',
                                 style: Theme.of(context).textTheme.titleLarge
                                     ?.copyWith(
                                       color: Colors.white,

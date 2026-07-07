@@ -4,7 +4,7 @@ import '../models/community_models.dart';
 abstract final class CommunitySeed {
   static const viewer = CommunityUser(
     id: 'viewer-alex',
-    displayName: 'Alex R',
+    displayName: 'Alex Rally',
     age: 20,
     country: 'USA',
     avatarAsset: SquadPingAssets.avatarMaleStreetSnap,
@@ -16,7 +16,7 @@ abstract final class CommunitySeed {
 
   static const chloe = CommunityUser(
     id: 'chloe',
-    displayName: 'Chloe',
+    displayName: 'Chloe Quest',
     age: 21,
     country: 'Austria',
     avatarAsset: SquadPingAssets.avatarFemaleSunlitSelfie,
@@ -27,7 +27,7 @@ abstract final class CommunitySeed {
   );
   static const liam = CommunityUser(
     id: 'liam',
-    displayName: 'Liam',
+    displayName: 'Liam Route',
     age: 23,
     country: 'UK',
     avatarAsset: SquadPingAssets.avatarMaleShadowProfile,
@@ -38,18 +38,18 @@ abstract final class CommunitySeed {
   );
   static const julian = CommunityUser(
     id: 'julian',
-    displayName: 'Julian',
+    displayName: 'Julian Ops',
     age: 24,
     country: 'Germany',
     avatarAsset: SquadPingAssets.avatarMaleBlueRoom,
     bio: 'FPS angles, quick clips, and review notes.',
-    trendLabel: 'Hot',
+    trendLabel: 'Clutch',
     followingCount: 22,
     fansCount: 41,
   );
   static const zoe = CommunityUser(
     id: 'zoe-community',
-    displayName: 'Zoe',
+    displayName: 'Zoe Boost',
     age: 22,
     country: 'Italy',
     avatarAsset: SquadPingAssets.avatarFemaleGlassesLeopard,
@@ -60,7 +60,7 @@ abstract final class CommunitySeed {
   );
   static const maya = CommunityUser(
     id: 'maya-community',
-    displayName: 'Maya',
+    displayName: 'Maya Co-op',
     age: 23,
     country: 'Australia',
     avatarAsset: SquadPingAssets.avatarFemaleWhiteHeadset,
@@ -77,7 +77,7 @@ abstract final class CommunitySeed {
       id: 'post-neon-racer',
       author: viewer,
       message:
-          "There aren't many games to play lately, so what games are you all playing?",
+          'Queue has been quiet today. What game is your squad running tonight?',
       imageAsset: SquadPingAssets.postNeonRacer,
       likeCount: 12,
       comments: [
@@ -85,7 +85,7 @@ abstract final class CommunitySeed {
           id: 'comment-neon-racer-esme',
           author: chloe,
           message:
-              'I went on an outdoor trip with my best friend and we pitched a tent for the night.',
+              'I am down for a relaxed co-op route if the lobby stays voice-optional.',
           sentAt: '12 min ago',
         ),
       ],
@@ -184,7 +184,7 @@ abstract final class CommunitySeed {
         CommunityComment(
           id: 'comment-controller-chloe',
           author: chloe,
-          message: 'I can join after dinner if the pace stays chill.',
+          message: 'I can join after warmup if the pace stays chill.',
           sentAt: '7 min ago',
         ),
         CommunityComment(
@@ -241,7 +241,7 @@ abstract final class CommunitySeed {
         CommunityComment(
           id: 'comment-arcade-screen-chloe',
           author: chloe,
-          message: 'I want a whole photo dump from this place.',
+          message: 'I want a full arcade angle set from this place.',
           sentAt: '49 min ago',
         ),
         CommunityComment(

@@ -154,7 +154,7 @@ class _CommunityChatScreenState extends State<CommunityChatScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: const Text('Understood'),
           ),
         ],
       ),
@@ -246,7 +246,7 @@ class _CommunityChatScreenState extends State<CommunityChatScreen> {
                   textInputAction: TextInputAction.send,
                   onSubmitted: (_) => _sendMessage(),
                   decoration: InputDecoration(
-                    hintText: 'Enter what you want to send',
+                    hintText: 'Send a squad DM',
                     filled: true,
                     fillColor: Colors.white,
                     border: OutlineInputBorder(

@@ -191,7 +191,7 @@ class _InformationChatScreenState extends State<InformationChatScreen> {
                     borderRadius: BorderRadius.circular(999),
                   ),
                 ),
-                child: const Text('OK'),
+                child: const Text('Understood'),
               ),
             ],
           ),
@@ -321,7 +321,7 @@ class _InformationChatScreenState extends State<InformationChatScreen> {
                           textInputAction: TextInputAction.send,
                           onSubmitted: (_) => _sendMessage(),
                           decoration: InputDecoration(
-                            hintText: 'Enter what you want to send',
+                            hintText: 'Send a squad DM',
                             filled: true,
                             fillColor: Colors.white,
                             border: OutlineInputBorder(

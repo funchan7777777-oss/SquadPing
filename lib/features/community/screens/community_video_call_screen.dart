@@ -45,7 +45,7 @@ class _CommunityVideoCallScreenState extends State<CommunityVideoCallScreen> {
       }
       setState(() {
         _notice =
-            'Camera and microphone permission are required for video call preview.';
+            'Allow camera and microphone access to preview a mutual-follow squad call.';
       });
       return;
     }

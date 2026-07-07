@@ -35,7 +35,7 @@ class VideoCommentComposer extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                   decoration: InputDecoration(
-                    hintText: 'Enter what you want to send',
+                    hintText: 'Add a clean clip note',
                     hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: const Color(0xFFBDB9C5),
                       fontSize: 16,
@@ -58,7 +58,7 @@ class VideoCommentComposer extends StatelessWidget {
             const SizedBox(width: 18),
             Semantics(
               button: true,
-              label: 'Send comment',
+              label: 'Send clip comment',
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: onSend,

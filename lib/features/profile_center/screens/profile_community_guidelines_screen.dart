@@ -191,7 +191,7 @@ const _guidelineItems = [
     icon: Icons.campaign_rounded,
     title: 'Report unsafe content',
     body:
-        'Use report tools on posts, comments, chat rooms, and messages for adult sexual content, hate, discrimination, threats, harassment, scams, misleading content, or other policy issues.',
+        'Use report tools on posts, comments, chat rooms, and messages for adult content, abuse, discrimination, threats, harassment, scams, misleading content, or other policy issues.',
   ),
   _GuidelineItem(
     icon: Icons.block_rounded,
@@ -215,6 +215,6 @@ const _guidelineItems = [
     icon: Icons.favorite_rounded,
     title: 'Keep the game space respectful',
     body:
-        'No sexual exploitation, hate speech, targeted bullying, threats, graphic violence, illegal activity, or spam. Keep game chat welcoming.',
+        'No exploitation, identity abuse, targeted bullying, threats, graphic violence, illegal activity, or spam. Keep game chat welcoming.',
   ),
 ];

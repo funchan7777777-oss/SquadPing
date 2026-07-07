@@ -79,8 +79,8 @@ class _CommunityReleaseScreenState extends State<CommunityReleaseScreen> {
               const SizedBox(height: 16),
               _PhotoSourceTile(
                 icon: Icons.photo_library_rounded,
-                title: 'Choose from album',
-                subtitle: 'Upload photos from your local library',
+                title: 'Choose squad photo',
+                subtitle: 'Attach a setup, arcade, or gameplay moment',
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickFromAlbum();
@@ -89,8 +89,8 @@ class _CommunityReleaseScreenState extends State<CommunityReleaseScreen> {
               const SizedBox(height: 10),
               _PhotoSourceTile(
                 icon: Icons.photo_camera_rounded,
-                title: 'Take a photo',
-                subtitle: 'Open camera and attach a new shot',
+                title: 'Capture squad photo',
+                subtitle: 'Open camera for a fresh game post image',
                 onTap: () {
                   Navigator.of(context).pop();
                   _takePhoto();
@@ -123,7 +123,7 @@ class _CommunityReleaseScreenState extends State<CommunityReleaseScreen> {
       }
     } catch (_) {
       if (mounted) {
-        _showSnack('Photo access failed. Check permissions and try again.');
+        _showSnack('Allow photo access to attach a gameplay or setup image.');
       }
     }
   }
@@ -145,7 +145,7 @@ class _CommunityReleaseScreenState extends State<CommunityReleaseScreen> {
       setState(() => _selectedPhotos.add(photo));
     } catch (_) {
       if (mounted) {
-        _showSnack('Camera unavailable. Check permissions and try again.');
+        _showSnack('Allow camera access to capture a fresh game post image.');
       }
     }
   }
@@ -163,11 +163,11 @@ class _CommunityReleaseScreenState extends State<CommunityReleaseScreen> {
   Future<void> _release() async {
     final text = _textController.text.trim();
     if (text.isEmpty) {
-      _showSnack('Say something before releasing.');
+      _showSnack('Add squad context before posting.');
       return;
     }
     if (_selectedPhotos.isEmpty) {
-      _showSnack('Add at least one real photo before releasing.');
+      _showSnack('Attach at least one gameplay or setup photo before posting.');
       return;
     }
     if (!await ensureSafetyTextAllowed(context, text, fieldLabel: 'Post')) {
@@ -250,7 +250,7 @@ class _CommunityReleaseScreenState extends State<CommunityReleaseScreen> {
                     _ReleaseHeader(onBack: () => Navigator.of(context).pop()),
                     const SizedBox(height: 18),
                     Text(
-                      'Let me introduce it.',
+                      'Set the squad context.',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: Colors.white,
                         fontSize: 26,
@@ -263,7 +263,7 @@ class _CommunityReleaseScreenState extends State<CommunityReleaseScreen> {
                     Row(
                       children: [
                         Text(
-                          'Add photos',
+                          'Attach squad photos',
                           style: Theme.of(context).textTheme.titleLarge
                               ?.copyWith(
                                 color: Colors.white,
@@ -321,7 +321,7 @@ class _ReleaseHeader extends StatelessWidget {
         ),
         Expanded(
           child: Text(
-            'release',
+            'Share post',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: Colors.white,
@@ -369,7 +369,7 @@ class _TextBox extends StatelessWidget {
           fontWeight: FontWeight.w700,
         ),
         decoration: InputDecoration(
-          hintText: 'Say something',
+          hintText: 'Name the game, role, time, or clip moment',
           hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
             color: const Color(0xFFA4A1AC),
             fontSize: 18,
@@ -666,7 +666,7 @@ class _ReleaseButton extends StatelessWidget {
             ),
           ),
           child: Text(
-            'release',
+            'Share post',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w900,
