@@ -50,6 +50,13 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
         );
       case _SettingsOption.agreement:
         await _openPolicy('User Agreement', LegalDocumentLinks.termsUrl);
+      case _SettingsOption.contact:
+        await showSafetyFeedbackDialog(
+          context: context,
+          title: 'Contact support',
+          message:
+              'Use Report on posts, comments, chats, or rooms for unsafe content. For moderation appeals, account help, or urgent safety issues, use the support contact published in the App Store listing and Privacy Policy.',
+        );
       case _SettingsOption.logout:
         await _confirmSessionAction(
           title: 'Log out',
@@ -288,6 +295,7 @@ enum _SettingsOption {
   privacy,
   guidelines,
   agreement,
+  contact,
   logout,
   deleteAccount;
 
@@ -297,6 +305,7 @@ enum _SettingsOption {
       _SettingsOption.privacy => 'Privacy Policy',
       _SettingsOption.guidelines => 'Community Guidelines',
       _SettingsOption.agreement => 'User agreement',
+      _SettingsOption.contact => 'Contact support',
       _SettingsOption.logout => 'Log out',
       _SettingsOption.deleteAccount => 'Deleting an account',
     };
@@ -308,6 +317,7 @@ enum _SettingsOption {
       _SettingsOption.privacy => SquadPingAssets.profilePrivacyButton,
       _SettingsOption.guidelines => SquadPingAssets.profileGuidelinesButton,
       _SettingsOption.agreement => SquadPingAssets.profileAgreementButton,
+      _SettingsOption.contact => SquadPingAssets.profileContactButton,
       _SettingsOption.logout => SquadPingAssets.profileLogoutButton,
       _SettingsOption.deleteAccount =>
         SquadPingAssets.profileDeleteAccountButton,

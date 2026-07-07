@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/moderation/moderation_queue.dart';
+import '../../../shared/safety/safety_text_guard.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../../profile_center/services/coin_economy.dart';
 import '../../profile_center/services/profile_wallet_store.dart';
@@ -167,6 +168,9 @@ class _CommunityReleaseScreenState extends State<CommunityReleaseScreen> {
     }
     if (_selectedPhotos.isEmpty) {
       _showSnack('Add at least one real photo before releasing.');
+      return;
+    }
+    if (!await ensureSafetyTextAllowed(context, text, fieldLabel: 'Post')) {
       return;
     }
     final charged = await _walletStore.spendCoins(_releaseCost);

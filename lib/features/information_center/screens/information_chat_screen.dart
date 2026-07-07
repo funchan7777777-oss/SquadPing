@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/safety/safety_action_store.dart';
+import '../../../shared/safety/safety_text_guard.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../../../shared/widgets/squad_empty_state.dart';
 import '../../community/data/community_seed.dart';
@@ -86,6 +87,9 @@ class _InformationChatScreenState extends State<InformationChatScreen> {
       return;
     }
     if (!_canChat()) {
+      return;
+    }
+    if (!await ensureSafetyTextAllowed(context, text, fieldLabel: 'Message')) {
       return;
     }
     await _localStore.appendMessage(

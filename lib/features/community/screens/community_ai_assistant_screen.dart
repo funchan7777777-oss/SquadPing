@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../shared/layout/squad_screen_insets.dart';
+import '../../../shared/safety/safety_text_guard.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 
 class CommunityAiAssistantScreen extends StatefulWidget {
@@ -49,6 +50,9 @@ class _CommunityAiAssistantScreenState
   Future<void> _sendText(String rawText) async {
     final text = rawText.trim();
     if (text.isEmpty || _isThinking) {
+      return;
+    }
+    if (!await ensureSafetyTextAllowed(context, text, fieldLabel: 'Prompt')) {
       return;
     }
     setState(() {

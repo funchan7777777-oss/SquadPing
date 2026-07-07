@@ -94,7 +94,7 @@ class _IntroPanel extends StatelessWidget {
         border: Border.all(color: Colors.white.withValues(alpha: 0.20)),
       ),
       child: Text(
-        'SquadPing is built for game fans to share clips, posts, and conversations safely. Chat is not anonymous and direct messages or video calls are available only after both users follow each other.',
+        'SquadPing is built for game fans to share clips, posts, and conversations safely. Chat is not anonymous, direct messages and video calls are available only after both users follow each other, and unsafe text is blocked before posting.',
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
           color: Colors.white.withValues(alpha: 0.84),
           height: 1.42,
@@ -191,7 +191,7 @@ const _guidelineItems = [
     icon: Icons.campaign_rounded,
     title: 'Report unsafe content',
     body:
-        'Use report tools for adult content, hate or discrimination, violent threats, harassment, misleading content, or other policy issues.',
+        'Use report tools on posts, comments, chat rooms, and messages for adult sexual content, hate, discrimination, threats, harassment, scams, misleading content, or other policy issues.',
   ),
   _GuidelineItem(
     icon: Icons.block_rounded,
@@ -203,7 +203,13 @@ const _guidelineItems = [
     icon: Icons.auto_awesome_rounded,
     title: 'Posts may be reviewed',
     body:
-        'New posts and videos enter review before appearing publicly. Content that violates these rules may stay hidden.',
+        'New posts enter review before appearing publicly, and unsafe text is rejected before coins are spent. Content that violates these rules may stay hidden.',
+  ),
+  _GuidelineItem(
+    icon: Icons.support_agent_rounded,
+    title: 'Contact support for safety issues',
+    body:
+        'For moderation appeals, account help, or urgent safety concerns, use Contact support in Settings and keep the App Store support contact current.',
   ),
   _GuidelineItem(
     icon: Icons.favorite_rounded,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/safety/safety_action_store.dart';
+import '../../../shared/safety/safety_text_guard.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../../../shared/widgets/squad_empty_state.dart';
 import '../data/community_seed.dart';
@@ -77,6 +78,11 @@ class _CommunityTopicDetailScreenState
   void _addComment() {
     final message = _commentController.text.trim();
     if (message.isEmpty) {
+      return;
+    }
+    final safetyCheck = SafetyTextGuard.check(message, fieldLabel: 'Comment');
+    if (!safetyCheck.isAllowed) {
+      showSafetyTextBlockedDialog(context, safetyCheck);
       return;
     }
     final comment = CommunityComment(

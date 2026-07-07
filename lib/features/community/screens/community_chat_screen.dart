@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../shared/layout/squad_screen_insets.dart';
+import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/safety/safety_action_store.dart';
+import '../../../shared/safety/safety_text_guard.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../../../shared/widgets/squad_empty_state.dart';
 import '../data/community_seed.dart';
@@ -51,6 +53,12 @@ class _CommunityChatScreenState extends State<CommunityChatScreen> {
   }
 
   bool _canChat({bool showNotice = true}) {
+    if (_isChatHidden) {
+      if (showNotice) {
+        _showLockedNotice('This chat is hidden locally.');
+      }
+      return false;
+    }
     if (_safetyStore.isUserBlocked(widget.peer.id)) {
       if (showNotice) {
         _showLockedNotice('This user is blocked locally.');
@@ -68,12 +76,22 @@ class _CommunityChatScreenState extends State<CommunityChatScreen> {
     return true;
   }
 
+  bool get _isChatHidden {
+    return _safetyStore.isContentHidden(
+      'chat-${widget.peer.id}',
+      authorId: widget.peer.id,
+    );
+  }
+
   Future<void> _sendMessage() async {
     final text = _messageController.text.trim();
     if (text.isEmpty) {
       return;
     }
     if (!_canChat()) {
+      return;
+    }
+    if (!await ensureSafetyTextAllowed(context, text, fieldLabel: 'Message')) {
       return;
     }
     final message = LocalChatMessage(
@@ -86,6 +104,18 @@ class _CommunityChatScreenState extends State<CommunityChatScreen> {
     await _store.appendMessage(message);
     _messageController.clear();
     await _load();
+  }
+
+  Future<void> _openSafety() async {
+    final changed = await showSafetyActionSheet(
+      context: context,
+      contentId: 'chat-${widget.peer.id}',
+      authorId: widget.peer.id,
+      authorName: widget.peer.displayName,
+    );
+    if (changed && mounted) {
+      await _load();
+    }
   }
 
   void _startVideoCall() {
@@ -134,6 +164,7 @@ class _CommunityChatScreenState extends State<CommunityChatScreen> {
   @override
   Widget build(BuildContext context) {
     final blocked = _safetyStore.isUserBlocked(widget.peer.id);
+    final hidden = _isChatHidden;
 
     return Scaffold(
       extendBody: true,
@@ -162,6 +193,7 @@ class _CommunityChatScreenState extends State<CommunityChatScreen> {
                         onBack: () => Navigator.of(context).pop(),
                         onVideoCall: _startVideoCall,
                         onPeerTap: _openPeerProfile,
+                        onMore: _openSafety,
                       ),
                       Expanded(
                         child: !_isReady
@@ -170,7 +202,7 @@ class _CommunityChatScreenState extends State<CommunityChatScreen> {
                                   color: Colors.white,
                                 ),
                               )
-                            : blocked
+                            : blocked || hidden
                             ? buildSquadEmptyState()
                             : _messages.isEmpty
                             ? buildSquadEmptyState()
@@ -251,12 +283,14 @@ class _ChatHeader extends StatelessWidget {
     required this.onBack,
     required this.onVideoCall,
     required this.onPeerTap,
+    required this.onMore,
   });
 
   final CommunityUser peer;
   final VoidCallback onBack;
   final VoidCallback onVideoCall;
   final VoidCallback onPeerTap;
+  final VoidCallback onMore;
 
   @override
   Widget build(BuildContext context) {
@@ -298,6 +332,11 @@ class _ChatHeader extends StatelessWidget {
           IconButton(
             onPressed: onVideoCall,
             icon: const Icon(Icons.videocam_rounded),
+            color: Colors.white,
+          ),
+          IconButton(
+            onPressed: onMore,
+            icon: const Icon(Icons.more_horiz_rounded),
             color: Colors.white,
           ),
         ],

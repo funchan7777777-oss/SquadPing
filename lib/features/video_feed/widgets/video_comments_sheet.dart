@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/safety/safety_action_store.dart';
+import '../../../shared/safety/safety_text_guard.dart';
 import '../../../shared/widgets/squad_empty_state.dart';
 import '../data/video_feed_seed.dart';
 import '../models/video_feed_models.dart';
@@ -71,6 +72,11 @@ class _VideoCommentsSheetState extends State<_VideoCommentsSheet> {
   void _sendComment() {
     final message = _controller.text.trim();
     if (message.isEmpty) {
+      return;
+    }
+    final safetyCheck = SafetyTextGuard.check(message, fieldLabel: 'Comment');
+    if (!safetyCheck.isAllowed) {
+      showSafetyTextBlockedDialog(context, safetyCheck);
       return;
     }
     final comment = VideoComment(

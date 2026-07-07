@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../shared/safety/safety_text_guard.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../models/gate_profile_origin.dart';
 import '../services/local_gate_record_keeper.dart';
@@ -285,6 +286,12 @@ class _ProfileRallyStageState extends State<ProfileRallyStage> {
         title: 'Profile needs a few signals',
         message: 'Add your name and country before entering SquadPing.',
       );
+      return;
+    }
+    if (!await ensureSafetyFieldsAllowed(context, {
+      'Name': displayName,
+      if (signatureLine.isNotEmpty) 'Signature': signatureLine,
+    })) {
       return;
     }
 

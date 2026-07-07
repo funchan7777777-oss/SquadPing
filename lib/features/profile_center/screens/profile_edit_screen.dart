@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_sheet.dart';
+import '../../../shared/safety/safety_text_guard.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../../signal_gate/services/local_gate_record_keeper.dart';
 import '../widgets/profile_avatar_image.dart';
@@ -130,6 +131,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         title: 'Profile incomplete',
         message: 'Enter a name, age from 13 to 99, and area before confirming.',
       );
+      return;
+    }
+    if (!await ensureSafetyFieldsAllowed(context, {
+      'Name': name,
+      'Area': area,
+    })) {
       return;
     }
     await widget.recordKeeper.updateProfile(

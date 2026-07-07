@@ -14,11 +14,11 @@ enum SafetyReportType {
 extension SafetyReportTypeCopy on SafetyReportType {
   String get label {
     return switch (this) {
-      SafetyReportType.adultContent => 'Pornographic content',
-      SafetyReportType.verbalViolence => 'Verbal violence',
-      SafetyReportType.religiousDiscrimination => 'Religious discrimination',
-      SafetyReportType.contentError => 'Content error',
-      SafetyReportType.genderDiscrimination => 'Gender discrimination',
+      SafetyReportType.adultContent => 'Adult or sexual content',
+      SafetyReportType.verbalViolence => 'Harassment or threats',
+      SafetyReportType.religiousDiscrimination => 'Religious or identity hate',
+      SafetyReportType.contentError => 'Scam or misleading content',
+      SafetyReportType.genderDiscrimination => 'Gender or sexuality hate',
     };
   }
 }

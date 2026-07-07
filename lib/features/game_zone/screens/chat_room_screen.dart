@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_sheet.dart';
 import '../../../shared/safety/safety_action_store.dart';
+import '../../../shared/safety/safety_text_guard.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../../../shared/widgets/squad_empty_state.dart';
 import '../data/game_zone_seed.dart';
@@ -89,6 +90,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
     if (message.isEmpty) {
       return;
     }
+    final safetyCheck = SafetyTextGuard.check(message, fieldLabel: 'Message');
+    if (!safetyCheck.isAllowed) {
+      showSafetyTextBlockedDialog(context, safetyCheck);
+      return;
+    }
     setState(() {
       _messages.add(
         ChatMessage(
@@ -126,6 +132,23 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
     }
   }
 
+  Future<void> _openMessageSafety(ChatMessage message) async {
+    final changed = await showSafetyActionSheet(
+      context: context,
+      contentId: _messageContentId(message),
+      authorId: message.author.id,
+      authorName: message.author.displayName,
+      allowBlock: message.author.id != GameZoneSeed.viewer.id,
+    );
+    if (changed && mounted) {
+      setState(() {});
+    }
+  }
+
+  String _messageContentId(ChatMessage message) {
+    return 'chat-message-${widget.room.id}-${message.author.id}-${message.sentAt}-${message.message.hashCode}';
+  }
+
   void _jumpToLatest() {
     if (!_scrollController.hasClients) {
       return;
@@ -150,7 +173,12 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
         .where((player) => !_safetyStore.isUserBlocked(player.id))
         .toList();
     final visibleMessages = _messages
-        .where((message) => !_safetyStore.isUserBlocked(message.author.id))
+        .where(
+          (message) => !_safetyStore.isContentHidden(
+            _messageContentId(message),
+            authorId: message.author.id,
+          ),
+        )
         .toList();
 
     return Scaffold(
@@ -232,6 +260,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
                                           ),
                                           child: _ChatMessageTile(
                                             message: message,
+                                            onMoreTap: () =>
+                                                _openMessageSafety(message),
                                           ),
                                         ),
                                       );
@@ -519,9 +549,10 @@ class _MoreOnlineMemberTile extends StatelessWidget {
 }
 
 class _ChatMessageTile extends StatelessWidget {
-  const _ChatMessageTile({required this.message});
+  const _ChatMessageTile({required this.message, required this.onMoreTap});
 
   final ChatMessage message;
+  final VoidCallback onMoreTap;
 
   @override
   Widget build(BuildContext context) {
@@ -574,11 +605,33 @@ class _ChatMessageTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 5),
-              Text(
-                message.sentAt,
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: Colors.white.withValues(alpha: 0.64),
-                ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    message.sentAt,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: Colors.white.withValues(alpha: 0.64),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Semantics(
+                    button: true,
+                    label: 'Report message',
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: onMoreTap,
+                      child: Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: Icon(
+                          Icons.more_horiz_rounded,
+                          color: Colors.white.withValues(alpha: 0.72),
+                          size: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

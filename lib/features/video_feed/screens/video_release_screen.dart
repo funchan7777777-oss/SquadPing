@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../shared/layout/squad_screen_insets.dart';
+import '../../../shared/safety/safety_text_guard.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../../profile_center/services/coin_economy.dart';
 import '../../profile_center/services/profile_wallet_store.dart';
@@ -77,6 +78,13 @@ class _VideoReleaseScreenState extends State<VideoReleaseScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Say something before releasing.')),
       );
+      return;
+    }
+    if (!await ensureSafetyTextAllowed(
+      context,
+      caption,
+      fieldLabel: 'Caption',
+    )) {
       return;
     }
     final charged = await _walletStore.spendCoins(_releaseCost);
