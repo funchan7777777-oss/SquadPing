@@ -5,23 +5,25 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
+import '../../profile_center/services/coin_economy.dart';
+import '../../profile_center/services/profile_wallet_store.dart';
+import '../../profile_center/widgets/coin_feedback.dart';
 import '../data/video_feed_seed.dart';
 import '../models/video_feed_models.dart';
 
 class VideoReleaseScreen extends StatefulWidget {
-  const VideoReleaseScreen({super.key, required this.walletCoins});
-
-  final int walletCoins;
+  const VideoReleaseScreen({super.key});
 
   @override
   State<VideoReleaseScreen> createState() => _VideoReleaseScreenState();
 }
 
 class _VideoReleaseScreenState extends State<VideoReleaseScreen> {
-  static const _releaseCost = 10;
+  static const _releaseCost = CoinEconomy.videoHighlightCost;
 
   late final TextEditingController _captionController;
   final _imagePicker = ImagePicker();
+  final _walletStore = ProfileWalletStore.instance;
   final List<XFile> _selectedPhotos = [];
   late String _selectedVideoAsset;
 
@@ -30,6 +32,7 @@ class _VideoReleaseScreenState extends State<VideoReleaseScreen> {
     super.initState();
     _captionController = TextEditingController();
     _selectedVideoAsset = VideoFeedSeed.releaseVideoOptions.first.videoAsset;
+    _walletStore.initialize();
   }
 
   @override
@@ -68,7 +71,7 @@ class _VideoReleaseScreenState extends State<VideoReleaseScreen> {
     setState(() => _selectedPhotos.remove(photo));
   }
 
-  void _release() {
+  Future<void> _release() async {
     final caption = _captionController.text.trim();
     if (caption.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -76,18 +79,30 @@ class _VideoReleaseScreenState extends State<VideoReleaseScreen> {
       );
       return;
     }
-    if (widget.walletCoins < _releaseCost) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Not enough gold coins.')));
+    final charged = await _walletStore.spendCoins(_releaseCost);
+    if (!charged) {
+      if (mounted) {
+        await showInsufficientCoinsDialog(
+          context,
+          cost: _releaseCost,
+          balance: _walletStore.coins,
+        );
+      }
       return;
     }
+    if (!mounted) {
+      return;
+    }
+    showCoinSpentSnack(
+      context,
+      cost: _releaseCost,
+      balance: _walletStore.coins,
+    );
     Navigator.of(context).pop(
       VideoDraftResult(
         caption: caption,
         videoAsset: _selectedVideoAsset,
         attachedPhotos: _selectedPhotos.map((photo) => photo.path).toList(),
-        cost: _releaseCost,
       ),
     );
   }

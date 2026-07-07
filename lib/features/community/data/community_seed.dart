@@ -10,6 +10,8 @@ abstract final class CommunitySeed {
     avatarAsset: SquadPingAssets.avatarMaleStreetSnap,
     bio: 'Looking for respectful squads, clean clips, and weekend co-op plans.',
     trendLabel: 'Rising',
+    followingCount: 0,
+    fansCount: 0,
   );
 
   static const chloe = CommunityUser(
@@ -20,6 +22,8 @@ abstract final class CommunitySeed {
     avatarAsset: SquadPingAssets.avatarFemaleSunlitSelfie,
     bio: 'Adventure games, city screenshots, and late-night story runs.',
     trendLabel: 'Trending',
+    followingCount: 18,
+    fansCount: 32,
   );
   static const liam = CommunityUser(
     id: 'liam',
@@ -29,6 +33,8 @@ abstract final class CommunitySeed {
     avatarAsset: SquadPingAssets.avatarMaleShadowProfile,
     bio: 'Strategy player who likes calm plans before queue.',
     trendLabel: 'Tactical',
+    followingCount: 11,
+    fansCount: 24,
   );
   static const julian = CommunityUser(
     id: 'julian',
@@ -38,6 +44,8 @@ abstract final class CommunitySeed {
     avatarAsset: SquadPingAssets.avatarMaleBlueRoom,
     bio: 'FPS angles, quick clips, and review notes.',
     trendLabel: 'Hot',
+    followingCount: 22,
+    fansCount: 41,
   );
   static const zoe = CommunityUser(
     id: 'zoe-community',
@@ -47,6 +55,8 @@ abstract final class CommunitySeed {
     avatarAsset: SquadPingAssets.avatarFemaleGlassesLeopard,
     bio: 'Screenshot collector and racing-game night driver.',
     trendLabel: 'Creator',
+    followingCount: 15,
+    fansCount: 36,
   );
   static const maya = CommunityUser(
     id: 'maya-community',
@@ -56,6 +66,8 @@ abstract final class CommunitySeed {
     avatarAsset: SquadPingAssets.avatarFemaleWhiteHeadset,
     bio: 'Co-op anchor and chat host.',
     trendLabel: 'Co-op',
+    followingCount: 9,
+    fansCount: 28,
   );
 
   static const users = <CommunityUser>[viewer, chloe, liam, julian, zoe, maya];

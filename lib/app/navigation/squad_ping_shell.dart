@@ -4,6 +4,9 @@ import '../../features/community/screens/community_screen.dart';
 import '../../features/game_zone/screens/game_zone_home_screen.dart';
 import '../../features/information_center/screens/information_center_screen.dart';
 import '../../features/profile_center/screens/profile_center_screen.dart';
+import '../../features/profile_center/services/coin_economy.dart';
+import '../../features/profile_center/services/profile_wallet_store.dart';
+import '../../features/profile_center/widgets/coin_feedback.dart';
 import '../../features/video_feed/screens/video_feed_screen.dart';
 import '../../field_notes/repositories/pulse_story_repository.dart';
 import 'session_exit_target.dart';
@@ -25,6 +28,22 @@ class SquadPingShell extends StatefulWidget {
 
 class _SquadPingShellState extends State<SquadPingShell> {
   int _selectedTabSlot = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _grantWelcomeGift());
+  }
+
+  Future<void> _grantWelcomeGift() async {
+    final walletStore = ProfileWalletStore.instance;
+    await walletStore.initialize();
+    final granted = await walletStore.grantWelcomeGiftIfNeeded();
+    if (!granted || !mounted) {
+      return;
+    }
+    await showWelcomeGiftDialog(context, coins: CoinEconomy.welcomeGiftCoins);
+  }
 
   @override
   Widget build(BuildContext context) {

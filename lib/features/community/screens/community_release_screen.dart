@@ -6,6 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/moderation/moderation_queue.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
+import '../../profile_center/services/coin_economy.dart';
+import '../../profile_center/services/profile_wallet_store.dart';
+import '../../profile_center/widgets/coin_feedback.dart';
 
 class CommunityReleaseScreen extends StatefulWidget {
   const CommunityReleaseScreen({super.key});
@@ -15,17 +18,19 @@ class CommunityReleaseScreen extends StatefulWidget {
 }
 
 class _CommunityReleaseScreenState extends State<CommunityReleaseScreen> {
-  static const _releaseCost = 10;
+  static const _releaseCost = CoinEconomy.communityPostCost;
   static const _maxPhotos = 6;
 
   late final TextEditingController _textController;
   final _imagePicker = ImagePicker();
+  final _walletStore = ProfileWalletStore.instance;
   final List<XFile> _selectedPhotos = [];
 
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController();
+    _walletStore.initialize();
   }
 
   @override
@@ -164,6 +169,25 @@ class _CommunityReleaseScreenState extends State<CommunityReleaseScreen> {
       _showSnack('Add at least one real photo before releasing.');
       return;
     }
+    final charged = await _walletStore.spendCoins(_releaseCost);
+    if (!charged) {
+      if (mounted) {
+        await showInsufficientCoinsDialog(
+          context,
+          cost: _releaseCost,
+          balance: _walletStore.coins,
+        );
+      }
+      return;
+    }
+    if (!mounted) {
+      return;
+    }
+    showCoinSpentSnack(
+      context,
+      cost: _releaseCost,
+      balance: _walletStore.coins,
+    );
     await ModerationQueue.instance.enqueuePending(
       itemId: 'community-${DateTime.now().microsecondsSinceEpoch}',
       itemType: 'community_post',

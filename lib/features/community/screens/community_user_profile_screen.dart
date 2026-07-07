@@ -118,6 +118,35 @@ class _CommunityUserProfileScreenState
     );
   }
 
+  int _visiblePeopleCount(Iterable<String> userIds) {
+    return userIds
+        .where((userId) => !_safetyStore.isUserBlocked(userId))
+        .where((userId) => CommunitySeed.users.any((user) => user.id == userId))
+        .length;
+  }
+
+  int _followingCountFor(CommunityUser user) {
+    if (user.id == CommunitySeed.viewer.id) {
+      return user.followingCount +
+          _visiblePeopleCount(_localStore.followingUserIds);
+    }
+    final followsViewer =
+        _localStore.approvedFollowerIds.contains(user.id) ||
+        _localStore.incomingFollowRequestIds.contains(user.id);
+    return user.followingCount + (followsViewer ? 1 : 0);
+  }
+
+  int _fansCountFor(CommunityUser user) {
+    if (user.id == CommunitySeed.viewer.id) {
+      return user.fansCount +
+          _visiblePeopleCount(_localStore.approvedFollowerIds);
+    }
+    final viewerFollowsUser =
+        _localStore.isFollowing(user.id) ||
+        _localStore.hasRequestedFollow(user.id);
+    return user.fansCount + (viewerFollowsUser ? 1 : 0);
+  }
+
   @override
   Widget build(BuildContext context) {
     final topPadding = squadCompactTopPadding(context);
@@ -225,7 +254,10 @@ class _CommunityUserProfileScreenState
                       ],
                     ),
                     const SizedBox(height: 18),
-                    _StatsPanel(postCount: visiblePosts.length),
+                    _StatsPanel(
+                      followingCount: _followingCountFor(widget.user),
+                      fansCount: _fansCountFor(widget.user),
+                    ),
                     const SizedBox(height: 16),
                     _ProfileActionButtons(
                       onChat: isViewer || isBlocked ? null : _openChat,
@@ -393,9 +425,10 @@ class _ProfileActionButtons extends StatelessWidget {
 }
 
 class _StatsPanel extends StatelessWidget {
-  const _StatsPanel({required this.postCount});
+  const _StatsPanel({required this.followingCount, required this.fansCount});
 
-  final int postCount;
+  final int followingCount;
+  final int fansCount;
 
   @override
   Widget build(BuildContext context) {
@@ -418,11 +451,11 @@ class _StatsPanel extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: _Stat(label: 'Follow', value: '$postCount'),
+                child: _Stat(label: 'Follow', value: '$followingCount'),
               ),
               Container(width: 1, height: 38, color: const Color(0xFFE2E2E8)),
-              const Expanded(
-                child: _Stat(label: 'Fans', value: '0'),
+              Expanded(
+                child: _Stat(label: 'Fans', value: '$fansCount'),
               ),
             ],
           ),

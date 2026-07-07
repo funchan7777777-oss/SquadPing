@@ -85,11 +85,9 @@ class VideoDraftResult {
     required this.caption,
     required this.videoAsset,
     required this.attachedPhotos,
-    required this.cost,
   });
 
   final String caption;
   final String videoAsset;
   final List<String> attachedPhotos;
-  final int cost;
 }

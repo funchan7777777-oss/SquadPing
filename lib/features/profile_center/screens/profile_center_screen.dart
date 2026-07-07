@@ -4,12 +4,10 @@ import '../../../app/navigation/session_exit_target.dart';
 import '../../../shared/layout/squad_screen_insets.dart';
 import '../../../shared/safety/safety_action_store.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
-import '../../../shared/widgets/squad_empty_state.dart';
 import '../../community/data/community_seed.dart';
 import '../../community/models/community_models.dart';
 import '../../community/services/community_local_store.dart';
 import '../../signal_gate/services/local_gate_record_keeper.dart';
-import '../services/profile_wallet_store.dart';
 import '../widgets/profile_avatar_image.dart';
 import 'profile_coin_shop_screen.dart';
 import 'profile_edit_screen.dart';
@@ -29,7 +27,6 @@ class _ProfileCenterScreenState extends State<ProfileCenterScreen> {
   final _recordKeeper = LocalGateRecordKeeper();
   final _localStore = CommunityLocalStore.instance;
   final _safetyStore = SafetyActionStore.instance;
-  final _walletStore = ProfileWalletStore.instance;
   GateProfileSnapshot? _profile;
   var _isReady = false;
 
@@ -39,14 +36,12 @@ class _ProfileCenterScreenState extends State<ProfileCenterScreen> {
     _load();
     _localStore.addListener(_refresh);
     _safetyStore.addListener(_refresh);
-    _walletStore.addListener(_refresh);
   }
 
   @override
   void dispose() {
     _localStore.removeListener(_refresh);
     _safetyStore.removeListener(_refresh);
-    _walletStore.removeListener(_refresh);
     super.dispose();
   }
 
@@ -55,7 +50,6 @@ class _ProfileCenterScreenState extends State<ProfileCenterScreen> {
       _recordKeeper.initialize(),
       _localStore.initialize(),
       _safetyStore.initialize(),
-      _walletStore.initialize(),
     ]);
     final profile = await _recordKeeper.loadProfile();
     if (mounted) {
@@ -126,13 +120,6 @@ class _ProfileCenterScreenState extends State<ProfileCenterScreen> {
   @override
   Widget build(BuildContext context) {
     final profile = _profile;
-    final ownPosts = CommunitySeed.posts
-        .where((post) => post.author.id == CommunitySeed.viewer.id)
-        .where(
-          (post) =>
-              !_safetyStore.isContentHidden(post.id, authorId: post.author.id),
-        )
-        .toList();
 
     return ColoredBox(
       color: const Color(0xFF7138F5),
@@ -204,8 +191,6 @@ class _ProfileCenterScreenState extends State<ProfileCenterScreen> {
                                 _openPeople(ProfilePeopleMode.fans),
                           ),
                           const SizedBox(height: 14),
-                          _CoinBalanceStrip(coins: _walletStore.coins),
-                          const SizedBox(height: 14),
                           Row(
                             children: [
                               Expanded(
@@ -224,13 +209,7 @@ class _ProfileCenterScreenState extends State<ProfileCenterScreen> {
                             ],
                           ),
                           const SizedBox(height: 14),
-                          if (ownPosts.isEmpty)
-                            buildSquadEmptyState()
-                          else
-                            for (final post in ownPosts) ...[
-                              _MinePostCard(profile: profile, post: post),
-                              const SizedBox(height: 14),
-                            ],
+                          const _MinePostsEmptyState(),
                         ],
                       ),
               ),
@@ -430,44 +409,6 @@ class _StatButton extends StatelessWidget {
   }
 }
 
-class _CoinBalanceStrip extends StatelessWidget {
-  const _CoinBalanceStrip({required this.coins});
-
-  final int coins;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 52,
-      child: Stack(
-        alignment: Alignment.centerLeft,
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              SquadPingAssets.profileCoinPill,
-              fit: BoxFit.fill,
-            ),
-          ),
-          Positioned(
-            left: 92,
-            right: 18,
-            child: Text(
-              '$coins',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.right,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _ProfileTile extends StatelessWidget {
   const _ProfileTile({required this.asset, required this.onTap});
 
@@ -480,123 +421,49 @@ class _ProfileTile extends StatelessWidget {
       onTap: onTap,
       child: SizedBox(
         width: double.infinity,
-        height: 96,
+        height: 112,
         child: Image.asset(asset, fit: BoxFit.fill),
       ),
     );
   }
 }
 
-class _MinePostCard extends StatelessWidget {
-  const _MinePostCard({required this.profile, required this.post});
-
-  final GateProfileSnapshot profile;
-  final CommunityPost post;
+class _MinePostsEmptyState extends StatelessWidget {
+  const _MinePostsEmptyState();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+      padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.10),
+        color: Colors.white.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.28)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.24)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Row(
-            children: [
-              ClipOval(
-                child: ProfileAvatarImage(
-                  avatarPath: profile.avatarPath,
-                  width: 46,
-                  height: 46,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      profile.displayName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    Text(
-                      '${profile.age} years old',
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.72),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Icon(
-                Icons.more_horiz_rounded,
-                color: Colors.white.withValues(alpha: 0.82),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            post.message,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.18),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: const Icon(
+              Icons.article_outlined,
               color: Colors.white,
-              height: 1.34,
-              fontWeight: FontWeight.w700,
+              size: 26,
             ),
           ),
-          const SizedBox(height: 12),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: AspectRatio(
-              aspectRatio: 630 / 368,
-              child: Image.asset(post.imageAsset, fit: BoxFit.cover),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Text(
+              'No posts yet.',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w900,
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              const Icon(
-                Icons.thumb_up_alt_outlined,
-                color: Colors.white,
-                size: 23,
-              ),
-              const SizedBox(width: 6),
-              Text(
-                '${post.likeCount}',
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-              const SizedBox(width: 18),
-              const Icon(
-                Icons.mode_comment_outlined,
-                color: Colors.white,
-                size: 23,
-              ),
-              const SizedBox(width: 6),
-              Text(
-                '${post.comments.length}',
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-              const Spacer(),
-              Image.asset(
-                SquadPingAssets.communityLikeGlyph,
-                width: 34,
-                height: 34,
-              ),
-            ],
           ),
         ],
       ),

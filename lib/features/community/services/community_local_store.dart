@@ -77,6 +77,7 @@ class CommunityLocalStore extends ChangeNotifier {
       _approvedFollowerIds.add(userId);
       _followingUserIds.add(userId);
     } else {
+      _followingUserIds.add(userId);
       _followRequestsSent.add(userId);
     }
     await _persistRelationshipState();

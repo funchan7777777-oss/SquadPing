@@ -23,7 +23,6 @@ class _VideoFeedScreenState extends State<VideoFeedScreen> {
   late final PageController _pageController;
   late final List<VideoPost> _posts;
   var _activeIndex = 0;
-  var _walletCoins = 60;
 
   @override
   void initState() {
@@ -66,9 +65,7 @@ class _VideoFeedScreenState extends State<VideoFeedScreen> {
 
   Future<void> _openRelease() async {
     final result = await Navigator.of(context).push<VideoDraftResult>(
-      MaterialPageRoute(
-        builder: (_) => VideoReleaseScreen(walletCoins: _walletCoins),
-      ),
+      MaterialPageRoute(builder: (_) => const VideoReleaseScreen()),
     );
     if (result == null || !mounted) {
       return;
@@ -82,7 +79,6 @@ class _VideoFeedScreenState extends State<VideoFeedScreen> {
       return;
     }
     setState(() {
-      _walletCoins -= result.cost;
       _activeIndex = 0;
     });
     await showModerationQueuedDialog(context);

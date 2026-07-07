@@ -7,6 +7,8 @@ class CommunityUser {
     required this.avatarAsset,
     required this.bio,
     required this.trendLabel,
+    required this.followingCount,
+    required this.fansCount,
   });
 
   final String id;
@@ -16,6 +18,8 @@ class CommunityUser {
   final String avatarAsset;
   final String bio;
   final String trendLabel;
+  final int followingCount;
+  final int fansCount;
 }
 
 class CommunityComment {
