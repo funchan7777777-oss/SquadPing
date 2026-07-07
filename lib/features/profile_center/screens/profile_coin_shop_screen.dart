@@ -19,6 +19,7 @@ class ProfileCoinShopScreen extends StatefulWidget {
 class _ProfileCoinShopScreenState extends State<ProfileCoinShopScreen> {
   final _walletStore = ProfileWalletStore.instance;
   late final StreamSubscription<List<PurchaseDetails>> _purchaseSubscription;
+  var _storeProducts = <String, ProductDetails>{};
   var _isReady = false;
   String? _buyingProductId;
 
@@ -42,6 +43,7 @@ class _ProfileCoinShopScreenState extends State<ProfileCoinShopScreen> {
 
   Future<void> _initialize() async {
     await _walletStore.initialize();
+    await _loadStoreProducts();
     if (mounted) {
       setState(() => _isReady = true);
     }
@@ -60,6 +62,26 @@ class _ProfileCoinShopScreenState extends State<ProfileCoinShopScreen> {
     }
   }
 
+  Future<void> _loadStoreProducts() async {
+    try {
+      final available = await InAppPurchase.instance.isAvailable();
+      if (!available) {
+        return;
+      }
+      final response = await InAppPurchase.instance.queryProductDetails(
+        CoinEconomy.coinPacks.map((pack) => pack.productId).toSet(),
+      );
+      if (response.error != null || !mounted) {
+        return;
+      }
+      _storeProducts = {
+        for (final product in response.productDetails) product.id: product,
+      };
+    } catch (_) {
+      return;
+    }
+  }
+
   Future<void> _buy(CoinPack pack) async {
     if (_buyingProductId != null) {
       return;
@@ -73,24 +95,43 @@ class _ProfileCoinShopScreenState extends State<ProfileCoinShopScreen> {
         return;
       }
 
-      final response = await InAppPurchase.instance.queryProductDetails({
-        pack.productId,
-      });
-      if (response.error != null) {
-        _showSnack(response.error!.message);
-        return;
+      var productDetails = _storeProducts[pack.productId];
+      if (productDetails == null) {
+        final response = await InAppPurchase.instance.queryProductDetails({
+          pack.productId,
+        });
+        if (response.error != null) {
+          _showSnack(response.error!.message);
+          return;
+        }
+
+        for (final product in response.productDetails) {
+          if (product.id == pack.productId) {
+            productDetails = product;
+            break;
+          }
+        }
+        if (productDetails != null) {
+          _storeProducts = {
+            ..._storeProducts,
+            productDetails.id: productDetails,
+          };
+        }
+        if (response.notFoundIDs.isNotEmpty) {
+          _showSnack(
+            'This coin pack is not available in App Store Connect yet.',
+          );
+          return;
+        }
       }
 
-      final productDetails = response.productDetails
-          .where((product) => product.id == pack.productId)
-          .toList(growable: false);
-      if (productDetails.isEmpty || response.notFoundIDs.isNotEmpty) {
+      if (productDetails == null) {
         _showSnack('This coin pack is not available in App Store Connect yet.');
         return;
       }
 
       final started = await InAppPurchase.instance.buyConsumable(
-        purchaseParam: PurchaseParam(productDetails: productDetails.first),
+        purchaseParam: PurchaseParam(productDetails: productDetails),
         autoConsume: true,
       );
       purchaseStarted = started;
@@ -241,7 +282,7 @@ class _ProfileCoinShopScreenState extends State<ProfileCoinShopScreen> {
                           const SizedBox(height: 18),
                           _SectionTitle(
                             title: 'Recharge packs',
-                            trailing: 'Apple Pay',
+                            trailing: 'App Store IAP',
                           ),
                           const SizedBox(height: 12),
                           GridView.builder(
@@ -259,6 +300,9 @@ class _ProfileCoinShopScreenState extends State<ProfileCoinShopScreen> {
                               final pack = CoinEconomy.coinPacks[index];
                               return _CoinProductCard(
                                 pack: pack,
+                                priceLabel:
+                                    _storeProducts[pack.productId]?.price ??
+                                    pack.priceLabel,
                                 isBuying: _buyingProductId == pack.productId,
                                 onBuy: () => _buy(pack),
                               );
@@ -404,7 +448,7 @@ class _ShopExplainer extends StatelessWidget {
           const SizedBox(width: 10),
           Expanded(
             child: Text(
-              'Coins unlock publishing tools. Chat, comments, and direct messages stay free.',
+              'Coins unlock fixed-price publishing and planning tools. Chat, comments, follows, and direct messages stay free.',
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
                 color: Colors.white.withValues(alpha: 0.86),
                 fontWeight: FontWeight.w800,
@@ -459,11 +503,13 @@ class _SectionTitle extends StatelessWidget {
 class _CoinProductCard extends StatelessWidget {
   const _CoinProductCard({
     required this.pack,
+    required this.priceLabel,
     required this.isBuying,
     required this.onBuy,
   });
 
   final CoinPack pack;
+  final String priceLabel;
   final bool isBuying;
   final VoidCallback onBuy;
 
@@ -542,7 +588,7 @@ class _CoinProductCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  pack.priceLabel,
+                  priceLabel,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: highlighted ? Colors.white : Colors.black,
                     fontWeight: FontWeight.w900,
@@ -629,7 +675,7 @@ class _SpendRulesPanel extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
             ),
             child: Text(
-              'Free forever: AI assistant chats, private chats, comments, likes, following, and profile edits.',
+              'Purchased coins do not expire. Coins have no cash value and are never used for odds-based rewards, contests, wagers, chat, likes, follows, or profile edits.',
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
                 color: Colors.white.withValues(alpha: 0.80),
                 fontWeight: FontWeight.w800,

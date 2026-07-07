@@ -28,6 +28,7 @@ abstract final class CoinEconomy {
   static const welcomeGiftCoins = 120;
   static const communityPostCost = 20;
   static const videoHighlightCost = 30;
+  static const tacticalBriefCost = 15;
 
   static const coinPacks = <CoinPack>[
     CoinPack(productId: 'ivdupywnbqlxlpet', coins: 50, priceLabel: r'$0.99'),
@@ -54,6 +55,11 @@ abstract final class CoinEconomy {
       title: 'Video highlight release',
       cost: videoHighlightCost,
       detail: 'Publish one gameplay highlight from the video feed.',
+    ),
+    CoinSpendRule(
+      title: 'Tactical brief forge',
+      cost: tacticalBriefCost,
+      detail: 'Create one saved squad plan with roles, comms, and reset rules.',
     ),
   ];
 }

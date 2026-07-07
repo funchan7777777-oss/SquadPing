@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../shared/safety/safety_action_store.dart';
 import '../../../shared/visuals/squad_ping_assets.dart';
 import '../../../shared/widgets/squad_empty_state.dart';
+import '../../profile_center/services/coin_economy.dart';
 import '../data/game_zone_seed.dart';
 import '../models/game_zone_models.dart';
 import 'chat_room_screen.dart';
 import 'game_detail_screen.dart';
+import 'tactical_brief_forge_screen.dart';
 
 enum _GameZoneShelf { game, chat }
 
@@ -71,6 +73,20 @@ class _GameZoneHomeScreenState extends State<GameZoneHomeScreen> {
                     focusedShelf: _focusedShelf,
                     onSelected: (shelf) {
                       setState(() => _focusedShelf = shelf);
+                    },
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(14, 12, 14, 0),
+                sliver: SliverToBoxAdapter(
+                  child: _TacticalBriefEntry(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const TacticalBriefForgeScreen(),
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -206,6 +222,118 @@ class _ShelfArtButton extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         onTap: onPressed,
         child: Image.asset(asset, height: 68, fit: BoxFit.fill),
+      ),
+    );
+  }
+}
+
+class _TacticalBriefEntry extends StatelessWidget {
+  const _TacticalBriefEntry({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(14, 12, 12, 12),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF20114F), Color(0xFF7138F5)],
+          ),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: const Color(0xFFFFD85F).withValues(alpha: 0.34),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF7138F5).withValues(alpha: 0.28),
+              blurRadius: 18,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(
+                Icons.map_rounded,
+                color: Color(0xFFFFD85F),
+                size: 28,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Tactical Brief Forge',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Build roles, comms, and reset rules before queue.',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: Colors.white.withValues(alpha: 0.72),
+                      fontWeight: FontWeight.w700,
+                      height: 1.2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.22),
+                borderRadius: BorderRadius.circular(999),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    SquadPingAssets.profileCoinIcon,
+                    width: 16,
+                    height: 16,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    '${CoinEconomy.tacticalBriefCost}',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 4),
+            const Icon(
+              Icons.chevron_right_rounded,
+              color: Colors.white,
+              size: 24,
+            ),
+          ],
+        ),
       ),
     );
   }
