@@ -130,6 +130,9 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
     if (confirmed != true) {
       return;
     }
+    if (!mounted) {
+      return;
+    }
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => RouteEntryLoadingStage(caption: loadingCaption),
